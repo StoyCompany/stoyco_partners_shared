@@ -52,8 +52,8 @@ class _Text {
   final Color blueBackgroundIcons = StoycoColorsToken.blueBackgroundIcons;
 
   final Color saHighlights = StoycoColorsToken.saHighlights;
-
   final Color saTextDisabled = StoycoColorsToken.saTextDisabled;
+  final Color saError = StoycoColorsToken.saError;
 }
 
 class _Background {
@@ -133,6 +133,7 @@ class _Border {
   final Color textFieldError = StoycoColorsToken.tertiary1;
   final Color customerCard = StoycoColorsToken.grey4;
   final Color greenBorder = StoycoColorsToken.greenClear;
+  final Color saError = StoycoColorsToken.saError;
 }
 
 class _Shadow {

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:stoyco_partners_shared/design/types/formfield_validator_type.dart';
 import 'package:stoyco_partners_shared/design/utils/foundations/color_foundation.dart';
 
 typedef FormFieldValidator = String? Function(String? value);
@@ -12,7 +11,6 @@ class CustomFormField extends StatefulWidget {
     this.initialValue,
     this.placeholder,
     this.isPassword = false,
-    this.validatorType = FormFieldValidatorType.none,
     this.validators = const [],
     this.onChanged,
     this.onFieldSubmitted,
@@ -30,6 +28,7 @@ class CustomFormField extends StatefulWidget {
     this.textColor,
     this.placeholderColor,
     this.iconColor,
+    this.autovalidateMode,
   }) : assert(
          controller == null || initialValue == null,
          'Provide either a controller or an initialValue, not both.',
@@ -41,7 +40,6 @@ class CustomFormField extends StatefulWidget {
 
   final bool isPassword;
 
-  final FormFieldValidatorType validatorType;
   final List<FormFieldValidator> validators;
 
   final ValueChanged<String>? onChanged;
@@ -65,12 +63,15 @@ class CustomFormField extends StatefulWidget {
   final Color? placeholderColor;
   final Color? iconColor;
 
+  final AutovalidateMode? autovalidateMode;
+
   @override
   State<CustomFormField> createState() => _CustomFormFieldState();
 }
 
 class _CustomFormFieldState extends State<CustomFormField> {
   late bool _obscure;
+  final ValueNotifier<bool> _hasError = ValueNotifier<bool>(false);
 
   @override
   void initState() {
@@ -78,57 +79,42 @@ class _CustomFormFieldState extends State<CustomFormField> {
     _obscure = widget.isPassword;
   }
 
-  String? _builtInValidator(String? value) {
-    final v = value?.trim() ?? '';
-
-    switch (widget.validatorType) {
-      case FormFieldValidatorType.none:
-        return null;
-
-      case FormFieldValidatorType.email:
-        final emailRegex = RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$');
-        if (v.isEmpty) return 'Este campo es requerido';
-        if (!emailRegex.hasMatch(v)) return '*Favor ingresar un correo válido';
-        return null;
-
-      case FormFieldValidatorType.password:
-        if (v.isEmpty) return 'Este campo es requerido';
-
-        final lengthOK = v.length >= 8;
-        final upperOK = v.contains(RegExp(r'[A-Z]'));
-        final lowerOK = v.contains(RegExp(r'[a-z]'));
-        final digitOK = v.contains(RegExp(r'\d'));
-        if (!(lengthOK && upperOK && lowerOK && digitOK)) {
-          return 'La contraseña debe tener 8+ caracteres, '
-              'una mayúscula, una minúscula y un número';
-        }
-        return null;
-    }
+  @override
+  void dispose() {
+    _hasError.dispose();
+    super.dispose();
   }
 
   String? _runValidators(String? value) {
-    final builtIn = _builtInValidator(value);
-    if (builtIn != null) return builtIn;
-
     for (final validator in widget.validators) {
-      final res = validator(value);
-      if (res != null) return res;
+      final error = validator(value);
+      if (error != null) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) _hasError.value = true;
+        });
+        return error;
+      }
     }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) _hasError.value = false;
+    });
     return null;
   }
 
   @override
   Widget build(BuildContext context) {
-    final saDark = ColorFoundation.text.saDark;
-    final errorColor = ColorFoundation.border.textFieldError;
+    final errorColor = ColorFoundation.text.saError;
 
-    final Color baseUnderline = widget.underlineColor ?? saDark;
+    final Color baseUnderline =
+        widget.underlineColor ?? ColorFoundation.text.saDark;
     final Color baseFocusedUnderline =
         widget.focusedUnderlineColor ?? baseUnderline;
     final Color baseErrorUnderline = widget.errorUnderlineColor ?? errorColor;
-    final Color baseTextColor = widget.textColor ?? saDark;
-    final Color basePlaceholderColor = widget.placeholderColor ?? saDark;
-    final Color baseIconColor = widget.iconColor ?? saDark;
+    final Color baseTextColor = widget.textColor ?? ColorFoundation.text.saDark;
+    final Color basePlaceholderColor =
+        widget.placeholderColor ?? ColorFoundation.text.saDark;
+    final Color baseIconColor = widget.iconColor ?? ColorFoundation.text.saDark;
 
     final underline = UnderlineInputBorder(
       borderSide: BorderSide(color: baseUnderline, width: 2),
@@ -140,50 +126,65 @@ class _CustomFormFieldState extends State<CustomFormField> {
       borderSide: BorderSide(color: baseErrorUnderline, width: 2),
     );
 
-    return TextFormField(
-      controller: widget.controller,
-      initialValue: widget.controller == null ? widget.initialValue : null,
-      onChanged: widget.onChanged,
-      onFieldSubmitted: widget.onFieldSubmitted,
-      keyboardType:
-          widget.keyboardType ??
-          (widget.isPassword
-              ? TextInputType.visiblePassword
-              : TextInputType.text),
-      inputFormatters: widget.inputFormatters,
-      textInputAction: widget.textInputAction,
-      autofocus: widget.autofocus,
-      focusNode: widget.focusNode,
-      enabled: widget.enabled,
-      maxLength: widget.maxLength,
-      maxLines: widget.isPassword ? 1 : widget.maxLines,
-      obscureText: _obscure && widget.isPassword,
-      style: TextStyle(color: baseTextColor),
-      validator: _runValidators,
-      decoration: InputDecoration(
-        hintText: widget.placeholder,
-        hintStyle: TextStyle(
-          color: basePlaceholderColor,
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
-        ),
-        enabledBorder: underline,
-        focusedBorder: focusedUnderline,
-        errorBorder: errorUnderline,
-        focusedErrorBorder: errorUnderline,
-        suffixIcon: widget.isPassword
-            ? IconButton(
-                visualDensity: VisualDensity.compact,
-                icon: Icon(
-                  _obscure ? Icons.visibility_off : Icons.visibility,
-                  color: baseIconColor,
-                ),
-                onPressed: !widget.enabled
-                    ? null
-                    : () => setState(() => _obscure = !_obscure),
-              )
-            : null,
-      ),
+    return ValueListenableBuilder<bool>(
+      valueListenable: _hasError,
+      builder: (context, hasError, child) {
+        final Color currentTextColor = hasError ? errorColor : baseTextColor;
+
+        return TextFormField(
+          controller: widget.controller,
+          initialValue: widget.controller == null ? widget.initialValue : null,
+          onChanged: widget.onChanged,
+          onFieldSubmitted: widget.onFieldSubmitted,
+          keyboardType:
+              widget.keyboardType ??
+              (widget.isPassword
+                  ? TextInputType.visiblePassword
+                  : TextInputType.text),
+          inputFormatters: widget.inputFormatters,
+          textInputAction: widget.textInputAction,
+          autofocus: widget.autofocus,
+          focusNode: widget.focusNode,
+          enabled: widget.enabled,
+          maxLength: widget.maxLength,
+          maxLines: widget.isPassword ? 1 : widget.maxLines,
+          obscureText: _obscure && widget.isPassword,
+          style: TextStyle(color: currentTextColor),
+          validator: _runValidators,
+          autovalidateMode:
+              widget.autovalidateMode ?? AutovalidateMode.onUserInteraction,
+          decoration: InputDecoration(
+            hintText: widget.placeholder,
+            hintStyle: TextStyle(
+              color: basePlaceholderColor,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
+            enabledBorder: underline,
+            focusedBorder: focusedUnderline,
+            errorBorder: errorUnderline,
+            focusedErrorBorder: errorUnderline,
+            errorStyle: TextStyle(
+              color: errorColor,
+              fontSize: 12,
+              fontWeight: FontWeight.w400,
+            ),
+            errorMaxLines: 2,
+            suffixIcon: widget.isPassword
+                ? IconButton(
+                    visualDensity: VisualDensity.compact,
+                    icon: Icon(
+                      _obscure ? Icons.visibility_off : Icons.visibility,
+                      color: baseIconColor,
+                    ),
+                    onPressed: !widget.enabled
+                        ? null
+                        : () => setState(() => _obscure = !_obscure),
+                  )
+                : null,
+          ),
+        );
+      },
     );
   }
 }

@@ -131,6 +131,9 @@ class StoycoColorsToken {
   /// Color: #C8B5E9
   static const Color saDisabled = Color(0xFFC8B5E9);
 
+  /// Color: #E87D99
+  static const Color saError = Color(0xFFE87D99);
+
   /// Color: #9E80E1
   static const Color saHighlights = Color(0xFF9E80E1);
 

@@ -77,6 +77,7 @@
 
     <!-- failed -->
     <color name="failed">#F8C3BE</color>
+    <color name="sa-error">#E87D99</color>
 
     <!-- blur -->
     <color name="blur">#B2383838</color>

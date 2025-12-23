@@ -1,3 +1,10 @@
+## 0.0.2
+
+* Features
+- Added custom form fields with auto validation
+- Added custom button
+- Added custom header
+
 ## 0.0.1
 
-* TODO: Describe initial release.
+* Initial release
