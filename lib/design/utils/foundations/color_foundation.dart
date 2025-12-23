@@ -113,6 +113,8 @@ class _Background {
 
   final Color saDark = StoycoColorsToken.saDark;
 
+  final Color saLight = StoycoColorsToken.saLight;
+
   final Color saHighlights = StoycoColorsToken.saHighlights;
 
   final Color saDisabled = StoycoColorsToken.saDisabled;

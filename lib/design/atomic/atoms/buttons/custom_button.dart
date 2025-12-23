@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:stoyco_partners_shared/design/layout.dart';
 
 class CustomButton extends StatelessWidget {
   const CustomButton({
@@ -112,7 +113,7 @@ class CustomButton extends StatelessWidget {
                   radius: 12,
                 ),
               ),
-              const SizedBox(width: 8),
+              Gutter(8),
               DefaultTextStyle(
                 style: resolvedTextStyle.copyWith(color: finalTextColor),
                 child: content,
@@ -192,11 +193,11 @@ class CustomButton extends StatelessWidget {
             data: IconThemeData(size: textStyle.fontSize ?? 16),
             child: leading!,
           ),
-          const SizedBox(width: 8),
+          Gutter(8),
         ],
         DefaultTextStyle(style: textStyle, child: content),
         if (hasTrailing) ...[
-          const SizedBox(width: 8),
+          Gutter(8),
           IconTheme.merge(
             data: IconThemeData(size: textStyle.fontSize ?? 16),
             child: trailing!,
