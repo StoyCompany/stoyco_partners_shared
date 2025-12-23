@@ -1,0 +1,86 @@
+name: stoyco_partners_shared
+description: "A new Flutter package project."
+version: 0.0.1
+homepage:
+
+environment:
+  sdk: ^3.10.1
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  carousel_slider: ^5.1.1
+  cupertino_icons: ^1.0.6
+  either_dart: ^1.0.0
+  equatable: ^2.0.5
+  flutter_dotenv: ^6.0.0
+  flutter_native_splash: ^2.4.7
+  flutter_statusbarcolor_ns: ^0.6.0
+  flutter_svg: ^2.0.10+1
+  gap: ^3.0.1
+  get: ^4.6.6
+  get_storage: ^2.1.1
+  json_annotation: ^4.9.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  build_runner: ^2.4.9
+  flutter_gen: ^5.4.0
+  flutter_gen_runner: ^5.4.0
+  json_serializable: ^6.7.1
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter packages.
+flutter:
+  uses-material-design: true
+
+  assets:
+    - lib/assets/colors/
+    - lib/assets/fonts/
+    - lib/assets/images/
+
+  fonts:
+    - family: Gilroy
+      fonts:
+        - asset: lib/assets/fonts/gilroy/Gilroy-Thin.ttf
+          weight: 100
+        - asset: lib/assets/fonts/gilroy/Gilroy-UltraLight.ttf
+          weight: 200
+        - asset: lib/assets/fonts/gilroy/Gilroy-Light.ttf
+          weight: 300
+        - asset: lib/assets/fonts/gilroy/Gilroy-Regular.ttf
+          weight: 400
+        - asset: lib/assets/fonts/gilroy/Gilroy-Medium.ttf
+          weight: 500
+        - asset: lib/assets/fonts/gilroy/Gilroy-SemiBold.ttf
+          weight: 600
+        - asset: lib/assets/fonts/gilroy/Gilroy-Bold.ttf
+          weight: 700
+        - asset: lib/assets/fonts/gilroy/Gilroy-ExtraBold.ttf
+          weight: 800
+        - asset: lib/assets/fonts/gilroy/Gilroy-Black.ttf
+          weight: 900
+
+flutter_gen:
+  output: lib/design/utils/tokens/gen
+  integrations:
+    flutter_svg: true
+  assets:
+    enabled: true
+    outputs:
+      class_name: StoycoAssetsToken
+  fonts:
+    enabled: true
+    outputs:
+      class_name: StoycoFontFamilyToken
+  colors:
+    enabled: true
+    outputs:
+      class_name: StoycoColorsToken
+    inputs:
+      - lib/assets/colors/colors.xml

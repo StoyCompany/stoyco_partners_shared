@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base -->
+
+    <color name="white">#FFFFFF</color>
+    <color name="sa-light">#F2E9F2</color>
+
+    <!-- gray colors -->
+    <color name="grey1">#585858</color>
+    <color name="grey2">#797979</color>
+    <color name="grey3">#A0A0A0</color>
+    <color name="grey4">#C2C2C2</color>
+    <color name="grey5">#E7E7E7</color>
+    <color name="grey6">#EAEBEB</color>
+    <color name="grey7">#545F71</color>
+    <color name="sa-text-disabled">#6B6974</color>
+
+    <!-- black colors -->
+    <color name="black">#2F2F2F</color>
+    <color name="blackTransparent">#33000000</color>
+    <color name="black-1">#4E4E4E</color>
+    <color name="black-2">#0D0F33</color>
+    <color name="sa-dark">#14121D</color>
+
+    <!-- complementary colors -->
+    <color name="complementario1">#314F9E</color>
+    <color name="complementario2">#0F4572</color>
+    <color name="complementario3">#048DBE</color>
+    <color name="complementario4">#15B790</color>
+    <color name="tertiary1">#F25444</color>
+    <color name="tertiary3">#F27B2C</color>
+
+    <!-- yellow colors -->
+    <color name="darkYellow">#E8CF00</color>
+
+    <!-- purple colors -->
+    <color name="sa-highlights">#9E80E1</color>
+    <color name="sa-disabled">#C8B5E9</color>
+
+
+    <!-- blue colors -->
+    <color name="blue30">#B4DDEC</color>
+    <color name="blue10">#CDE8F2</color>
+    <color name="blue5">#E6F4F9</color>
+    <color name="blue11">#006DB3</color>
+    <color name="blueBackgroundIcons">#CCF2FF</color>
+
+    <!-- green colors -->
+    <color name="greendark">#038969</color>
+    <color name="greenClear">#76DBC3</color>
+    <color name="greenMenu">#B9E9DE</color>
+    <color name="greenTable">#E7F6F3</color>
+
+    <!-- colors for gradients, color 1 and color 2 -->
+    <color name="header1">#AAD3E1</color>
+    <color name="header2">#AEDFD4</color>
+
+    <color name="cardAffirmative1">#15B790</color>
+    <color name="cardAffirmative2">#83CEBC</color>
+
+    <color name="cardNegative1">#F25444</color>
+    <color name="cardNegative2">#C09590</color>
+
+    <color name="cardIntermediate1">#BAA707</color>
+    <color name="cardIntermediate2">#E8D112</color>
+
+    <color name="lineCard1">#048DBE</color>
+    <color name="lineCard2">#5DCEF6</color>
+
+    <color name="whiteGradient">#00FFFFFF</color>
+
+    <!-- transparent invisible -->
+    <color name="transparent">#00000000</color>
+
+    <!-- shadow -->
+    <color name="shadow1">#29000000</color>
+
+    <!-- failed -->
+    <color name="failed">#F8C3BE</color>
+
+    <!-- blur -->
+    <color name="blur">#B2383838</color>
+
+
+</resources>
