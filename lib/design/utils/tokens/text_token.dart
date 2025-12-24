@@ -117,6 +117,32 @@ class GilroyText {
     fontSize: 14,
   );
 
+  // Font Size : 15
+  final TextStyle light_15 = _gilroy.copyWith(
+    fontWeight: FontWeight.w300,
+    fontSize: 15,
+  );
+  final TextStyle regular_15 = _gilroy.copyWith(
+    fontWeight: FontWeight.w400,
+    fontSize: 15,
+  );
+  final TextStyle medium_15 = _gilroy.copyWith(
+    fontWeight: FontWeight.w500,
+    fontSize: 15,
+  );
+  final TextStyle semibold_15 = _gilroy.copyWith(
+    fontWeight: FontWeight.w600,
+    fontSize: 15,
+  );
+  final TextStyle bold_15 = _gilroy.copyWith(
+    fontWeight: FontWeight.w700,
+    fontSize: 15,
+  );
+  final TextStyle extrabold_15 = _gilroy.copyWith(
+    fontWeight: FontWeight.w800,
+    fontSize: 15,
+  );
+
   // Font Size : 16
   final TextStyle light_16 = _gilroy.copyWith(
     fontWeight: FontWeight.w300,

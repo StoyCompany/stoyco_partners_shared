@@ -43,6 +43,7 @@ flutter:
     - lib/assets/colors/
     - lib/assets/fonts/
     - lib/assets/images/
+    - lib/assets/icons/
 
   fonts:
     - family: Gilroy

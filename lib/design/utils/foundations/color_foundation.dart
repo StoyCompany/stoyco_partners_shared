@@ -133,7 +133,10 @@ class _Border {
   final Color textFieldError = StoycoColorsToken.tertiary1;
   final Color customerCard = StoycoColorsToken.grey4;
   final Color greenBorder = StoycoColorsToken.greenClear;
+
   final Color saError = StoycoColorsToken.saError;
+  final Color saDark = StoycoColorsToken.saDark;
+  final Color saLight = StoycoColorsToken.saLight;
 }
 
 class _Shadow {

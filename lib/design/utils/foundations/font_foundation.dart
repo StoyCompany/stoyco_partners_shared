@@ -30,6 +30,20 @@ class _Title {
   );
 
   // Size 25 sa light
+  final TextStyle bold25saDark = TextTokens.gilroy.bold_25.copyWith(
+    color: ColorFoundation.text.saDark,
+  );
+  final TextStyle semiBold25saDark = TextTokens.gilroy.semibold_25.copyWith(
+    color: ColorFoundation.text.saDark,
+  );
+  final TextStyle medium25saDark = TextTokens.gilroy.medium_25.copyWith(
+    color: ColorFoundation.text.saDark,
+  );
+  final TextStyle regular25saDark = TextTokens.gilroy.regular_25.copyWith(
+    color: ColorFoundation.text.saDark,
+  );
+
+  // Size 25 sa light
   final TextStyle bold25saLight = TextTokens.gilroy.bold_25.copyWith(
     color: ColorFoundation.text.saLight,
   );
@@ -1477,6 +1491,20 @@ class _Paragraph {
     color: ColorFoundation.text.negative,
   );
 
+  // Size 16 negative
+  final TextStyle bold16saDark = TextTokens.gilroy.bold_12.copyWith(
+    color: ColorFoundation.text.saDark,
+  );
+  final TextStyle semiBold16saDark = TextTokens.gilroy.semibold_16.copyWith(
+    color: ColorFoundation.text.saDark,
+  );
+  final TextStyle medium16saDark = TextTokens.gilroy.medium_16.copyWith(
+    color: ColorFoundation.text.saDark,
+  );
+  final TextStyle regular16saDark = TextTokens.gilroy.regular_16.copyWith(
+    color: ColorFoundation.text.saDark,
+  );
+
   // Size 18 white
   final TextStyle bold18White = TextTokens.gilroy.bold_18.copyWith(
     color: ColorFoundation.text.white,
@@ -2044,6 +2072,74 @@ class _Label {
   );
   final TextStyle regular14Grey5 = TextTokens.gilroy.regular_14.copyWith(
     color: ColorFoundation.text.grey5,
+  );
+
+  // Size 14 saDark
+  final TextStyle extraBold14SaDark = TextTokens.gilroy.extrabold_14.copyWith(
+    color: ColorFoundation.text.saDark,
+  );
+  final TextStyle bold14SaDark = TextTokens.gilroy.bold_14.copyWith(
+    color: ColorFoundation.text.saDark,
+  );
+  final TextStyle semiBold14SaDark = TextTokens.gilroy.semibold_14.copyWith(
+    color: ColorFoundation.text.saDark,
+  );
+  final TextStyle medium14SaDark = TextTokens.gilroy.medium_14.copyWith(
+    color: ColorFoundation.text.saDark,
+  );
+  final TextStyle regular14SaDark = TextTokens.gilroy.regular_14.copyWith(
+    color: ColorFoundation.text.saDark,
+  );
+
+  // Size 14 saLight
+  final TextStyle extraBold14SaLight = TextTokens.gilroy.extrabold_14.copyWith(
+    color: ColorFoundation.text.saLight,
+  );
+  final TextStyle bold14SaLight = TextTokens.gilroy.bold_14.copyWith(
+    color: ColorFoundation.text.saLight,
+  );
+  final TextStyle semiBold14SaLight = TextTokens.gilroy.semibold_14.copyWith(
+    color: ColorFoundation.text.saLight,
+  );
+  final TextStyle medium14SaLight = TextTokens.gilroy.medium_14.copyWith(
+    color: ColorFoundation.text.saLight,
+  );
+  final TextStyle regular14SaLight = TextTokens.gilroy.regular_14.copyWith(
+    color: ColorFoundation.text.saLight,
+  );
+
+  // Size 15 saError
+  final TextStyle extraBold15saError = TextTokens.gilroy.extrabold_15.copyWith(
+    color: ColorFoundation.text.saError,
+  );
+  final TextStyle bold15saError = TextTokens.gilroy.bold_15.copyWith(
+    color: ColorFoundation.text.saError,
+  );
+  final TextStyle semiBold15saError = TextTokens.gilroy.semibold_15.copyWith(
+    color: ColorFoundation.text.saError,
+  );
+  final TextStyle medium15saError = TextTokens.gilroy.medium_15.copyWith(
+    color: ColorFoundation.text.saError,
+  );
+  final TextStyle regular15saError = TextTokens.gilroy.regular_15.copyWith(
+    color: ColorFoundation.text.saError,
+  );
+
+  // 15 size Sa Dark
+  final TextStyle extraBold15saDark = TextTokens.gilroy.extrabold_15.copyWith(
+    color: ColorFoundation.text.saDark,
+  );
+  final TextStyle bold15saDark = TextTokens.gilroy.bold_15.copyWith(
+    color: ColorFoundation.text.saDark,
+  );
+  final TextStyle semiBold15saDark = TextTokens.gilroy.semibold_15.copyWith(
+    color: ColorFoundation.text.saDark,
+  );
+  final TextStyle medium15saDark = TextTokens.gilroy.medium_15.copyWith(
+    color: ColorFoundation.text.saDark,
+  );
+  final TextStyle regular15saDark = TextTokens.gilroy.regular_15.copyWith(
+    color: ColorFoundation.text.saDark,
   );
 }
 
