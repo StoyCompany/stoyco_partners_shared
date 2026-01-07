@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:stoyco_partners_shared/design/atomic/atoms/buttons/custom_button.dart';
 import 'package:stoyco_partners_shared/design/layout.dart';
 import 'package:stoyco_partners_shared/design/utils/foundations/color_foundation.dart';
 import 'package:stoyco_partners_shared/design/utils/foundations/font_foundation.dart';
@@ -10,13 +9,17 @@ class CustomModal extends StatelessWidget {
     super.key,
     required this.title,
     required this.description,
-    required this.cancelAction,
-    required this.confirmAction,
+    this.cancelActionLabel,
+    this.cancelAction,
+    this.confirmActionLabel,
+    this.confirmAction,
   });
 
   final String title;
   final String description;
+  final String? cancelActionLabel;
   final VoidCallback? cancelAction;
+  final String? confirmActionLabel;
   final VoidCallback? confirmAction;
 
   @override
@@ -70,18 +73,20 @@ class CustomModal extends StatelessWidget {
             ),
             child: Row(
               children: [
-                Expanded(
-                  child: _ModalButton(
-                    onTap: cancelAction,
-                    label: 'CANCELAR',
-                    textStyle: FontFoundation.label.semiBold15saError,
+                if (cancelAction != null)
+                  Expanded(
+                    child: _ModalButton(
+                      onTap: cancelAction,
+                      label: cancelActionLabel ?? 'CANCELAR',
+                      textStyle: FontFoundation.label.semiBold15saError,
+                    ),
                   ),
-                ),
-                Container(width: 1, color: ColorFoundation.border.saDark),
+                if (cancelAction != null)
+                  Container(width: 1, color: ColorFoundation.border.saDark),
                 Expanded(
                   child: _ModalButton(
                     onTap: confirmAction,
-                    label: 'VOLVER A ENVIAR',
+                    label: confirmActionLabel ?? 'VOLVER A ENVIAR',
                     textStyle: FontFoundation.label.semiBold15saDark,
                   ),
                 ),

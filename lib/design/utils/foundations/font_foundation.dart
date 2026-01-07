@@ -1314,6 +1314,34 @@ class _Paragraph {
     color: ColorFoundation.text.negative,
   );
 
+  // Size 15 Sa Light
+  final TextStyle bold15SaLight = TextTokens.gilroy.bold_15.copyWith(
+    color: ColorFoundation.text.saLight,
+  );
+  final TextStyle semiBold15SaLight = TextTokens.gilroy.semibold_15.copyWith(
+    color: ColorFoundation.text.saLight,
+  );
+  final TextStyle medium15SaLight = TextTokens.gilroy.medium_15.copyWith(
+    color: ColorFoundation.text.saLight,
+  );
+  final TextStyle regular15SaLight = TextTokens.gilroy.regular_15.copyWith(
+    color: ColorFoundation.text.saLight,
+  );
+
+  // Size 15 Sa Dark
+  final TextStyle bold15SaDark = TextTokens.gilroy.bold_15.copyWith(
+    color: ColorFoundation.text.saDark,
+  );
+  final TextStyle semiBold15SaDark = TextTokens.gilroy.semibold_15.copyWith(
+    color: ColorFoundation.text.saDark,
+  );
+  final TextStyle medium15SaDark = TextTokens.gilroy.medium_15.copyWith(
+    color: ColorFoundation.text.saDark,
+  );
+  final TextStyle regular15SaDark = TextTokens.gilroy.regular_15.copyWith(
+    color: ColorFoundation.text.saDark,
+  );
+
   // Size 16 white
   final TextStyle bold16White = TextTokens.gilroy.bold_16.copyWith(
     color: ColorFoundation.text.white,

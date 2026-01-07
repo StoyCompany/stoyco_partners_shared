@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:stoyco_partners_shared/design/utils/foundations/color_foundation.dart';
 
-typedef FormFieldValidator = String? Function(String? value);
-
 class CustomFormField extends StatefulWidget {
   const CustomFormField({
     super.key,
@@ -29,6 +27,8 @@ class CustomFormField extends StatefulWidget {
     this.placeholderColor,
     this.iconColor,
     this.autovalidateMode,
+    this.prefixText,
+    this.prefixStyle,
   }) : assert(
          controller == null || initialValue == null,
          'Provide either a controller or an initialValue, not both.',
@@ -40,7 +40,7 @@ class CustomFormField extends StatefulWidget {
 
   final bool isPassword;
 
-  final List<FormFieldValidator> validators;
+  final List<FormFieldValidator<String>> validators;
 
   final ValueChanged<String>? onChanged;
   final ValueChanged<String>? onFieldSubmitted;
@@ -65,6 +65,9 @@ class CustomFormField extends StatefulWidget {
 
   final AutovalidateMode? autovalidateMode;
 
+  final String? prefixText;
+  final TextStyle? prefixStyle;
+
   @override
   State<CustomFormField> createState() => _CustomFormFieldState();
 }
@@ -72,11 +75,20 @@ class CustomFormField extends StatefulWidget {
 class _CustomFormFieldState extends State<CustomFormField> {
   late bool _obscure;
   final ValueNotifier<bool> _hasError = ValueNotifier<bool>(false);
+  TextEditingController? _internalController;
 
   @override
   void initState() {
     super.initState();
     _obscure = widget.isPassword;
+
+    if (widget.controller == null && widget.initialValue != null) {
+      // Reactive mode - no internal controller needed
+      _internalController = null;
+    } else if (widget.controller != null) {
+      // Controller mode - Only create internal controller if using controller mode
+      _internalController = widget.controller;
+    }
   }
 
   @override
@@ -131,9 +143,12 @@ class _CustomFormFieldState extends State<CustomFormField> {
       builder: (context, hasError, child) {
         final Color currentTextColor = hasError ? errorColor : baseTextColor;
 
-        return TextFormField(
-          controller: widget.controller,
-          initialValue: widget.controller == null ? widget.initialValue : null,
+        final textField = TextFormField(
+          // Use controller only if provided, otherwise use initialValue
+          controller: _internalController,
+          initialValue: _internalController == null
+              ? widget.initialValue
+              : null,
           onChanged: widget.onChanged,
           onFieldSubmitted: widget.onFieldSubmitted,
           keyboardType:
@@ -154,6 +169,9 @@ class _CustomFormFieldState extends State<CustomFormField> {
           autovalidateMode:
               widget.autovalidateMode ?? AutovalidateMode.onUserInteraction,
           decoration: InputDecoration(
+            contentPadding: widget.prefixText != null
+                ? EdgeInsets.only(left: 4)
+                : null,
             hintText: widget.placeholder,
             hintStyle: TextStyle(
               color: basePlaceholderColor,
@@ -184,6 +202,40 @@ class _CustomFormFieldState extends State<CustomFormField> {
                 : null,
           ),
         );
+
+        if (widget.prefixText != null) {
+          return IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 14),
+                  child: Container(
+                    padding: EdgeInsets.only(bottom: 12),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(color: baseUnderline, width: 2),
+                      ),
+                    ),
+                    child: Text(
+                      widget.prefixText!,
+                      style:
+                          widget.prefixStyle ??
+                          TextStyle(
+                            color: currentTextColor,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                    ),
+                  ),
+                ),
+                Expanded(child: textField),
+              ],
+            ),
+          );
+        }
+
+        return textField;
       },
     );
   }

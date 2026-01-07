@@ -34,4 +34,18 @@ class AppValidators {
       return null;
     };
   }
+
+  static String? Function(String?) phone([String? message]) {
+    return (value) {
+      if (value == null || value.isEmpty) return null;
+
+      final digitsOnly = value.replaceAll(RegExp(r'\D'), '');
+
+      if (digitsOnly.length < 10) {
+        return message ?? '*Favor ingresar un número de teléfono válido';
+      }
+
+      return null;
+    };
+  }
 }
