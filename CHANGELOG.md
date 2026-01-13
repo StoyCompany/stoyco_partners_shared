@@ -1,3 +1,8 @@
+## 0.0.3
+
+* Features
+- Added CustomSearchFormfield
+
 ## 0.0.2
 
 * Features
