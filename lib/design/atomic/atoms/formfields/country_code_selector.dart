@@ -142,13 +142,28 @@ class _CountryCodeSelectorState extends State<CountryCodeSelector> {
               if (hasError)
                 Padding(
                   padding: const EdgeInsets.only(top: 4, left: 12),
-                  child: Text(
-                    control.errors.entries.first.key,
-                    style: TextStyle(
-                      color: ColorFoundation.text.saError,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                    ),
+                  child: Builder(
+                    builder: (context) {
+                      final errorKey = control.errors.keys.first;
+                      final errorValue = control.errors[errorKey];
+
+                      String message = errorKey;
+                      if (widget.validationMessages != null &&
+                          widget.validationMessages!.containsKey(errorKey)) {
+                        message = widget.validationMessages![errorKey]!(
+                          errorValue,
+                        );
+                      }
+
+                      return Text(
+                        message,
+                        style: TextStyle(
+                          color: ColorFoundation.text.saError,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      );
+                    },
                   ),
                 ),
               // Dropdown List
@@ -428,16 +443,17 @@ class _PhoneNumberInputState extends State<_PhoneNumberInput> {
               ),
               enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(
-                  color: widget.underlineColor ?? ColorFoundation.text.saDark,
+                  color: hasError
+                      ? ColorFoundation.text.saError
+                      : (widget.underlineColor ?? ColorFoundation.text.saDark),
                   width: 2,
                 ),
               ),
               focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(
-                  color:
-                      widget.focusedUnderlineColor ??
-                      widget.underlineColor ??
-                      ColorFoundation.text.saDark,
+                  color: hasError
+                      ? ColorFoundation.text.saError
+                      : (widget.underlineColor ?? ColorFoundation.text.saDark),
                   width: 2,
                 ),
               ),
