@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stoyco_partners_shared/design/utils/foundations/color_foundation.dart';
 import 'package:stoyco_partners_shared/design/utils/tokens/button_tokens.dart';
 import 'custom_button.dart';
 
@@ -15,6 +16,7 @@ class StoycoButton extends StatelessWidget {
     this.fullWidth = false,
     this.loading = false,
     this.loadingLabel = 'Procesando',
+    this.enabled = true,
     this.elevation,
     this.autofocus = false,
     this.focusNode,
@@ -52,6 +54,7 @@ class StoycoButton extends StatelessWidget {
   final bool fullWidth;
   final bool loading;
   final String loadingLabel;
+  final bool enabled;
   final double? elevation;
   final bool autofocus;
   final FocusNode? focusNode;
@@ -81,6 +84,7 @@ class StoycoButton extends StatelessWidget {
     bool fullWidth = false,
     bool loading = false,
     String loadingLabel = 'Procesando',
+    bool enabled = true,
     double? elevation,
     int? maxLines,
     MouseCursor? mouseCursor,
@@ -111,6 +115,7 @@ class StoycoButton extends StatelessWidget {
          fullWidth: fullWidth,
          loading: loading,
          loadingLabel: loadingLabel,
+         enabled: enabled,
          elevation: elevation,
          maxLines: maxLines,
          mouseCursor: mouseCursor,
@@ -142,6 +147,7 @@ class StoycoButton extends StatelessWidget {
     bool fullWidth = false,
     bool loading = false,
     String loadingLabel = 'Procesando',
+    bool enabled = true,
     double? elevation,
     int? maxLines,
     MouseCursor? mouseCursor,
@@ -172,6 +178,7 @@ class StoycoButton extends StatelessWidget {
          fullWidth: fullWidth,
          loading: loading,
          loadingLabel: loadingLabel,
+         enabled: enabled,
          elevation: elevation,
          maxLines: maxLines,
          mouseCursor: mouseCursor,
@@ -203,6 +210,7 @@ class StoycoButton extends StatelessWidget {
     bool fullWidth = false,
     bool loading = false,
     String loadingLabel = 'Procesando',
+    bool enabled = true,
     double? elevation,
     int? maxLines,
     MouseCursor? mouseCursor,
@@ -233,6 +241,7 @@ class StoycoButton extends StatelessWidget {
          fullWidth: fullWidth,
          loading: loading,
          loadingLabel: loadingLabel,
+         enabled: enabled,
          elevation: elevation,
          maxLines: maxLines,
          mouseCursor: mouseCursor,
@@ -259,6 +268,9 @@ class StoycoButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final tokens = ButtonTokens.resolve(variant, size);
 
+    Color customDisabledBackgroundColor = ColorFoundation.background.saDisabled;
+    Color customDisabledForegroundColor = ColorFoundation.text.saTextDisabled;
+
     final effectiveBackgroundColor = loading
         ? (loadingBackgroundColor ??
               tokens.loadingBackgroundColor ??
@@ -272,23 +284,23 @@ class StoycoButton extends StatelessWidget {
         : (foregroundColor ?? tokens.foregroundColor);
 
     return CustomButton(
-      onPressed: loading ? () {} : onPressed,
+      onPressed: (loading || !enabled) ? null : onPressed,
       label: loading ? loadingLabel : label,
       leading: leading,
       trailing: trailing,
       backgroundColor: effectiveBackgroundColor,
       foregroundColor: effectiveForegroundColor,
       disabledBackgroundColor:
-          disabledBackgroundColor ?? tokens.disabledBackgroundColor,
+          disabledBackgroundColor ?? customDisabledBackgroundColor,
       disabledForegroundColor:
-          disabledForegroundColor ?? tokens.disabledForegroundColor,
+          disabledForegroundColor ?? customDisabledForegroundColor,
       borderSide: borderSide ?? tokens.borderSide,
       borderRadius: borderRadius ?? tokens.borderRadius,
       padding: padding ?? tokens.padding,
       width: width,
       height: height ?? tokens.height,
       fullWidth: fullWidth,
-      loading: loading,  // Changed from false to loading
+      loading: loading,
       elevation: elevation,
       autofocus: autofocus,
       focusNode: focusNode,

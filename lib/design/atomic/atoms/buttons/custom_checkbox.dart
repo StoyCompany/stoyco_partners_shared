@@ -127,8 +127,6 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
                   ],
                 ),
               ),
-
-              // Validation Error
             ],
           ),
         );

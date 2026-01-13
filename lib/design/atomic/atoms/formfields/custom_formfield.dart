@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:stoyco_partners_shared/design/utils/foundations/color_foundation.dart';
 
@@ -6,131 +7,321 @@ import 'package:stoyco_partners_shared/design/utils/foundations/color_foundation
 ///
 /// This widget extends [ReactiveTextField] and provides consistent styling
 /// across the application. It's designed to work exclusively with reactive_forms.
-class CustomFormField extends ReactiveTextField<String> {
-  CustomFormField({
+class CustomFormField extends StatelessWidget {
+  const CustomFormField({
     super.key,
-    required String super.formControlName,
-    String? placeholder,
-    bool isPassword = false,
-    super.validationMessages,
-    TextInputType? keyboardType,
-    super.inputFormatters,
-    super.textInputAction,
-    super.autofocus,
-    super.focusNode,
-    super.maxLength,
-    int maxLines = 1,
-    Color? underlineColor,
-    Color? focusedUnderlineColor,
-    Color? errorUnderlineColor,
-    Color? textColor,
-    Color? placeholderColor,
-    Color? iconColor,
-    String? prefixText,
-    TextStyle? prefixStyle,
-    super.onChanged,
-    super.onSubmitted,
-    ReactiveFormFieldCallback? super.onTap,
-    super.readOnly,
-    InputDecoration? decoration,
-  }) : super(
-         keyboardType:
-             keyboardType ??
-             (isPassword ? TextInputType.visiblePassword : TextInputType.text),
-         maxLines: isPassword ? 1 : maxLines,
-         obscureText: isPassword,
-         style: TextStyle(
-           color: textColor ?? ColorFoundation.text.saDark,
-           fontSize: 14,
-           fontWeight: FontWeight.w500,
-         ),
-         decoration:
-             decoration ??
-             InputDecoration(
-               contentPadding: prefixText != null
-                   ? const EdgeInsets.only(left: 4)
-                   : null,
-               hintText: placeholder,
-               hintStyle: TextStyle(
-                 color: placeholderColor ?? ColorFoundation.text.saDark,
-                 fontSize: 14,
-                 fontWeight: FontWeight.w500,
-               ),
-               enabledBorder: UnderlineInputBorder(
-                 borderSide: BorderSide(
-                   color: underlineColor ?? ColorFoundation.text.saDark,
-                   width: 2,
-                 ),
-               ),
-               focusedBorder: UnderlineInputBorder(
-                 borderSide: BorderSide(
-                   color:
-                       focusedUnderlineColor ??
-                       underlineColor ??
-                       ColorFoundation.text.saDark,
-                   width: 2,
-                 ),
-               ),
-               errorBorder: UnderlineInputBorder(
-                 borderSide: BorderSide(
-                   color: errorUnderlineColor ?? ColorFoundation.text.saError,
-                   width: 2,
-                 ),
-               ),
-               focusedErrorBorder: UnderlineInputBorder(
-                 borderSide: BorderSide(
-                   color: errorUnderlineColor ?? ColorFoundation.text.saError,
-                   width: 2,
-                 ),
-               ),
-               errorStyle: TextStyle(
-                 color: ColorFoundation.text.saError,
-                 fontSize: 12,
-                 fontWeight: FontWeight.w400,
-               ),
-               errorMaxLines: 2,
-               prefixText: prefixText,
-               prefixStyle:
-                   prefixStyle ??
-                   TextStyle(
-                     color: textColor ?? ColorFoundation.text.saDark,
-                     fontSize: 14,
-                     fontWeight: FontWeight.w500,
-                   ),
-               suffixIcon: isPassword ? _PasswordVisibilityToggle() : null,
-             ),
-       );
-}
+    required this.formControlName,
+    this.placeholder,
+    this.isPassword = false,
+    this.validationMessages,
+    this.keyboardType,
+    this.inputFormatters,
+    this.textInputAction,
+    this.autofocus = false,
+    this.focusNode,
+    this.maxLength,
+    this.maxLines = 1,
+    this.underlineColor,
+    this.focusedUnderlineColor,
+    this.errorUnderlineColor,
+    this.textColor,
+    this.placeholderColor,
+    this.iconColor,
+    this.prefixText,
+    this.prefixStyle,
+    this.onTap,
+    this.readOnly = false,
+    this.decoration,
+  });
 
-/// Internal widget to handle password visibility toggle
-class _PasswordVisibilityToggle extends StatefulWidget {
-  const _PasswordVisibilityToggle();
-
-  @override
-  State<_PasswordVisibilityToggle> createState() =>
-      _PasswordVisibilityToggleState();
-}
-
-class _PasswordVisibilityToggleState extends State<_PasswordVisibilityToggle> {
-  bool _obscure = true;
+  final String formControlName;
+  final String? placeholder;
+  final bool isPassword;
+  final Map<String, ValidationMessageFunction>? validationMessages;
+  final TextInputType? keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
+  final TextInputAction? textInputAction;
+  final bool autofocus;
+  final FocusNode? focusNode;
+  final int? maxLength;
+  final int maxLines;
+  final Color? underlineColor;
+  final Color? focusedUnderlineColor;
+  final Color? errorUnderlineColor;
+  final Color? textColor;
+  final Color? placeholderColor;
+  final Color? iconColor;
+  final String? prefixText;
+  final TextStyle? prefixStyle;
+  final ReactiveFormFieldCallback? onTap;
+  final bool readOnly;
+  final InputDecoration? decoration;
 
   @override
   Widget build(BuildContext context) {
-    // Get the parent ReactiveTextField to toggle obscureText
-    final reactiveField = context
-        .findAncestorStateOfType<ReactiveFormFieldState<String, String>>();
+    return ReactiveFormField<String, String>(
+      formControlName: formControlName,
+      builder: (field) {
+        final control = field.control;
+        final hasError = control.hasErrors && control.touched;
 
-    return IconButton(
-      visualDensity: VisualDensity.compact,
-      icon: Icon(
-        _obscure ? Icons.visibility_off : Icons.visibility,
-        color: ColorFoundation.text.saDark,
+        return isPassword
+            ? _PasswordField(
+                formControlName: formControlName,
+                validationMessages: validationMessages,
+                keyboardType: keyboardType,
+                inputFormatters: inputFormatters,
+                textInputAction: textInputAction,
+                autofocus: autofocus,
+                focusNode: focusNode,
+                maxLength: maxLength,
+                onTap: onTap,
+                readOnly: readOnly,
+                hasError: hasError,
+                textColor: textColor,
+                placeholder: placeholder,
+                placeholderColor: placeholderColor,
+                underlineColor: underlineColor,
+                focusedUnderlineColor: focusedUnderlineColor,
+                errorUnderlineColor: errorUnderlineColor,
+                iconColor: iconColor,
+                prefixText: prefixText,
+                prefixStyle: prefixStyle,
+                decoration: decoration,
+              )
+            : ReactiveTextField<String>(
+                formControlName: formControlName,
+                validationMessages: validationMessages,
+                keyboardType: keyboardType ?? TextInputType.text,
+                maxLines: maxLines,
+                obscureText: false,
+                inputFormatters: inputFormatters,
+                textInputAction: textInputAction,
+                autofocus: autofocus,
+                focusNode: focusNode,
+                maxLength: maxLength,
+                onTap: onTap,
+                readOnly: readOnly,
+                style: TextStyle(
+                  color: hasError
+                      ? ColorFoundation.text.saError
+                      : (textColor ?? ColorFoundation.text.saDark),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+                decoration:
+                    decoration ??
+                    InputDecoration(
+                      contentPadding: prefixText != null
+                          ? const EdgeInsets.only(left: 4, top: 10)
+                          : null,
+                      hintText: placeholder,
+                      hintStyle: TextStyle(
+                        color: placeholderColor ?? ColorFoundation.text.saDark,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: underlineColor ?? ColorFoundation.text.saDark,
+                          width: 2,
+                        ),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color:
+                              focusedUnderlineColor ??
+                              underlineColor ??
+                              ColorFoundation.text.saDark,
+                          width: 2,
+                        ),
+                      ),
+                      errorBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color:
+                              errorUnderlineColor ??
+                              ColorFoundation.text.saError,
+                          width: 2,
+                        ),
+                      ),
+                      focusedErrorBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color:
+                              errorUnderlineColor ??
+                              ColorFoundation.text.saError,
+                          width: 2,
+                        ),
+                      ),
+                      errorStyle: TextStyle(
+                        color: ColorFoundation.text.saError,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      errorMaxLines: 2,
+                      prefixText: prefixText,
+                      prefixStyle:
+                          prefixStyle ??
+                          TextStyle(
+                            color: textColor ?? ColorFoundation.text.saDark,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                    ),
+              );
+      },
+    );
+  }
+}
+
+/// Internal widget to handle password field with visibility toggle
+class _PasswordField extends StatefulWidget {
+  const _PasswordField({
+    required this.formControlName,
+    required this.hasError,
+    this.validationMessages,
+    this.keyboardType,
+    this.inputFormatters,
+    this.textInputAction,
+    this.autofocus = false,
+    this.focusNode,
+    this.maxLength,
+    this.onTap,
+    this.readOnly = false,
+    this.textColor,
+    this.placeholder,
+    this.placeholderColor,
+    this.underlineColor,
+    this.focusedUnderlineColor,
+    this.errorUnderlineColor,
+    this.iconColor,
+    this.prefixText,
+    this.prefixStyle,
+    this.decoration,
+  });
+
+  final String formControlName;
+  final bool hasError;
+  final Map<String, ValidationMessageFunction>? validationMessages;
+  final TextInputType? keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
+  final TextInputAction? textInputAction;
+  final bool autofocus;
+  final FocusNode? focusNode;
+  final int? maxLength;
+  final ReactiveFormFieldCallback? onTap;
+  final bool readOnly;
+  final Color? textColor;
+  final String? placeholder;
+  final Color? placeholderColor;
+  final Color? underlineColor;
+  final Color? focusedUnderlineColor;
+  final Color? errorUnderlineColor;
+  final Color? iconColor;
+  final String? prefixText;
+  final TextStyle? prefixStyle;
+  final InputDecoration? decoration;
+
+  @override
+  State<_PasswordField> createState() => _PasswordFieldState();
+}
+
+class _PasswordFieldState extends State<_PasswordField> {
+  bool _obscureText = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return ReactiveTextField<String>(
+      formControlName: widget.formControlName,
+      validationMessages: widget.validationMessages,
+      keyboardType: widget.keyboardType ?? TextInputType.visiblePassword,
+      maxLines: 1,
+      obscureText: _obscureText,
+      inputFormatters: widget.inputFormatters,
+      textInputAction: widget.textInputAction,
+      autofocus: widget.autofocus,
+      focusNode: widget.focusNode,
+      maxLength: widget.maxLength,
+      onTap: widget.onTap,
+      readOnly: widget.readOnly,
+      style: TextStyle(
+        color: widget.hasError
+            ? ColorFoundation.text.saError
+            : (widget.textColor ?? ColorFoundation.text.saDark),
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
       ),
-      onPressed: reactiveField?.control.disabled ?? false
-          ? null
-          : () {
-              setState(() => _obscure = !_obscure);
-            },
+      decoration:
+          widget.decoration ??
+          InputDecoration(
+            contentPadding: widget.prefixText != null
+                ? const EdgeInsets.only(left: 4, top: 10)
+                : const EdgeInsets.symmetric(vertical: 12),
+            hintText: widget.placeholder,
+            hintStyle: TextStyle(
+              color: widget.placeholderColor ?? ColorFoundation.text.saDark,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: widget.underlineColor ?? ColorFoundation.text.saDark,
+                width: 2,
+              ),
+            ),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color:
+                    widget.focusedUnderlineColor ??
+                    widget.underlineColor ??
+                    ColorFoundation.text.saDark,
+                width: 2,
+              ),
+            ),
+            errorBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color:
+                    widget.errorUnderlineColor ?? ColorFoundation.text.saError,
+                width: 2,
+              ),
+            ),
+            focusedErrorBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color:
+                    widget.errorUnderlineColor ?? ColorFoundation.text.saError,
+                width: 2,
+              ),
+            ),
+            errorStyle: TextStyle(
+              color: ColorFoundation.text.saError,
+              fontSize: 12,
+              fontWeight: FontWeight.w400,
+            ),
+            errorMaxLines: 2,
+            prefixText: widget.prefixText,
+            prefixStyle:
+                widget.prefixStyle ??
+                TextStyle(
+                  color: widget.textColor ?? ColorFoundation.text.saDark,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+            suffixIcon: IconButton(
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(),
+              icon: Icon(
+                _obscureText ? Icons.visibility : Icons.visibility_off,
+                size: 24,
+                color: widget.iconColor ?? ColorFoundation.text.saDark,
+              ),
+              onPressed: () {
+                setState(() => _obscureText = !_obscureText);
+              },
+            ),
+            suffixIconConstraints: const BoxConstraints(
+              minWidth: 40,
+              minHeight: 40,
+            ),
+          ),
     );
   }
 }
