@@ -15,6 +15,20 @@ class FontFoundation {
 class _Title {
   _Title._();
 
+  // Size 30 sa dark
+  final TextStyle bold30saDark = TextTokens.gilroy.bold_30.copyWith(
+    color: ColorFoundation.text.saDark,
+  );
+  final TextStyle semiBold30saDark = TextTokens.gilroy.semibold_30.copyWith(
+    color: ColorFoundation.text.saDark,
+  );
+  final TextStyle medium30saDark = TextTokens.gilroy.medium_30.copyWith(
+    color: ColorFoundation.text.saDark,
+  );
+  final TextStyle regular30saDark = TextTokens.gilroy.regular_30.copyWith(
+    color: ColorFoundation.text.saDark,
+  );
+
   // Sa Light General, for size add copyWith
   final TextStyle boldSaLight = TextTokens.gilroy.bold.copyWith(
     color: ColorFoundation.text.saLight,
@@ -1312,6 +1326,35 @@ class _Paragraph {
   );
   final TextStyle regular14Negative = TextTokens.gilroy.regular_14.copyWith(
     color: ColorFoundation.text.negative,
+  );
+
+  // Size 14 Sa Dark
+  final TextStyle bold14SaDark = TextTokens.gilroy.bold_14.copyWith(
+    color: ColorFoundation.text.saDark,
+  );
+  final TextStyle semiBold14SaDark = TextTokens.gilroy.semibold_14.copyWith(
+    color: ColorFoundation.text.saDark,
+  );
+  final TextStyle medium14SaDark = TextTokens.gilroy.medium_14.copyWith(
+    color: ColorFoundation.text.saDark,
+  );
+  final TextStyle regular14SaDark = TextTokens.gilroy.regular_14.copyWith(
+    color: ColorFoundation.text.saDark,
+  );
+
+  // Size 14 Sa highlights
+  final TextStyle extraBold14SaHighlights = TextTokens.gilroy.extrabold_14
+      .copyWith(color: ColorFoundation.text.saHighlights);
+  final TextStyle bold14SaHighlights = TextTokens.gilroy.bold_14.copyWith(
+    color: ColorFoundation.text.saHighlights,
+  );
+  final TextStyle semiBold14SaHighlights = TextTokens.gilroy.semibold_14
+      .copyWith(color: ColorFoundation.text.saHighlights);
+  final TextStyle medium14SaHighlights = TextTokens.gilroy.medium_14.copyWith(
+    color: ColorFoundation.text.saHighlights,
+  );
+  final TextStyle regular14SaHighlights = TextTokens.gilroy.regular_14.copyWith(
+    color: ColorFoundation.text.saHighlights,
   );
 
   // Size 15 Sa Light

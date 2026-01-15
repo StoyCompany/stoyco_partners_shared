@@ -107,7 +107,7 @@ class CustomFormField extends StatelessWidget {
                       ? ColorFoundation.text.saError
                       : (textColor ?? ColorFoundation.text.saDark),
                   fontSize: 14,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w600,
                 ),
                 decoration:
                     decoration ??
@@ -164,7 +164,7 @@ class CustomFormField extends StatelessWidget {
                           TextStyle(
                             color: textColor ?? ColorFoundation.text.saDark,
                             fontSize: 14,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w400,
                           ),
                     ),
               );

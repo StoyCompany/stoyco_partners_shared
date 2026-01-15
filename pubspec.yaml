@@ -1,6 +1,6 @@
 name: stoyco_partners_shared
 description: "A new Flutter package project."
-version: 0.0.3
+version: 0.0.4
 homepage:
 
 environment:
@@ -24,6 +24,7 @@ dependencies:
   json_annotation: ^4.9.0
   intl_phone_field: ^3.2.0
   reactive_forms: ^18.2.2
+  pinput: ^6.0.1
 
 dev_dependencies:
   flutter_test:

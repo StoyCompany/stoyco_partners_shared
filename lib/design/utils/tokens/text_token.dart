@@ -324,4 +324,30 @@ class GilroyText {
     fontWeight: FontWeight.w800,
     fontSize: 25,
   );
+
+  // Font Size : 30
+  final TextStyle light_30 = _gilroy.copyWith(
+    fontWeight: FontWeight.w300,
+    fontSize: 30,
+  );
+  final TextStyle regular_30 = _gilroy.copyWith(
+    fontWeight: FontWeight.w400,
+    fontSize: 30,
+  );
+  final TextStyle medium_30 = _gilroy.copyWith(
+    fontWeight: FontWeight.w500,
+    fontSize: 30,
+  );
+  final TextStyle semibold_30 = _gilroy.copyWith(
+    fontWeight: FontWeight.w600,
+    fontSize: 30,
+  );
+  final TextStyle bold_30 = _gilroy.copyWith(
+    fontWeight: FontWeight.w700,
+    fontSize: 30,
+  );
+  final TextStyle extrabold_30 = _gilroy.copyWith(
+    fontWeight: FontWeight.w800,
+    fontSize: 30,
+  );
 }

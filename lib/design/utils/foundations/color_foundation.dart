@@ -137,6 +137,7 @@ class _Border {
   final Color saError = StoycoColorsToken.saError;
   final Color saDark = StoycoColorsToken.saDark;
   final Color saLight = StoycoColorsToken.saLight;
+  final Color saHighlights = StoycoColorsToken.saHighlights;
 }
 
 class _Shadow {
@@ -144,6 +145,7 @@ class _Shadow {
 
   final Color cardHelp = StoycoColorsToken.shadow1;
   final Color buttom = StoycoColorsToken.transparent;
+  final Color saHighlights = StoycoColorsToken.saHighlights;
 }
 
 class _Gradient {

@@ -1,3 +1,9 @@
+## 0.0.4
+
+* Features
+- Added phone validator input using 'pinput' package
+- Refactor various fields to use 'reactive_forms' package
+
 ## 0.0.3
 
 * Features
