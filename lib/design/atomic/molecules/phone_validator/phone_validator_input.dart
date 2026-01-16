@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 import 'package:stoyco_partners_shared/design/responsive/gutter.dart';
 import 'package:stoyco_partners_shared/design/utils/foundations/color_foundation.dart';
-import 'package:stoyco_partners_shared/design/utils/foundations/font_foundation.dart';
 
 // Phone number validator input using pinput package
 class PhoneValidatorInput extends StatefulWidget {
