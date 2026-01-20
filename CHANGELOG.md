@@ -1,3 +1,8 @@
+## 0.0.5
+
+* Features
+- Added colors and images
+
 ## 0.0.4
 
 * Features
