@@ -1732,6 +1732,19 @@ class _Paragraph {
 class _Label {
   _Label._();
 
+  // Sa Highlights Akkurat General
+  final TextStyle akkuratExtraBoldSaHighlights = TextTokens.akkurat.extrabold
+      .copyWith(color: ColorFoundation.text.saHighlights);
+  final TextStyle akkuratBoldSaHighlights = TextTokens.akkurat.bold.copyWith(
+    color: ColorFoundation.text.saHighlights,
+  );
+  final TextStyle akkuratSemiBoldSaHighlights = TextTokens.akkurat.semibold
+      .copyWith(color: ColorFoundation.text.saHighlights);
+  final TextStyle akkuratMediumSaHighlights = TextTokens.akkurat.medium
+      .copyWith(color: ColorFoundation.text.saHighlights);
+  final TextStyle akkuratRegularSaHighlights = TextTokens.akkurat.regular
+      .copyWith(color: ColorFoundation.text.saHighlights);
+
   // Sa Dark General
   final TextStyle extraBoldSaDark = TextTokens.gilroy.extrabold.copyWith(
     color: ColorFoundation.text.saDark,
@@ -2009,6 +2022,20 @@ class _Label {
     color: ColorFoundation.text.grey5,
   );
 
+  // Size 12 sa error
+  final TextStyle bold12SaError = TextTokens.gilroy.bold_12.copyWith(
+    color: ColorFoundation.text.saError,
+  );
+  final TextStyle semiBold12SaError = TextTokens.gilroy.semibold_12.copyWith(
+    color: ColorFoundation.text.saError,
+  );
+  final TextStyle medium12SaError = TextTokens.gilroy.medium_12.copyWith(
+    color: ColorFoundation.text.saError,
+  );
+  final TextStyle regular12SaError = TextTokens.gilroy.regular_12.copyWith(
+    color: ColorFoundation.text.saError,
+  );
+
   // Size 14 white
   final TextStyle bold14White = TextTokens.gilroy.bold_14.copyWith(
     color: ColorFoundation.text.white,
@@ -2177,6 +2204,23 @@ class _Label {
   );
   final TextStyle regular14SaLight = TextTokens.gilroy.regular_14.copyWith(
     color: ColorFoundation.text.saLight,
+  );
+
+  // Size 14 saError
+  final TextStyle extraBold14saError = TextTokens.gilroy.extrabold_14.copyWith(
+    color: ColorFoundation.text.saError,
+  );
+  final TextStyle bold14saError = TextTokens.gilroy.bold_14.copyWith(
+    color: ColorFoundation.text.saError,
+  );
+  final TextStyle semiBold14saError = TextTokens.gilroy.semibold_14.copyWith(
+    color: ColorFoundation.text.saError,
+  );
+  final TextStyle medium14saError = TextTokens.gilroy.medium_14.copyWith(
+    color: ColorFoundation.text.saError,
+  );
+  final TextStyle regular14saError = TextTokens.gilroy.regular_14.copyWith(
+    color: ColorFoundation.text.saError,
   );
 
   // Size 15 saError

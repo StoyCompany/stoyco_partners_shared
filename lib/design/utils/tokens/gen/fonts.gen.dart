@@ -11,6 +11,9 @@
 class StoycoFontFamilyToken {
   StoycoFontFamilyToken._();
 
+  /// Font family: Akkurat
+  static const String akkurat = 'Akkurat';
+
   /// Font family: Gilroy
   static const String gilroy = 'Gilroy';
 }

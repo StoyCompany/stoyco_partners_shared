@@ -130,9 +130,9 @@ class _CustomDropdownFieldState extends State<CustomDropdownField> {
               ),
               if (hasError)
                 Padding(
-                  padding: const EdgeInsets.only(top: 4, left: 12),
+                  padding: const EdgeInsets.only(top: 4),
                   child: Text(
-                    control.errors.entries.first.key,
+                    field.errorText ?? '',
                     style: TextStyle(
                       color: ColorFoundation.text.saError,
                       fontSize: 12,

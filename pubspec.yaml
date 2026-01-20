@@ -70,6 +70,10 @@ flutter:
         - asset: lib/assets/fonts/gilroy/Gilroy-Black.ttf
           weight: 900
 
+    - family: Akkurat
+      fonts:
+        - asset: lib/assets/fonts/akkurat/AkkuratMono-Regular.ttf
+
 flutter_gen:
   output: lib/design/utils/tokens/gen
   integrations:
