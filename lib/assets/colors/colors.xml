@@ -83,5 +83,11 @@
     <!-- blur -->
     <color name="blur">#B2383838</color>
 
+    <!-- neutralsN3 -->
+    <color name="neutralsN3">#253341</color>
+
+    <!-- menuGrey -->
+    <color name="menuGrey">#D9D9D9</color>
+
 
 </resources>

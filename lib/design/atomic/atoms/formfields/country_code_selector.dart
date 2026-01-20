@@ -151,7 +151,7 @@ class _CountryCodeSelectorState extends State<CountryCodeSelector> {
                       if (widget.validationMessages != null &&
                           widget.validationMessages!.containsKey(errorKey)) {
                         message = widget.validationMessages![errorKey]!(
-                          errorValue,
+                          errorValue as Object,
                         );
                       }
 

@@ -125,6 +125,12 @@ class StoycoColorsToken {
   /// Color: #5DCEF6
   static const Color lineCard2 = Color(0xFF5DCEF6);
 
+  /// Color: #D9D9D9
+  static const Color menuGrey = Color(0xFFD9D9D9);
+
+  /// Color: #253341
+  static const Color neutralsN3 = Color(0xFF253341);
+
   /// Color: #14121D
   static const Color saDark = Color(0xFF14121D);
 
