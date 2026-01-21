@@ -20,6 +20,25 @@ class TextTokens {
   TextTokens._internal();
 
   static GilroyText gilroy = GilroyText._();
+  static AkkuratText akkurat = AkkuratText._();
+}
+
+class AkkuratText {
+  AkkuratText._();
+
+  static const TextStyle _akkurat = TextStyle(
+    fontFamily: StoycoFontFamilyToken.akkurat,
+    decoration: TextDecoration.none,
+  );
+
+  // General Size
+
+  final TextStyle light = _akkurat.copyWith(fontWeight: FontWeight.w300);
+  final TextStyle regular = _akkurat.copyWith(fontWeight: FontWeight.w400);
+  final TextStyle medium = _akkurat.copyWith(fontWeight: FontWeight.w500);
+  final TextStyle semibold = _akkurat.copyWith(fontWeight: FontWeight.w600);
+  final TextStyle bold = _akkurat.copyWith(fontWeight: FontWeight.w700);
+  final TextStyle extrabold = _akkurat.copyWith(fontWeight: FontWeight.w800);
 }
 
 class GilroyText {

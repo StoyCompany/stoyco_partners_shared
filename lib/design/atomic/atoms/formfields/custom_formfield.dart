@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:stoyco_partners_shared/design/utils/foundations/color_foundation.dart';
+import 'package:stoyco_partners_shared/design/utils/foundations/font_foundation.dart';
 
 /// A custom reactive text form field for Stoyco Partners.
 ///
@@ -102,12 +103,10 @@ class CustomFormField extends StatelessWidget {
                 maxLength: maxLength,
                 onTap: onTap,
                 readOnly: readOnly,
-                style: TextStyle(
+                style: FontFoundation.label.semiBold14SaDark.copyWith(
                   color: hasError
                       ? ColorFoundation.text.saError
                       : (textColor ?? ColorFoundation.text.saDark),
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
                 ),
                 decoration:
                     decoration ??
@@ -116,11 +115,11 @@ class CustomFormField extends StatelessWidget {
                           ? const EdgeInsets.only(left: 4, top: 10)
                           : null,
                       hintText: placeholder,
-                      hintStyle: TextStyle(
-                        color: placeholderColor ?? ColorFoundation.text.saDark,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      hintStyle: placeholderColor != null
+                          ? FontFoundation.label.medium14SaDark.copyWith(
+                              color: placeholderColor,
+                            )
+                          : FontFoundation.label.medium14SaDark,
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
                           color: underlineColor ?? ColorFoundation.text.saDark,
@@ -152,20 +151,11 @@ class CustomFormField extends StatelessWidget {
                           width: 2,
                         ),
                       ),
-                      errorStyle: TextStyle(
-                        color: ColorFoundation.text.saError,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                      ),
+                      errorStyle: FontFoundation.label.semiBold12SaError,
                       errorMaxLines: 2,
                       prefixText: prefixText,
                       prefixStyle:
-                          prefixStyle ??
-                          TextStyle(
-                            color: textColor ?? ColorFoundation.text.saDark,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                          ),
+                          prefixStyle ?? FontFoundation.label.medium14SaDark,
                     ),
               );
       },
@@ -243,12 +233,10 @@ class _PasswordFieldState extends State<_PasswordField> {
       maxLength: widget.maxLength,
       onTap: widget.onTap,
       readOnly: widget.readOnly,
-      style: TextStyle(
+      style: FontFoundation.label.semiBold14SaDark.copyWith(
         color: widget.hasError
             ? ColorFoundation.text.saError
             : (widget.textColor ?? ColorFoundation.text.saDark),
-        fontSize: 14,
-        fontWeight: FontWeight.w500,
       ),
       decoration:
           widget.decoration ??
@@ -257,11 +245,11 @@ class _PasswordFieldState extends State<_PasswordField> {
                 ? const EdgeInsets.only(left: 4, top: 10)
                 : const EdgeInsets.symmetric(vertical: 12),
             hintText: widget.placeholder,
-            hintStyle: TextStyle(
-              color: widget.placeholderColor ?? ColorFoundation.text.saDark,
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-            ),
+            hintStyle: widget.placeholderColor != null
+                ? FontFoundation.label.medium14SaDark.copyWith(
+                    color: widget.placeholderColor,
+                  )
+                : FontFoundation.label.medium14SaDark,
             enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(
                 color: widget.underlineColor ?? ColorFoundation.text.saDark,
@@ -291,20 +279,11 @@ class _PasswordFieldState extends State<_PasswordField> {
                 width: 2,
               ),
             ),
-            errorStyle: TextStyle(
-              color: ColorFoundation.text.saError,
-              fontSize: 12,
-              fontWeight: FontWeight.w400,
-            ),
+            errorStyle: FontFoundation.label.semiBold12SaError,
             errorMaxLines: 2,
             prefixText: widget.prefixText,
             prefixStyle:
-                widget.prefixStyle ??
-                TextStyle(
-                  color: widget.textColor ?? ColorFoundation.text.saDark,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
+                widget.prefixStyle ?? FontFoundation.label.medium14SaDark,
             suffixIcon: IconButton(
               padding: EdgeInsets.zero,
               constraints: const BoxConstraints(),

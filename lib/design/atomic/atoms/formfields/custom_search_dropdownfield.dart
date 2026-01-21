@@ -156,14 +156,10 @@ class _CustomSearchDropdownfieldState extends State<CustomSearchDropdownfield> {
               // Validation Error
               if (hasError)
                 Padding(
-                  padding: const EdgeInsets.only(top: 4, left: 12),
+                  padding: const EdgeInsets.only(top: 4),
                   child: Text(
-                    control.errors.entries.first.key,
-                    style: TextStyle(
-                      color: ColorFoundation.text.saError,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                    ),
+                    field.errorText ?? '',
+                    style: FontFoundation.label.semiBold12SaError,
                   ),
                 ),
               if (isOpened)
@@ -175,8 +171,10 @@ class _CustomSearchDropdownfieldState extends State<CustomSearchDropdownfield> {
                     children: [
                       // Search bar
                       Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 6,
+                        ),
                         child: TextField(
                           controller: _searchController,
                           style: FontFoundation.label.medium14SaDark,
@@ -213,7 +211,9 @@ class _CustomSearchDropdownfieldState extends State<CustomSearchDropdownfield> {
                       if (_filteredItems.isEmpty)
                         Padding(
                           padding: EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 10),
+                            horizontal: 8,
+                            vertical: 10,
+                          ),
                           child: Text(
                             widget.noResultsText,
                             style: FontFoundation.label.medium14SaLight,
@@ -234,7 +234,8 @@ class _CustomSearchDropdownfieldState extends State<CustomSearchDropdownfield> {
                                   padding: EdgeInsets.symmetric(horizontal: 8),
                                   child: Text(
                                     item,
-                                    style: FontFoundation.label.medium14SaDark,
+                                    style:
+                                        FontFoundation.label.semiBold14SaDark,
                                   ),
                                 ),
                               ),

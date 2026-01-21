@@ -428,19 +428,15 @@ class _PhoneNumberInputState extends State<_PhoneNumberInput> {
             focusNode: _focusNode,
             enabled: isEnabled,
             keyboardType: TextInputType.phone,
-            style: TextStyle(
-              color: widget.textColor ?? ColorFoundation.text.saDark,
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
+            style: FontFoundation.label.semiBold14SaDark.copyWith(
+              color: hasError
+                  ? ColorFoundation.text.saError
+                  : (widget.textColor ?? ColorFoundation.text.saDark),
             ),
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.only(left: 4),
               hintText: widget.placeholder,
-              hintStyle: TextStyle(
-                color: widget.textColor ?? ColorFoundation.text.saDark,
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
+              hintStyle: FontFoundation.label.medium14SaDark,
               enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(
                   color: hasError
