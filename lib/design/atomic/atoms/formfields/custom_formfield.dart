@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:stoyco_partners_shared/design/responsive/screen_size/stoyco_screen_size.dart';
 import 'package:stoyco_partners_shared/design/utils/foundations/color_foundation.dart';
 
 /// A custom reactive text form field for Stoyco Partners.
@@ -103,23 +104,25 @@ class CustomFormField extends StatelessWidget {
                 onTap: onTap,
                 readOnly: readOnly,
                 style: TextStyle(
+                  fontFamily: 'Gilroy',
+                  fontWeight: FontWeight.w600,
+                  fontSize: StoycoScreenSize.fontSize(context, 14),
                   color: hasError
                       ? ColorFoundation.text.saError
                       : (textColor ?? ColorFoundation.text.saDark),
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
                 ),
                 decoration:
                     decoration ??
                     InputDecoration(
                       contentPadding: prefixText != null
-                          ? const EdgeInsets.only(left: 4, top: 10)
+                          ? StoycoScreenSize.fromLTRB(context, left: 4, top: 10)
                           : null,
                       hintText: placeholder,
                       hintStyle: TextStyle(
-                        color: placeholderColor ?? ColorFoundation.text.saDark,
-                        fontSize: 14,
+                        fontFamily: 'Gilroy',
                         fontWeight: FontWeight.w500,
+                        fontSize: StoycoScreenSize.fontSize(context, 14),
+                        color: placeholderColor ?? ColorFoundation.text.saDark,
                       ),
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
@@ -153,18 +156,20 @@ class CustomFormField extends StatelessWidget {
                         ),
                       ),
                       errorStyle: TextStyle(
+                        fontFamily: 'Gilroy',
+                        fontWeight: FontWeight.w600,
+                        fontSize: StoycoScreenSize.fontSize(context, 12),
                         color: ColorFoundation.text.saError,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
                       ),
                       errorMaxLines: 2,
                       prefixText: prefixText,
                       prefixStyle:
                           prefixStyle ??
                           TextStyle(
-                            color: textColor ?? ColorFoundation.text.saDark,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
+                            fontFamily: 'Gilroy',
+                            fontWeight: FontWeight.w500,
+                            fontSize: StoycoScreenSize.fontSize(context, 14),
+                            color: ColorFoundation.text.saDark,
                           ),
                     ),
               );
@@ -244,23 +249,25 @@ class _PasswordFieldState extends State<_PasswordField> {
       onTap: widget.onTap,
       readOnly: widget.readOnly,
       style: TextStyle(
+        fontFamily: 'Gilroy',
+        fontWeight: FontWeight.w600,
+        fontSize: StoycoScreenSize.fontSize(context, 14),
         color: widget.hasError
             ? ColorFoundation.text.saError
             : (widget.textColor ?? ColorFoundation.text.saDark),
-        fontSize: 14,
-        fontWeight: FontWeight.w500,
       ),
       decoration:
           widget.decoration ??
           InputDecoration(
             contentPadding: widget.prefixText != null
-                ? const EdgeInsets.only(left: 4, top: 10)
-                : const EdgeInsets.symmetric(vertical: 12),
+                ? StoycoScreenSize.fromLTRB(context, left: 4, top: 10)
+                : StoycoScreenSize.symmetric(context, vertical: 12),
             hintText: widget.placeholder,
             hintStyle: TextStyle(
-              color: widget.placeholderColor ?? ColorFoundation.text.saDark,
-              fontSize: 14,
+              fontFamily: 'Gilroy',
               fontWeight: FontWeight.w500,
+              fontSize: StoycoScreenSize.fontSize(context, 14),
+              color: widget.placeholderColor ?? ColorFoundation.text.saDark,
             ),
             enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(
@@ -292,34 +299,36 @@ class _PasswordFieldState extends State<_PasswordField> {
               ),
             ),
             errorStyle: TextStyle(
+              fontFamily: 'Gilroy',
+              fontWeight: FontWeight.w600,
+              fontSize: StoycoScreenSize.fontSize(context, 12),
               color: ColorFoundation.text.saError,
-              fontSize: 12,
-              fontWeight: FontWeight.w400,
             ),
             errorMaxLines: 2,
             prefixText: widget.prefixText,
             prefixStyle:
                 widget.prefixStyle ??
                 TextStyle(
-                  color: widget.textColor ?? ColorFoundation.text.saDark,
-                  fontSize: 14,
+                  fontFamily: 'Gilroy',
                   fontWeight: FontWeight.w500,
+                  fontSize: StoycoScreenSize.fontSize(context, 14),
+                  color: ColorFoundation.text.saDark,
                 ),
             suffixIcon: IconButton(
               padding: EdgeInsets.zero,
               constraints: const BoxConstraints(),
               icon: Icon(
                 _obscureText ? Icons.visibility : Icons.visibility_off,
-                size: 24,
+                size: StoycoScreenSize.fontSize(context, 24),
                 color: widget.iconColor ?? ColorFoundation.text.saDark,
               ),
               onPressed: () {
                 setState(() => _obscureText = !_obscureText);
               },
             ),
-            suffixIconConstraints: const BoxConstraints(
-              minWidth: 40,
-              minHeight: 40,
+            suffixIconConstraints: BoxConstraints(
+              minWidth: StoycoScreenSize.width(context, 40),
+              minHeight: StoycoScreenSize.height(context, 40),
             ),
           ),
     );
