@@ -30,8 +30,7 @@ class PhoneValidatorInputState extends State<PhoneValidatorInput> {
   late final FocusNode focusNode;
 
   Timer? _timer;
-  int _remainingSeconds =
-      20; // 5 minutes (change from 10 to 300 for production)
+  int _remainingSeconds = 300;
   bool _isTimerActive = true;
   ValidationState _validationState = ValidationState.idle;
   String? _errorMessage;
@@ -54,10 +53,10 @@ class PhoneValidatorInputState extends State<PhoneValidatorInput> {
 
   void _startTimer() {
     _isTimerActive = true;
-    _remainingSeconds = 20; // 5 minutes (change from 10 to 300 for production)
+    _remainingSeconds = 300;
 
     _timer?.cancel();
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
       setState(() {
         if (_remainingSeconds > 0) {
           _remainingSeconds--;
@@ -115,8 +114,8 @@ class PhoneValidatorInputState extends State<PhoneValidatorInput> {
   }
 
   String _formatTime(int seconds) {
-    final minutes = seconds ~/ 60;
-    final remainingSeconds = seconds % 60;
+    final int minutes = seconds ~/ 60;
+    final int remainingSeconds = seconds % 60;
     return '${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
   }
 
@@ -133,13 +132,13 @@ class PhoneValidatorInputState extends State<PhoneValidatorInput> {
 
   @override
   Widget build(BuildContext context) {
-    final focusedBorderColor = ColorFoundation.border.saHighlights;
+    final Color focusedBorderColor = ColorFoundation.border.saHighlights;
 
-    final defaultPinTheme = PinTheme(
-      height: 58,
-      width: 47,
+    final PinTheme defaultPinTheme = PinTheme(
+      height: StoycoScreenSize.height(context, 58),
+      width: StoycoScreenSize.width(context, 48),
       textStyle: FontFoundation.label.akkuratRegularSaHighlights.copyWith(
-        fontSize: 40,
+        fontSize: StoycoScreenSize.fontSize(context, 40),
         color: _getTextColor(),
       ),
       decoration: BoxDecoration(
@@ -153,17 +152,17 @@ class PhoneValidatorInputState extends State<PhoneValidatorInput> {
       padding: StoycoScreenSize.symmetric(context, horizontal: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
+        children: <Widget>[
           Pinput(
             length: 6,
             controller: _pinController,
             focusNode: focusNode,
             defaultPinTheme: defaultPinTheme,
-            separatorBuilder: (index) {
-              return Gutter(10);
+            separatorBuilder: (int index) {
+              return Gutter(StoycoScreenSize.height(context, 10));
             },
             hapticFeedbackType: HapticFeedbackType.lightImpact,
-            onChanged: (pin) {
+            onChanged: (String pin) {
               // Clear error state when user starts typing again
               if (_validationState == ValidationState.error) {
                 setState(() {
@@ -173,7 +172,7 @@ class PhoneValidatorInputState extends State<PhoneValidatorInput> {
               }
               widget.onChanged?.call(pin);
             },
-            onCompleted: (pin) {
+            onCompleted: (String pin) {
               widget.onCompleted?.call(pin);
             },
             enabled:
@@ -181,9 +180,11 @@ class PhoneValidatorInputState extends State<PhoneValidatorInput> {
                 _validationState != ValidationState.success,
             focusedPinTheme: defaultPinTheme.copyWith(
               decoration: defaultPinTheme.decoration!.copyWith(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(
+                  StoycoScreenSize.radius(context, 15),
+                ),
                 border: Border.all(color: focusedBorderColor),
-                boxShadow: [
+                boxShadow: <BoxShadow>[
                   BoxShadow(
                     color: ColorFoundation.shadow.saHighlights,
                     blurRadius: 8,
@@ -193,7 +194,7 @@ class PhoneValidatorInputState extends State<PhoneValidatorInput> {
               ),
             ),
           ),
-          Gutter(15),
+          Gutter(StoycoScreenSize.height(context, 15)),
           // Show timer, error message, or success message
           if (_validationState != ValidationState.validating)
             _buildStatusRow()
@@ -224,14 +225,14 @@ class PhoneValidatorInputState extends State<PhoneValidatorInput> {
     // Timer expired
     if (!_isTimerActive) {
       return Row(
-        children: [
+        children: <Widget>[
           Text(
             _formatTime(_remainingSeconds),
             style: FontFoundation.paragraph.semiBold14SaHighlights.copyWith(
               color: ColorFoundation.text.saError,
             ),
           ),
-          Gutter(4),
+          Gutter(StoycoScreenSize.width(context, 4)),
           Expanded(
             child: Text(
               'Tu tiempo ha terminado y tu código ha vencido.',
@@ -245,12 +246,12 @@ class PhoneValidatorInputState extends State<PhoneValidatorInput> {
     // Error state
     if (_validationState == ValidationState.error && _errorMessage != null) {
       return Row(
-        children: [
+        children: <Widget>[
           Text(
             _formatTime(_remainingSeconds),
             style: FontFoundation.paragraph.semiBold14SaHighlights,
           ),
-          Gutter(4),
+          Gutter(StoycoScreenSize.width(context, 4)),
           Expanded(
             child: Text(
               _errorMessage!,
@@ -263,7 +264,7 @@ class PhoneValidatorInputState extends State<PhoneValidatorInput> {
 
     // Default: just show timer
     return Row(
-      children: [
+      children: <Widget>[
         Text(
           _formatTime(_remainingSeconds),
           style: FontFoundation.paragraph.semiBold14SaHighlights,

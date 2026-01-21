@@ -3,6 +3,7 @@ import 'package:intl_phone_field/countries.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:stoyco_partners_shared/design/models/phone_number_model.dart';
 import 'package:stoyco_partners_shared/design/responsive/gutter.dart';
+import 'package:stoyco_partners_shared/design/responsive/screen_size/stoyco_screen_size.dart';
 import 'package:stoyco_partners_shared/design/utils/foundations/color_foundation.dart';
 import 'package:stoyco_partners_shared/design/utils/foundations/font_foundation.dart';
 
@@ -80,19 +81,19 @@ class _CountryCodeSelectorState extends State<CountryCodeSelector> {
   }
 
   Country _getCountryFromControl(FormControl<PhoneNumber?> control) {
-    final phoneNumber = control.value;
+    final PhoneNumber? phoneNumber = control.value;
     if (phoneNumber?.selectedCountry != null) {
       return phoneNumber!.selectedCountry!;
     }
     return countries.firstWhere(
-      (country) => country.code == widget.initialCountryCode,
+      (Country country) => country.code == widget.initialCountryCode,
       orElse: () => countries.first,
     );
   }
 
   void _selectCountry(Country country, FormControl<PhoneNumber?> control) {
-    final currentPhoneNumber = control.value;
-    final newPhoneNumber = PhoneNumber(
+    final PhoneNumber? currentPhoneNumber = control.value;
+    final PhoneNumber newPhoneNumber = PhoneNumber(
       selectedCountry: country,
       number: currentPhoneNumber?.number,
     );
@@ -107,24 +108,24 @@ class _CountryCodeSelectorState extends State<CountryCodeSelector> {
   Widget build(BuildContext context) {
     return ReactiveFormField<PhoneNumber?, PhoneNumber>(
       formControlName: widget.formControlName,
-      builder: (field) {
-        final control = field.control;
-        final selectedCountry = _getCountryFromControl(control);
-        final hasError = control.hasErrors && control.touched;
+      builder: (ReactiveFormFieldState<PhoneNumber?, PhoneNumber> field) {
+        final FormControl<PhoneNumber?> control = field.control;
+        final Country selectedCountry = _getCountryFromControl(control);
+        final bool hasError = control.hasErrors && control.touched;
 
         return Focus(
           focusNode: _focusNode,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
-            children: [
+            children: <Widget>[
               Row(
                 key: _rowKey,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                children: <Widget>[
                   // Country Code Selector
                   _buildCountrySelector(selectedCountry, control, hasError),
-                  Gutter(10),
+                  Gutter(StoycoScreenSize.width(context, 10)),
                   // Phone Number Field
                   Expanded(
                     child: _PhoneNumberInput(
@@ -141,7 +142,7 @@ class _CountryCodeSelectorState extends State<CountryCodeSelector> {
               // Validation Error
               if (hasError)
                 Padding(
-                  padding: const EdgeInsets.only(top: 4, left: 12),
+                  padding: StoycoScreenSize.fromLTRB(context, top: 4, left: 12),
                   child: Builder(
                     builder: (context) {
                       final errorKey = control.errors.keys.first;
@@ -159,7 +160,7 @@ class _CountryCodeSelectorState extends State<CountryCodeSelector> {
                         message,
                         style: TextStyle(
                           color: ColorFoundation.text.saError,
-                          fontSize: 12,
+                          fontSize: StoycoScreenSize.fontSize(context, 12),
                           fontWeight: FontWeight.w400,
                         ),
                       );
@@ -192,10 +193,10 @@ class _CountryCodeSelectorState extends State<CountryCodeSelector> {
         ? errorColor
         : (_isExpanded ? baseFocusedUnderline : baseUnderline);
 
-    final isEnabled = control.enabled;
+    final bool isEnabled = control.enabled;
 
     return SizedBox(
-      width: 66,
+      width: StoycoScreenSize.width(context, 66),
       child: GestureDetector(
         onTap: isEnabled ? _toggleDropdown : null,
         child: Container(
@@ -209,14 +210,16 @@ class _CountryCodeSelectorState extends State<CountryCodeSelector> {
               ),
             ),
           ),
-          padding: EdgeInsets.symmetric(vertical: 6),
+          padding: StoycoScreenSize.symmetric(context, vertical: 6),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+            children: <Widget>[
               Expanded(
                 child: Text(
                   selectedCountry.flag,
-                  style: TextStyle(fontSize: 24),
+                  style: TextStyle(
+                    fontSize: StoycoScreenSize.fontSize(context, 24),
+                  ),
                 ),
               ),
               Icon(
@@ -226,7 +229,7 @@ class _CountryCodeSelectorState extends State<CountryCodeSelector> {
                 color: isEnabled
                     ? baseTextColor
                     : baseTextColor.withOpacity(0.5),
-                size: 20,
+                size: StoycoScreenSize.fontSize(context, 20),
               ),
             ],
           ),
@@ -241,9 +244,11 @@ class _CountryCodeSelectorState extends State<CountryCodeSelector> {
   ) {
     return Container(
       width: _dropdownWidth,
-      constraints: BoxConstraints(maxHeight: 200),
-      margin: EdgeInsets.only(top: 4),
-      padding: EdgeInsets.symmetric(vertical: 15),
+      constraints: BoxConstraints(
+        maxHeight: StoycoScreenSize.height(context, 200),
+      ),
+      margin: StoycoScreenSize.fromLTRB(context, top: 4),
+      padding: StoycoScreenSize.symmetric(context, vertical: 15),
       decoration: BoxDecoration(
         color: ColorFoundation.background.saLight,
         border: Border(
@@ -254,27 +259,36 @@ class _CountryCodeSelectorState extends State<CountryCodeSelector> {
         color: Colors.transparent,
         child: ListView.separated(
           shrinkWrap: true,
-          padding: EdgeInsets.symmetric(vertical: 4),
+          padding: StoycoScreenSize.symmetric(context, vertical: 4),
           itemCount: countries.length,
-          separatorBuilder: (context, index) => Divider(
+          separatorBuilder: (BuildContext context, int index) => Divider(
             height: 1,
             color: ColorFoundation.border.saDark.withOpacity(0.2),
           ),
-          itemBuilder: (context, index) {
-            final country = countries[index];
-            final isSelected = country.code == selectedCountry.code;
+          itemBuilder: (BuildContext context, int index) {
+            final Country country = countries[index];
+            final bool isSelected = country.code == selectedCountry.code;
 
             return InkWell(
               onTap: () => _selectCountry(country, control),
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                padding: StoycoScreenSize.symmetric(
+                  context,
+                  horizontal: 12,
+                  vertical: 10,
+                ),
                 color: isSelected
                     ? ColorFoundation.background.saHighlights.withOpacity(0.1)
                     : Colors.transparent,
                 child: Row(
-                  children: [
-                    Text(country.flag, style: TextStyle(fontSize: 20)),
-                    Gutter(12),
+                  children: <Widget>[
+                    Text(
+                      country.flag,
+                      style: TextStyle(
+                        fontSize: StoycoScreenSize.fontSize(context, 20),
+                      ),
+                    ),
+                    Gutter(StoycoScreenSize.width(context, 20)),
                     Expanded(
                       child: Text(
                         country.name,
@@ -335,8 +349,8 @@ class _PhoneNumberInputState extends State<_PhoneNumberInput> {
     _focusNode = FocusNode();
 
     // Listen to form control changes
-    widget.control.valueChanges.listen((phoneNumber) {
-      final newNumber = phoneNumber?.number ?? '';
+    widget.control.valueChanges.listen((PhoneNumber? phoneNumber) {
+      final String newNumber = phoneNumber?.number ?? '';
       if (_controller.text != newNumber) {
         _controller.text = newNumber;
       }
@@ -348,8 +362,8 @@ class _PhoneNumberInputState extends State<_PhoneNumberInput> {
   }
 
   void _onTextChanged() {
-    final currentPhoneNumber = widget.control.value;
-    final newPhoneNumber = PhoneNumber(
+    final PhoneNumber? currentPhoneNumber = widget.control.value;
+    final PhoneNumber newPhoneNumber = PhoneNumber(
       selectedCountry: widget.selectedCountry,
       number: _controller.text,
     );
@@ -372,7 +386,7 @@ class _PhoneNumberInputState extends State<_PhoneNumberInput> {
 
     // Update phone number with new country if it changed
     if (oldWidget.selectedCountry.code != widget.selectedCountry.code) {
-      final newPhoneNumber = PhoneNumber(
+      final PhoneNumber newPhoneNumber = PhoneNumber(
         selectedCountry: widget.selectedCountry,
         number: _controller.text,
       );
@@ -389,16 +403,16 @@ class _PhoneNumberInputState extends State<_PhoneNumberInput> {
 
   @override
   Widget build(BuildContext context) {
-    final isEnabled = widget.control.enabled;
-    final hasError = widget.control.hasErrors && widget.control.touched;
+    final bool isEnabled = widget.control.enabled;
+    final bool hasError = widget.control.hasErrors && widget.control.touched;
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
       mainAxisAlignment: MainAxisAlignment.center,
-      children: [
+      children: <Widget>[
         // Prefix Container
         Container(
-          padding: const EdgeInsets.only(bottom: 13),
+          padding: StoycoScreenSize.fromLTRB(context, bottom: 13),
           decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(
@@ -416,7 +430,7 @@ class _PhoneNumberInputState extends State<_PhoneNumberInput> {
                   ? (widget.textColor ?? ColorFoundation.text.saDark)
                   : (widget.textColor ?? ColorFoundation.text.grey1)
                         .withOpacity(0.5),
-              fontSize: 14,
+              fontSize: StoycoScreenSize.fontSize(context, 14),
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -428,13 +442,16 @@ class _PhoneNumberInputState extends State<_PhoneNumberInput> {
             focusNode: _focusNode,
             enabled: isEnabled,
             keyboardType: TextInputType.phone,
-            style: FontFoundation.label.semiBold14SaDark.copyWith(
+            style: TextStyle(
+              fontFamily: 'Gilroy',
+              fontWeight: FontWeight.w600,
+              fontSize: StoycoScreenSize.fontSize(context, 14),
               color: hasError
                   ? ColorFoundation.text.saError
                   : (widget.textColor ?? ColorFoundation.text.saDark),
             ),
             decoration: InputDecoration(
-              contentPadding: const EdgeInsets.only(left: 4),
+              contentPadding: StoycoScreenSize.fromLTRB(context, left: 4),
               hintText: widget.placeholder,
               hintStyle: FontFoundation.label.medium14SaDark,
               enabledBorder: UnderlineInputBorder(
