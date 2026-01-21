@@ -1,3 +1,10 @@
+## 0.0.6
+
+* Features
+
+- Added timer to pinput field
+- Refactor fields to match Figma design
+
 ## 0.0.5
 
 * Features
