@@ -56,7 +56,7 @@ class BubbleTooltip extends StatelessWidget {
             left: lineEndOffset.dx + StoycoScreenSize.width(context, 8),
             top: lineEndOffset.dy,
             child: Transform.translate(
-              offset: Offset(0, -StoycoScreenSize.height(context, 15)),
+              offset: Offset(0, -StoycoScreenSize.height(context, 11)),
               child: _TooltipBox(value: value),
             ),
           ),
@@ -74,25 +74,21 @@ class _TooltipBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(15),
+      borderRadius: BorderRadius.circular(
+        StoycoScreenSize.radius(context, 15),
+      ),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
         child: Container(
-          padding: StoycoScreenSize.symmetric(context, horizontal: 16, vertical: 8),
+          padding: StoycoScreenSize.symmetric(context, horizontal: 16, vertical: 2),
           decoration: BoxDecoration(
-            color: const Color(0x3DDDDDDD),
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(
+              StoycoScreenSize.radius(context, 15),
+            ),
             border: Border.all(
               width: 1,
-              color: Colors.transparent,
+              color: ColorFoundation.background.white,
             ),
-            boxShadow: const <BoxShadow>[
-              BoxShadow(
-                color: Color(0x14000000),
-                offset: Offset(2, 4),
-                blurRadius: 8,
-              ),
-            ],
             gradient: const LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
