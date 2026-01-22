@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:stoyco_partners_shared/design/atomic/organisms/bubble_graph/bubble_data.dart';
 import 'package:stoyco_partners_shared/design/atomic/organisms/bubble_graph/bubble_graph_painter.dart';
@@ -66,7 +68,6 @@ class _BubbleGraphState extends State<BubbleGraph>
   }
 
   void _calculateBubblePositions() {
-    // Ordenar data de forma descendente
     final List<BubbleData> sortedData = List<BubbleData>.from(widget.data)
       ..sort((BubbleData a, BubbleData b) => b.value.compareTo(a.value));
 
@@ -75,55 +76,69 @@ class _BubbleGraphState extends State<BubbleGraph>
       return;
     }
 
-    // Radio base mínimo
-    const double baseRadius = 40.0;
-    
-    // Calcular radio del círculo central basado en cantidad de items
-    // Cada item necesita espacio para su circunferencia
-    const double radiusPerItem = 15.0;
-    final double calculatedCenterRadius = baseRadius + (sortedData.length * radiusPerItem);
-
-    // Encontrar el valor máximo de la lista
+    final double maxContainerRadius = (widget.width ?? 280) / 2;
     final double maxValue = sortedData.first.value;
     final double minValue = sortedData.last.value;
     final double valueRange = maxValue - minValue;
-
-    // Calcular posiciones concéntricas (todas desde el centro)
-    _bubblePositions = <BubblePosition>[];
     
-    // El espacio disponible dentro del círculo central (dejando margen para el logo)
-    final double availableRadius = calculatedCenterRadius - baseRadius;
+    final double proportion = maxValue / widget.total;
+    const double minCenterRadius = 80.0;
+    final double centerRadius = proportion >= 0.95 
+        ? maxContainerRadius * 0.95 
+        : math.max(maxContainerRadius * proportion, minCenterRadius);
 
-    for (int i = 0; i < sortedData.length; i++) {
+    const double logoSafeZone = 0.3;
+    const double minSpacing = 15.0;
+    final double startRadius = centerRadius * logoSafeZone;
+    final double maxAllowedRadius = centerRadius * 0.95;
+    final double availableRadius = maxAllowedRadius - startRadius;
+
+    _bubblePositions = <BubblePosition>[];
+    double previousRadius = startRadius;
+
+    for (int i = sortedData.length - 1; i >= 0; i--) {
       final BubbleData data = sortedData[i];
       
-      // Calcular proporción basada en el valor
-      final double proportion = valueRange > 0 
+      final double itemProportion = valueRange > 0 
           ? (data.value - minValue) / valueRange 
           : 1.0;
       
-      // Radio proporcional dentro del espacio disponible
-      // El más grande estará cerca del borde, el más pequeño cerca del centro
-      final double radius = baseRadius + (availableRadius * (1.0 - proportion * 0.85));
+      final double calculatedRadius = startRadius + (availableRadius * itemProportion);
+      final double radius = math.max(calculatedRadius, previousRadius + minSpacing);
+      final double finalRadius = math.min(radius, maxAllowedRadius);
 
       _bubblePositions.add(
         BubblePosition(
           data: data,
-          radius: radius,
+          radius: finalRadius,
           offset: Offset.zero,
           angle: 0,
         ),
       );
+
+      previousRadius = finalRadius;
     }
   }
 
-  double _calculateRadius(double value) {
-    // Radio base mínimo
-    const double baseRadius = 40.0;
+  double _calculateRadius(double maxValue) {
+    if (widget.data.isEmpty) {
+      return 80.0;
+    }
+
+    const double minCenterRadius = 80.0;
+    final double maxContainerRadius = (widget.width ?? 280) / 2;
+    final double sortedMaxValue = widget.data
+        .map((BubbleData d) => d.value)
+        .reduce((double a, double b) => a > b ? a : b);
+
+    final double proportion = sortedMaxValue / widget.total;
     
-    // Calcular radio basado en cantidad de items
-    const double radiusPerItem = 15.0;
-    return baseRadius + (widget.data.length * radiusPerItem);
+    if (proportion >= 0.95) {
+      return maxContainerRadius * 0.95;
+    }
+
+    final double calculatedRadius = maxContainerRadius * proportion;
+    return math.max(calculatedRadius, minCenterRadius);
   }
 
   @override
@@ -136,6 +151,10 @@ class _BubbleGraphState extends State<BubbleGraph>
           builder: (BuildContext context, BoxConstraints constraints) {
             final double centerRadius = _calculateRadius(widget.total);
 
+            final double maxValue = widget.data.isNotEmpty
+                ? widget.data.map((BubbleData d) => d.value).reduce((double a, double b) => a > b ? a : b)
+                : 0.0;
+
             return Stack(
               children: <Widget>[
                 // Canvas para las burbujas
@@ -145,6 +164,8 @@ class _BubbleGraphState extends State<BubbleGraph>
                     bubbles: _bubblePositions,
                     animation: _animation,
                     centerRadius: centerRadius,
+                    total: widget.total,
+                    maxValue: maxValue,
                   ),
                 ),
                 // Logo en el centro
