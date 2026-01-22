@@ -135,9 +135,11 @@ class BubbleGraphPainter extends CustomPainter {
     required double dashSpace,
   }) {
     final double circumference = 2 * math.pi * radius;
-    final int dashCount = (circumference / (dashWidth + dashSpace)).floor();
-    final double adjustedDashAngle = (dashWidth / circumference) * 2 * math.pi;
-    final double adjustedSpaceAngle = (dashSpace / circumference) * 2 * math.pi;
+    final int dashCount = (circumference / (dashWidth + dashSpace)).round();
+    
+    final double totalDashAngle = (dashWidth / circumference) * 2 * math.pi;
+    final double totalSpace = 2 * math.pi - (totalDashAngle * dashCount);
+    final double adjustedSpaceAngle = totalSpace / dashCount;
 
     final Path path = Path();
     double currentAngle = -math.pi / 2;
@@ -145,8 +147,8 @@ class BubbleGraphPainter extends CustomPainter {
     for (int i = 0; i < dashCount; i++) {
       final double x1 = center.dx + radius * math.cos(currentAngle);
       final double y1 = center.dy + radius * math.sin(currentAngle);
-      final double x2 = center.dx + radius * math.cos(currentAngle + adjustedDashAngle);
-      final double y2 = center.dy + radius * math.sin(currentAngle + adjustedDashAngle);
+      final double x2 = center.dx + radius * math.cos(currentAngle + totalDashAngle);
+      final double y2 = center.dy + radius * math.sin(currentAngle + totalDashAngle);
 
       path
         ..moveTo(x1, y1)
@@ -156,7 +158,7 @@ class BubbleGraphPainter extends CustomPainter {
           clockwise: true,
         );
 
-      currentAngle += adjustedDashAngle + adjustedSpaceAngle;
+      currentAngle += totalDashAngle + adjustedSpaceAngle;
     }
 
     canvas.drawPath(path, paint);

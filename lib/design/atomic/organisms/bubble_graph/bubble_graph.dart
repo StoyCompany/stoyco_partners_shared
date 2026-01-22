@@ -14,6 +14,8 @@ class BubbleGraph extends StatefulWidget {
     this.animationDuration = const Duration(milliseconds: 2000),
     this.width,
     this.height,
+    this.minSpacing = 8.0,
+    this.minCenterRadius = 80.0,
   });
 
   final double total;
@@ -22,6 +24,8 @@ class BubbleGraph extends StatefulWidget {
   final Duration animationDuration;
   final double? width;
   final double? height;
+  final double minSpacing;
+  final double minCenterRadius;
 
   @override
   State<BubbleGraph> createState() => _BubbleGraphState();
@@ -82,13 +86,11 @@ class _BubbleGraphState extends State<BubbleGraph>
     final double valueRange = maxValue - minValue;
     
     final double proportion = maxValue / widget.total;
-    const double minCenterRadius = 80.0;
     final double centerRadius = proportion >= 0.95 
         ? maxContainerRadius * 0.95 
-        : math.max(maxContainerRadius * proportion, minCenterRadius);
+        : math.max(maxContainerRadius * proportion, widget.minCenterRadius);
 
     const double logoSafeZone = 0.3;
-    const double minSpacing = 15.0;
     final double startRadius = centerRadius * logoSafeZone;
     final double maxAllowedRadius = centerRadius * 0.95;
     final double availableRadius = maxAllowedRadius - startRadius;
@@ -104,7 +106,7 @@ class _BubbleGraphState extends State<BubbleGraph>
           : 1.0;
       
       final double calculatedRadius = startRadius + (availableRadius * itemProportion);
-      final double radius = math.max(calculatedRadius, previousRadius + minSpacing);
+      final double radius = math.max(calculatedRadius, previousRadius + widget.minSpacing);
       final double finalRadius = math.min(radius, maxAllowedRadius);
 
       _bubblePositions.add(
@@ -122,10 +124,9 @@ class _BubbleGraphState extends State<BubbleGraph>
 
   double _calculateRadius(double maxValue) {
     if (widget.data.isEmpty) {
-      return 80.0;
+      return widget.minCenterRadius;
     }
 
-    const double minCenterRadius = 80.0;
     final double maxContainerRadius = (widget.width ?? 280) / 2;
     final double sortedMaxValue = widget.data
         .map((BubbleData d) => d.value)
@@ -138,7 +139,7 @@ class _BubbleGraphState extends State<BubbleGraph>
     }
 
     final double calculatedRadius = maxContainerRadius * proportion;
-    return math.max(calculatedRadius, minCenterRadius);
+    return math.max(calculatedRadius, widget.minCenterRadius);
   }
 
   @override
