@@ -243,24 +243,37 @@ class _BubbleGraphState extends State<BubbleGraph>
                     ),
                   ),
                 ),
-                if (_selectedBubble != null && _graphCenter != null)
+                if (_selectedBubble != null && _graphCenter != null && _controller.isCompleted)
                   Positioned.fill(
-                    child: Builder(
-                      builder: (BuildContext context) {
+                    child: AnimatedBuilder(
+                      animation: _tooltipAnimation,
+                      builder: (BuildContext context, Widget? child) {
                         final double maxContainerRadius = (widget.width ?? 280) / 2;
                         final double distanceFromCenter = _selectedBubble!.radius;
                         final double remainingSpace = maxContainerRadius - distanceFromCenter;
                         final double lineLength = remainingSpace > 66 ? 66 : remainingSpace * 0.7;
                         
-                        return BubbleTooltip(
-                          value: NumbersFormat.formatCompact(_selectedBubble!.data.value),
-                          lineStartOffset: _graphCenter! + Offset(
-                            _selectedBubble!.radius * math.cos(0),
-                            _selectedBubble!.radius * math.sin(0),
-                          ),
-                          lineEndOffset: _graphCenter! + Offset(
-                            _selectedBubble!.radius * math.cos(0) + lineLength,
-                            _selectedBubble!.radius * math.sin(0),
+                        return Opacity(
+                          opacity: _tooltipAnimation.value,
+                          child: Transform.scale(
+                            scale: 0.8 + (_tooltipAnimation.value * 0.2),
+                            child: Transform.translate(
+                              offset: Offset(
+                                20 * (1 - _tooltipAnimation.value),
+                                0,
+                              ),
+                              child: BubbleTooltip(
+                                value: NumbersFormat.formatCompact(_selectedBubble!.data.value),
+                                lineStartOffset: _graphCenter! + Offset(
+                                  _selectedBubble!.radius * math.cos(0),
+                                  _selectedBubble!.radius * math.sin(0),
+                                ),
+                                lineEndOffset: _graphCenter! + Offset(
+                                  _selectedBubble!.radius * math.cos(0) + lineLength,
+                                  _selectedBubble!.radius * math.sin(0),
+                                ),
+                              ),
+                            ),
                           ),
                         );
                       },
