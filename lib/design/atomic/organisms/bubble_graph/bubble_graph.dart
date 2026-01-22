@@ -225,18 +225,45 @@ class _BubbleGraphState extends State<BubbleGraph>
                 ),
                 if (_selectedBubble != null && _graphCenter != null)
                   Positioned.fill(
+                    child: Builder(
+                      builder: (BuildContext context) {
+                        final double maxContainerRadius = (widget.width ?? 280) / 2;
+                        final double distanceFromCenter = _selectedBubble!.radius;
+                        final double remainingSpace = maxContainerRadius - distanceFromCenter;
+                        final double lineLength = remainingSpace > 66 ? 66 : remainingSpace * 0.7;
+                        
+                        return BubbleTooltip(
+                          value: NumbersFormat.formatCompact(_selectedBubble!.data.value),
+                          lineStartOffset: _graphCenter! + Offset(
+                            _selectedBubble!.radius * math.cos(0),
+                            _selectedBubble!.radius * math.sin(0),
+                          ),
+                          lineEndOffset: _graphCenter! + Offset(
+                            _selectedBubble!.radius * math.cos(0) + lineLength,
+                            _selectedBubble!.radius * math.sin(0),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                Positioned(
+                  top: 40,
+                  left: 20,
+                  right: 0,
+                  child: Center(
                     child: BubbleTooltip(
-                      value: NumbersFormat.formatCompact(_selectedBubble!.data.value),
-                      lineStartOffset: _graphCenter! + Offset(
-                        _selectedBubble!.radius * math.cos(0),
-                        _selectedBubble!.radius * math.sin(0),
+                      value: NumbersFormat.formatCompact(widget.total),
+                      lineStartOffset: Offset(
+                        (widget.width ?? 280) / 2,
+                        0,
                       ),
-                      lineEndOffset: _graphCenter! + Offset(
-                        _selectedBubble!.radius * math.cos(0) + 66,
-                        _selectedBubble!.radius * math.sin(0),
+                      lineEndOffset: Offset(
+                        (widget.width ?? 280) / 1.5,
+                        0,
                       ),
                     ),
                   ),
+                ),
               ],
             );
           },
