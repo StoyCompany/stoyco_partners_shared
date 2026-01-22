@@ -119,6 +119,18 @@ class StoycoColorsToken {
   /// Color: #AEDFD4
   static const Color header2 = Color(0xFFAEDFD4);
 
+  /// Color: #B2D5DF
+  static const Color itemMenuBlue = Color(0xFFB2D5DF);
+
+  /// Color: #FF9F39
+  static const Color itemMenuOrange = Color(0xFFFF9F39);
+
+  /// Color: #DB839A
+  static const Color itemMenuRed = Color(0xFFDB839A);
+
+  /// Color: #FBE490
+  static const Color itemMenuYellow = Color(0xFFFBE490);
+
   /// Color: #048DBE
   static const Color lineCard1 = Color(0xFF048DBE);
 
@@ -145,6 +157,9 @@ class StoycoColorsToken {
 
   /// Color: #F2E9F2
   static const Color saLight = Color(0xFFF2E9F2);
+
+  /// Color: #EFDFEF
+  static const Color saLightMenu = Color(0xFFEFDFEF);
 
   /// Color: #819384
   static const Color saSuccess = Color(0xFF819384);

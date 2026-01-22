@@ -51,10 +51,17 @@ class _Text {
 
   final Color blueBackgroundIcons = StoycoColorsToken.blueBackgroundIcons;
 
+  final Color fandom = StoycoColorsToken.saLightMenu;
+
   final Color saHighlights = StoycoColorsToken.saHighlights;
   final Color saTextDisabled = StoycoColorsToken.saTextDisabled;
   final Color saError = StoycoColorsToken.saError;
   final Color saSuccess = StoycoColorsToken.saSuccess;
+
+  final Color itemMenuBlue = StoycoColorsToken.itemMenuBlue;
+  final Color itemMenuRed = StoycoColorsToken.itemMenuRed;
+  final Color itemMenuYellow = StoycoColorsToken.itemMenuYellow;
+  final Color itemMenuOrange = StoycoColorsToken.itemMenuOrange;
 }
 
 class _Background {
@@ -119,6 +126,10 @@ class _Background {
   final Color saHighlights = StoycoColorsToken.saHighlights;
 
   final Color saDisabled = StoycoColorsToken.saDisabled;
+
+  final Color fandom = StoycoColorsToken.saLightMenu;
+
+  final Color divider = StoycoColorsToken.saLight.withOpacity(0.3);
 }
 
 class _Border {
