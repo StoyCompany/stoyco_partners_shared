@@ -5,7 +5,7 @@ import 'package:stoyco_partners_shared/design/models/phone_number_model.dart';
 import 'package:stoyco_partners_shared/design/responsive/gutter.dart';
 import 'package:stoyco_partners_shared/design/responsive/screen_size/stoyco_screen_size.dart';
 import 'package:stoyco_partners_shared/design/utils/foundations/color_foundation.dart';
-import 'package:stoyco_partners_shared/design/utils/foundations/font_foundation.dart';
+import 'package:stoyco_partners_shared/design/utils/tokens/gen/fonts.gen.dart';
 
 class CountryCodeSelector extends StatefulWidget {
   const CountryCodeSelector({
@@ -210,7 +210,7 @@ class _CountryCodeSelectorState extends State<CountryCodeSelector> {
               ),
             ),
           ),
-          padding: StoycoScreenSize.symmetric(context, vertical: 6),
+          padding: StoycoScreenSize.symmetric(context, vertical: 4),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -292,16 +292,24 @@ class _CountryCodeSelectorState extends State<CountryCodeSelector> {
                     Expanded(
                       child: Text(
                         country.name,
-                        style: FontFoundation.label.regularSaDark.copyWith(
+                        style: TextStyle(
+                          fontFamily: StoycoFontFamilyToken.gilroy,
                           fontWeight: isSelected
                               ? FontWeight.w600
                               : FontWeight.w500,
+                          fontSize: StoycoScreenSize.fontSize(context, 14),
+                          color: ColorFoundation.text.saDark,
                         ),
                       ),
                     ),
                     Text(
                       '+${country.dialCode}',
-                      style: FontFoundation.paragraph.medium15SaDark,
+                      style: TextStyle(
+                        fontFamily: StoycoFontFamilyToken.gilroy,
+                        fontWeight: FontWeight.w500,
+                        fontSize: StoycoScreenSize.fontSize(context, 15),
+                        color: ColorFoundation.text.saDark,
+                      ),
                     ),
                   ],
                 ),
@@ -412,7 +420,7 @@ class _PhoneNumberInputState extends State<_PhoneNumberInput> {
       children: <Widget>[
         // Prefix Container
         Container(
-          padding: StoycoScreenSize.fromLTRB(context, bottom: 13),
+          padding: StoycoScreenSize.fromLTRB(context, bottom: 10),
           decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(
@@ -443,7 +451,7 @@ class _PhoneNumberInputState extends State<_PhoneNumberInput> {
             enabled: isEnabled,
             keyboardType: TextInputType.phone,
             style: TextStyle(
-              fontFamily: 'Gilroy',
+              fontFamily: StoycoFontFamilyToken.gilroy,
               fontWeight: FontWeight.w600,
               fontSize: StoycoScreenSize.fontSize(context, 14),
               color: hasError
@@ -453,7 +461,12 @@ class _PhoneNumberInputState extends State<_PhoneNumberInput> {
             decoration: InputDecoration(
               contentPadding: StoycoScreenSize.fromLTRB(context, left: 4),
               hintText: widget.placeholder,
-              hintStyle: FontFoundation.label.medium14SaDark,
+              hintStyle: TextStyle(
+                fontFamily: StoycoFontFamilyToken.gilroy,
+                fontWeight: FontWeight.w500,
+                fontSize: StoycoScreenSize.fontSize(context, 14),
+                color: ColorFoundation.text.saDark,
+              ),
               enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(
                   color: hasError
