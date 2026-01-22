@@ -1,8 +1,10 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:stoyco_partners_shared/design/atomic/atoms/tooltip/bubble_tooltip.dart';
 import 'package:stoyco_partners_shared/design/atomic/organisms/bubble_graph/bubble_data.dart';
 import 'package:stoyco_partners_shared/design/atomic/organisms/bubble_graph/bubble_graph_painter.dart';
+import 'package:stoyco_partners_shared/design/utils/formats/numbers.dart';
 import 'package:stoyco_partners_shared/design/utils/tokens/gen/assets.gen.dart';
 
 class BubbleGraph extends StatefulWidget {
@@ -36,6 +38,8 @@ class _BubbleGraphState extends State<BubbleGraph>
   late AnimationController _controller;
   late Animation<double> _animation;
   List<BubblePosition> _bubblePositions = <BubblePosition>[];
+  BubblePosition? _selectedBubble;
+  Offset? _graphCenter;
 
   @override
   void initState() {
@@ -158,15 +162,40 @@ class _BubbleGraphState extends State<BubbleGraph>
 
             return Stack(
               children: <Widget>[
-                // Canvas para las burbujas
-                CustomPaint(
-                  size: Size(constraints.maxWidth, constraints.maxHeight),
-                  painter: BubbleGraphPainter(
-                    bubbles: _bubblePositions,
-                    animation: _animation,
-                    centerRadius: centerRadius,
-                    total: widget.total,
-                    maxValue: maxValue,
+                GestureDetector(
+                  onTapDown: (TapDownDetails details) {
+                    if (_controller.isAnimating) {
+                      return;
+                    }
+                    
+                    final RenderBox renderBox = context.findRenderObject() as RenderBox;
+                    final Offset localPosition = renderBox.globalToLocal(details.globalPosition);
+                    final Offset center = Offset(constraints.maxWidth / 2, constraints.maxHeight / 2);
+                    
+                    final BubbleGraphPainter painter = BubbleGraphPainter(
+                      bubbles: _bubblePositions,
+                      animation: _animation,
+                      centerRadius: centerRadius,
+                      total: widget.total,
+                      maxValue: maxValue,
+                    );
+                    
+                    final BubblePosition? bubble = painter.getBubbleAtPosition(localPosition, center);
+                    
+                    setState(() {
+                      _selectedBubble = bubble;
+                      _graphCenter = center;
+                    });
+                  },
+                  child: CustomPaint(
+                    size: Size(constraints.maxWidth, constraints.maxHeight),
+                    painter: BubbleGraphPainter(
+                      bubbles: _bubblePositions,
+                      animation: _animation,
+                      centerRadius: centerRadius,
+                      total: widget.total,
+                      maxValue: maxValue,
+                    ),
                   ),
                 ),
                 // Logo en el centro
@@ -194,6 +223,20 @@ class _BubbleGraphState extends State<BubbleGraph>
                     ),
                   ),
                 ),
+                if (_selectedBubble != null && _graphCenter != null)
+                  Positioned.fill(
+                    child: BubbleTooltip(
+                      value: NumbersFormat.formatCompact(_selectedBubble!.data.value),
+                      lineStartOffset: _graphCenter! + Offset(
+                        _selectedBubble!.radius * math.cos(0),
+                        _selectedBubble!.radius * math.sin(0),
+                      ),
+                      lineEndOffset: _graphCenter! + Offset(
+                        _selectedBubble!.radius * math.cos(0) + 66,
+                        _selectedBubble!.radius * math.sin(0),
+                      ),
+                    ),
+                  ),
               ],
             );
           },

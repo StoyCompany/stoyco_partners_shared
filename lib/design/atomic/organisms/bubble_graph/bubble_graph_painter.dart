@@ -9,6 +9,7 @@ class BubbleGraphPainter extends CustomPainter {
     required this.centerRadius,
     required this.total,
     required this.maxValue,
+    this.onBubbleTap,
   }) : super(repaint: animation);
 
   final List<BubblePosition> bubbles;
@@ -16,6 +17,7 @@ class BubbleGraphPainter extends CustomPainter {
   final double centerRadius;
   final double total;
   final double maxValue;
+  final void Function(BubblePosition bubble, Offset center)? onBubbleTap;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -170,5 +172,20 @@ class BubbleGraphPainter extends CustomPainter {
   bool shouldRepaint(covariant BubbleGraphPainter oldDelegate) {
     return oldDelegate.animation.value != animation.value ||
         oldDelegate.bubbles.length != bubbles.length;
+  }
+
+  @override
+  bool? hitTest(Offset position) => null;
+
+  BubblePosition? getBubbleAtPosition(Offset position, Offset center) {
+    for (final BubblePosition bubble in bubbles) {
+      final double distance = (position - center).distance;
+      final double animatedRadius = bubble.radius * animation.value;
+      
+      if ((distance - animatedRadius).abs() < 15) {
+        return bubble;
+      }
+    }
+    return null;
   }
 }
