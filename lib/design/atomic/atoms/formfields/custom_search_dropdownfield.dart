@@ -3,6 +3,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:stoyco_partners_shared/design/responsive/gutter.dart';
 import 'package:stoyco_partners_shared/design/responsive/screen_size/stoyco_screen_size.dart';
 import 'package:stoyco_partners_shared/design/utils/foundations/color_foundation.dart';
+import 'package:stoyco_partners_shared/design/utils/tokens/gen/fonts.gen.dart';
 
 class CustomSearchDropdownfield extends StatefulWidget {
   const CustomSearchDropdownfield({
@@ -110,14 +111,14 @@ class _CustomSearchDropdownfieldState extends State<CustomSearchDropdownfield> {
         final TextStyle textStyle = isPlaceholder
             ? (widget.placeholderStyle ??
                   TextStyle(
-                    fontFamily: 'Gilroy',
+                    fontFamily: StoycoFontFamilyToken.gilroy,
                     fontWeight: FontWeight.w500,
                     fontSize: StoycoScreenSize.fontSize(context, 14),
                     color: ColorFoundation.text.saLight,
                   ))
             : (widget.selectedStyle ??
                   TextStyle(
-                    fontFamily: 'Gilroy',
+                    fontFamily: StoycoFontFamilyToken.gilroy,
                     fontWeight: FontWeight.w600,
                     fontSize: StoycoScreenSize.fontSize(context, 14),
                     color: ColorFoundation.text.saDark,
@@ -172,7 +173,7 @@ class _CustomSearchDropdownfieldState extends State<CustomSearchDropdownfield> {
                   child: Text(
                     field.errorText ?? '',
                     style: TextStyle(
-                      fontFamily: 'Gilroy',
+                      fontFamily: StoycoFontFamilyToken.gilroy,
                       fontWeight: FontWeight.w600,
                       fontSize: StoycoScreenSize.fontSize(context, 12),
                       color: ColorFoundation.text.saError,
@@ -182,9 +183,13 @@ class _CustomSearchDropdownfieldState extends State<CustomSearchDropdownfield> {
               if (isOpened)
                 Container(
                   width: double.infinity,
+                  constraints: BoxConstraints(
+                    maxHeight: StoycoScreenSize.height(context, 200),
+                  ),
                   color: ColorFoundation.background.saLight,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       // Search bar
                       Padding(
@@ -196,7 +201,7 @@ class _CustomSearchDropdownfieldState extends State<CustomSearchDropdownfield> {
                         child: TextField(
                           controller: _searchController,
                           style: TextStyle(
-                            fontFamily: 'Gilroy',
+                            fontFamily: StoycoFontFamilyToken.gilroy,
                             fontWeight: FontWeight.w500,
                             fontSize: StoycoScreenSize.fontSize(context, 14),
                             color: ColorFoundation.text.saDark,
@@ -204,7 +209,7 @@ class _CustomSearchDropdownfieldState extends State<CustomSearchDropdownfield> {
                           decoration: InputDecoration(
                             hintText: widget.searchPlaceholder,
                             hintStyle: TextStyle(
-                              fontFamily: 'Gilroy',
+                              fontFamily: StoycoFontFamilyToken.gilroy,
                               fontWeight: FontWeight.w500,
                               fontSize: StoycoScreenSize.fontSize(context, 14),
                               color: ColorFoundation.text.saLight,
@@ -238,66 +243,85 @@ class _CustomSearchDropdownfieldState extends State<CustomSearchDropdownfield> {
                           ),
                         ),
                       ),
-                      // Items list
-                      if (_filteredItems.isEmpty)
-                        Padding(
-                          padding: StoycoScreenSize.symmetric(
-                            context,
-                            horizontal: 8,
-                            vertical: 10,
-                          ),
-                          child: Text(
-                            widget.noResultsText,
-                            style: TextStyle(
-                              fontFamily: 'Gilroy',
-                              fontWeight: FontWeight.w500,
-                              fontSize: StoycoScreenSize.fontSize(context, 14),
-                              color: ColorFoundation.text.saLight,
-                            ),
-                          ),
-                        )
-                      else
-                        ..._filteredItems.asMap().entries.map((
-                          MapEntry<int, String> entry,
-                        ) {
-                          final int index = entry.key;
-                          final String item = entry.value;
-                          final bool isLast =
-                              index == _filteredItems.length - 1;
-
-                          return Column(
+                      // Items list - now scrollable
+                      Flexible(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              GestureDetector(
-                                onTap: () => _selectItem(item, control),
-                                child: Container(
-                                  margin: StoycoScreenSize.fromLTRB(
-                                    context,
-                                    top: 10,
-                                  ),
+                              if (_filteredItems.isEmpty)
+                                Container(
+                                  width: double.infinity,
                                   padding: StoycoScreenSize.symmetric(
                                     context,
                                     horizontal: 8,
+                                    vertical: 10,
                                   ),
                                   child: Text(
-                                    item,
+                                    widget.noResultsText,
                                     style: TextStyle(
-                                      fontFamily: 'Gilroy',
-                                      fontWeight: FontWeight.w600,
+                                      fontFamily: StoycoFontFamilyToken.gilroy,
+                                      fontWeight: FontWeight.w500,
                                       fontSize: StoycoScreenSize.fontSize(
                                         context,
                                         14,
                                       ),
-                                      color: ColorFoundation.text.saDark,
+                                      color: ColorFoundation.text.saLight,
                                     ),
                                   ),
-                                ),
-                              ),
-                              if (!isLast)
-                                Gutter(StoycoScreenSize.height(context, 10)),
+                                )
+                              else
+                                ..._filteredItems.asMap().entries.map((
+                                  MapEntry<int, String> entry,
+                                ) {
+                                  final int index = entry.key;
+                                  final String item = entry.value;
+                                  final bool isLast =
+                                      index == _filteredItems.length - 1;
+
+                                  return Column(
+                                    children: <Widget>[
+                                      GestureDetector(
+                                        onTap: () => _selectItem(item, control),
+                                        child: Container(
+                                          width: double.infinity,
+                                          margin: StoycoScreenSize.fromLTRB(
+                                            context,
+                                            top: 10,
+                                          ),
+                                          padding: StoycoScreenSize.symmetric(
+                                            context,
+                                            horizontal: 8,
+                                          ),
+                                          child: Text(
+                                            item,
+                                            style: TextStyle(
+                                              fontFamily:
+                                                  StoycoFontFamilyToken.gilroy,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize:
+                                                  StoycoScreenSize.fontSize(
+                                                    context,
+                                                    14,
+                                                  ),
+                                              color:
+                                                  ColorFoundation.text.saDark,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      if (!isLast)
+                                        Gutter(
+                                          StoycoScreenSize.height(context, 10),
+                                        ),
+                                    ],
+                                  );
+                                }),
+                              Gutter(StoycoScreenSize.height(context, 10)),
                             ],
-                          );
-                        }),
-                      Gutter(StoycoScreenSize.height(context, 10)),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),

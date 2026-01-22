@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:stoyco_partners_shared/design/responsive/gutter.dart';
+import 'package:stoyco_partners_shared/design/responsive/screen_size/stoyco_screen_size.dart';
 import 'package:stoyco_partners_shared/design/utils/foundations/color_foundation.dart';
-import 'package:stoyco_partners_shared/design/utils/foundations/font_foundation.dart';
+import 'package:stoyco_partners_shared/design/utils/tokens/gen/fonts.gen.dart';
 
 class CustomDropdownField extends StatefulWidget {
   const CustomDropdownField({
@@ -27,7 +28,7 @@ class CustomDropdownField extends StatefulWidget {
 }
 
 class _CustomDropdownFieldState extends State<CustomDropdownField> {
-  var isOpened = false;
+  bool isOpened = false;
   final FocusNode _focusNode = FocusNode();
 
   @override
@@ -74,23 +75,35 @@ class _CustomDropdownFieldState extends State<CustomDropdownField> {
     return ReactiveFormField<String?, String>(
       formControlName: widget.formControlName,
       validationMessages: widget.validationMessages,
-      builder: (field) {
-        final control = field.control;
-        final selectedValue = control.value;
-        final hasError = control.hasErrors && control.touched;
-        final isEnabled = control.enabled;
+      builder: (ReactiveFormFieldState<String?, String> field) {
+        final FormControl<String?> control = field.control;
+        final String? selectedValue = control.value;
+        final bool hasError = control.hasErrors && control.touched;
+        final bool isEnabled = control.enabled;
 
         final bool isPlaceholder = selectedValue == null;
         final String displayText = selectedValue ?? widget.placeholder;
         final TextStyle textStyle = isPlaceholder
-            ? (widget.placeholderStyle ?? FontFoundation.label.medium14SaLight)
-            : (widget.selectedStyle ?? FontFoundation.label.medium14SaDark);
+            ? (widget.placeholderStyle ??
+                  TextStyle(
+                    fontFamily: StoycoFontFamilyToken.gilroy,
+                    fontSize: StoycoScreenSize.fontSize(context, 14),
+                    fontWeight: FontWeight.w500,
+                    color: ColorFoundation.text.saLight,
+                  ))
+            : (widget.selectedStyle ??
+                  TextStyle(
+                    fontFamily: StoycoFontFamilyToken.gilroy,
+                    fontSize: StoycoScreenSize.fontSize(context, 14),
+                    fontWeight: FontWeight.w500,
+                    color: ColorFoundation.text.saDark,
+                  ));
 
         return Focus(
           focusNode: _focusNode,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+            children: <Widget>[
               GestureDetector(
                 onTap: isEnabled ? () => _toggleDropdown(control) : null,
                 child: Container(
@@ -104,15 +117,16 @@ class _CustomDropdownFieldState extends State<CustomDropdownField> {
                       ),
                     ),
                   ),
-                  padding: EdgeInsets.symmetric(vertical: 10),
+                  padding: StoycoScreenSize.symmetric(context, vertical: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                    children: <Widget>[
                       Text(
                         displayText,
                         style: isEnabled
                             ? textStyle
                             : textStyle.copyWith(
+                                fontFamily: StoycoFontFamilyToken.gilroy,
                                 color: textStyle.color?.withOpacity(0.5),
                               ),
                       ),
@@ -130,12 +144,13 @@ class _CustomDropdownFieldState extends State<CustomDropdownField> {
               ),
               if (hasError)
                 Padding(
-                  padding: const EdgeInsets.only(top: 4),
+                  padding: StoycoScreenSize.fromLTRB(context, top: 4),
                   child: Text(
                     field.errorText ?? '',
                     style: TextStyle(
+                      fontFamily: StoycoFontFamilyToken.gilroy,
                       color: ColorFoundation.text.saError,
-                      fontSize: 12,
+                      fontSize: StoycoScreenSize.fontSize(context, 14),
                       fontWeight: FontWeight.w400,
                     ),
                   ),
@@ -146,26 +161,43 @@ class _CustomDropdownFieldState extends State<CustomDropdownField> {
                   color: ColorFoundation.background.saLight,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ...widget.items.asMap().entries.map((entry) {
-                        final index = entry.key;
-                        final item = entry.value;
-                        final isLast = index == widget.items.length - 1;
+                    children: <Widget>[
+                      ...widget.items.asMap().entries.map((
+                        MapEntry<int, String> entry,
+                      ) {
+                        final int index = entry.key;
+                        final String item = entry.value;
+                        final bool isLast = index == widget.items.length - 1;
 
                         return Column(
-                          children: [
+                          children: <Widget>[
                             GestureDetector(
                               onTap: () => _selectItem(item, control),
                               child: Container(
-                                margin: EdgeInsets.only(top: 10),
-                                padding: EdgeInsets.symmetric(horizontal: 8),
+                                margin: StoycoScreenSize.fromLTRB(
+                                  context,
+                                  top: 10,
+                                ),
+                                padding: StoycoScreenSize.symmetric(
+                                  context,
+                                  horizontal: 8,
+                                ),
                                 child: Text(
                                   item,
-                                  style: FontFoundation.label.medium14SaDark,
+                                  style: TextStyle(
+                                    fontFamily: StoycoFontFamilyToken.gilroy,
+                                    fontSize: StoycoScreenSize.fontSize(
+                                      context,
+                                      14,
+                                    ),
+                                    fontWeight: FontWeight.w500,
+                                    color: ColorFoundation.text.saDark,
+                                  ),
                                 ),
                               ),
                             ),
-                            if (!isLast) Gutter(10),
+                            if (!isLast)
+                              Gutter(StoycoScreenSize.height(context, 10)),
                           ],
                         );
                       }),
