@@ -71,60 +71,24 @@ class BubbleGraphPainter extends CustomPainter {
   void _drawCenterBubble(Canvas canvas, Offset center) {
     final double animatedRadius = centerRadius * animation.value;
 
-    // Capa base con gradiente principal de morado
-    final Paint baseGradient = Paint()
+    // Gradiente exacto según especificación CSS
+    final Paint gradientPaint = Paint()
       ..shader = const RadialGradient(
         center: Alignment.center,
         colors: <Color>[
-          Color(0xFFA27FEE),
-          Color(0xFF9F7DEB),
-          Color(0xFF9876E4),
-          Color(0xFF8E6EDB),
-          Color(0xFF8467D2),
-          Color(0xFF795BC5),
-          Color(0xFF6C50B8),
-          Color(0xFF5C43A7),
-          Color(0xFF4D3796),
-          Color(0xFF3E2B85),
-          Color(0xFF331D7F),
+          Color(0xFFA27FEE), // 0%
+          Color(0xFF9F7DEB), // 37%
+          Color(0xFF9876E4), // 54%
+          Color(0xFF8B6BD7), // 66%
+          Color(0xFF795BC5), // 77%
+          Color(0xFF6146AD), // 87%
+          Color(0xFF442C90), // 96%
+          Color(0xFF331D7F), // 100%
         ],
-        stops: <double>[0.0, 0.15, 0.28, 0.40, 0.52, 0.63, 0.73, 0.82, 0.89, 0.95, 1.0],
+        stops: <double>[0.0, 0.37, 0.54, 0.66, 0.77, 0.87, 0.96, 1.0],
       ).createShader(Rect.fromCircle(center: center, radius: animatedRadius));
 
-    canvas.drawCircle(center, animatedRadius, baseGradient);
-
-    // Capa de iluminación central suave
-    final Paint lightOverlay = Paint()
-      ..shader = RadialGradient(
-        center: const Alignment(-0.3, -0.3),
-        radius: 0.6,
-        colors: <Color>[
-          Colors.white.withOpacity(0.25),
-          Colors.white.withOpacity(0.12),
-          Colors.white.withOpacity(0.05),
-          Colors.transparent,
-        ],
-        stops: const <double>[0.0, 0.3, 0.6, 1.0],
-      ).createShader(Rect.fromCircle(center: center, radius: animatedRadius))
-      ..blendMode = BlendMode.overlay;
-
-    canvas.drawCircle(center, animatedRadius, lightOverlay);
-
-    // Capa de profundidad en el borde
-    final Paint edgeShadow = Paint()
-      ..shader = RadialGradient(
-        center: Alignment.center,
-        colors: <Color>[
-          Colors.transparent,
-          Colors.transparent,
-          const Color(0xFF331D7F).withOpacity(0.4),
-          const Color(0xFF1A0E40).withOpacity(0.6),
-        ],
-        stops: const <double>[0.0, 0.7, 0.9, 1.0],
-      ).createShader(Rect.fromCircle(center: center, radius: animatedRadius))
-      ..blendMode = BlendMode.multiply;
-
-    canvas.drawCircle(center, animatedRadius, edgeShadow);
+    canvas.drawCircle(center, animatedRadius, gradientPaint);
   }
 
   void _drawSecondaryBubble(
@@ -149,8 +113,8 @@ class BubbleGraphPainter extends CustomPainter {
       center, // Centrado, no con offset
       pulseRadius,
       borderPaint,
-      dashWidth: 10,
-      dashSpace: 8,
+      dashWidth: 4,
+      dashSpace: 4,
     );
 
     // Brillo animado más sutil

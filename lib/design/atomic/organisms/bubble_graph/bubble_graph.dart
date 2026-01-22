@@ -1,4 +1,3 @@
-import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:stoyco_partners_shared/design/atomic/organisms/bubble_graph/bubble_data.dart';
 import 'package:stoyco_partners_shared/design/atomic/organisms/bubble_graph/bubble_graph_painter.dart';
@@ -76,49 +75,55 @@ class _BubbleGraphState extends State<BubbleGraph>
       return;
     }
 
-    // Radio de la burbuja central basado en el total
-    final double centerRadius = _calculateRadius(widget.total);
+    // Radio base mínimo
+    const double baseRadius = 40.0;
+    
+    // Calcular radio del círculo central basado en cantidad de items
+    // Cada item necesita espacio para su circunferencia
+    const double radiusPerItem = 15.0;
+    final double calculatedCenterRadius = baseRadius + (sortedData.length * radiusPerItem);
 
     // Encontrar el valor máximo de la lista
     final double maxValue = sortedData.first.value;
-
-    // Espacio mínimo entre círculos (en píxeles)
-    const double minSpacing = 15.0;
+    final double minValue = sortedData.last.value;
+    final double valueRange = maxValue - minValue;
 
     // Calcular posiciones concéntricas (todas desde el centro)
     _bubblePositions = <BubblePosition>[];
-    double previousRadius = centerRadius;
+    
+    // El espacio disponible dentro del círculo central (dejando margen para el logo)
+    final double availableRadius = calculatedCenterRadius - baseRadius;
 
     for (int i = 0; i < sortedData.length; i++) {
       final BubbleData data = sortedData[i];
       
-      // Calcular radio proporcional al valor
-      final double proportion = data.value / maxValue;
-      final double maxAvailableRadius = centerRadius * 0.9;
-      final double calculatedRadius = centerRadius + (maxAvailableRadius - centerRadius) * proportion;
-
-      // Asegurar espacio mínimo con el círculo anterior
-      final double radius = math.max(calculatedRadius, previousRadius + minSpacing);
+      // Calcular proporción basada en el valor
+      final double proportion = valueRange > 0 
+          ? (data.value - minValue) / valueRange 
+          : 1.0;
+      
+      // Radio proporcional dentro del espacio disponible
+      // El más grande estará cerca del borde, el más pequeño cerca del centro
+      final double radius = baseRadius + (availableRadius * (1.0 - proportion * 0.85));
 
       _bubblePositions.add(
         BubblePosition(
           data: data,
           radius: radius,
-          offset: Offset.zero, // Todas centradas
+          offset: Offset.zero,
           angle: 0,
         ),
       );
-
-      previousRadius = radius;
     }
   }
 
   double _calculateRadius(double value) {
-    // Calcular radio basado en el área: área = π * r²
-    // r = √(área / π)
-    // Normalizamos el área en base al total
-    final double normalizedArea = (value / widget.total) * 10000;
-    return math.sqrt(normalizedArea / math.pi);
+    // Radio base mínimo
+    const double baseRadius = 40.0;
+    
+    // Calcular radio basado en cantidad de items
+    const double radiusPerItem = 15.0;
+    return baseRadius + (widget.data.length * radiusPerItem);
   }
 
   @override
