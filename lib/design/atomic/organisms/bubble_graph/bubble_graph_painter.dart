@@ -27,8 +27,10 @@ class BubbleGraphPainter extends CustomPainter {
 
     _drawCenterBubble(canvas, center);
 
-    for (final BubblePosition bubble in bubbles) {
-      _drawSecondaryBubble(canvas, center, bubble);
+    if (bubbles.length > 1) {
+      for (final BubblePosition bubble in bubbles) {
+        _drawSecondaryBubble(canvas, center, bubble);
+      }
     }
   }
 
