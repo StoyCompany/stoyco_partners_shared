@@ -7,23 +7,26 @@ class BubbleGraphPainter extends CustomPainter {
     required this.bubbles,
     required this.animation,
     required this.centerRadius,
+    required this.total,
+    required this.maxValue,
   }) : super(repaint: animation);
 
   final List<BubblePosition> bubbles;
   final Animation<double> animation;
   final double centerRadius;
+  final double total;
+  final double maxValue;
 
   @override
   void paint(Canvas canvas, Size size) {
     final Offset center = Offset(size.width / 2, size.height / 2);
 
-    // Dibujar capa exterior con gradiente transparente
-    _drawOuterGradientLayer(canvas, center, size);
+    if (maxValue < total) {
+      _drawOuterGradientLayer(canvas, center, size);
+    }
 
-    // Dibujar burbuja central con gradiente
     _drawCenterBubble(canvas, center);
 
-    // Dibujar burbujas secundarias
     for (final BubblePosition bubble in bubbles) {
       _drawSecondaryBubble(canvas, center, bubble);
     }
@@ -33,22 +36,21 @@ class BubbleGraphPainter extends CustomPainter {
     final double maxRadius = math.min(size.width, size.height) / 2;
     final double animatedRadius = maxRadius * animation.value;
 
-    // Gradiente exacto según especificación CSS
     final Paint gradientPaint = Paint()
       ..shader = const RadialGradient(
         center: Alignment.center,
         colors: <Color>[
-          Color.fromRGBO(255, 255, 255, 0),     // 0%
-          Color.fromRGBO(254, 253, 254, 0),     // 35%
-          Color.fromRGBO(251, 250, 254, 0.04),  // 49%
-          Color.fromRGBO(246, 243, 253, 0.09),  // 59%
-          Color.fromRGBO(239, 234, 252, 0.16),  // 67%
-          Color.fromRGBO(231, 222, 250, 0.26),  // 74%
-          Color.fromRGBO(220, 207, 248, 0.37),  // 81%
-          Color.fromRGBO(207, 189, 246, 0.51),  // 86%
-          Color.fromRGBO(192, 168, 243, 0.68),  // 92%
-          Color.fromRGBO(175, 145, 240, 0.85),  // 97%
-          Color(0xFFA27FEE),                     // 100%
+          Color.fromRGBO(255, 255, 255, 0),
+          Color.fromRGBO(254, 253, 254, 0),
+          Color.fromRGBO(251, 250, 254, 0.04),
+          Color.fromRGBO(246, 243, 253, 0.09),
+          Color.fromRGBO(239, 234, 252, 0.16),
+          Color.fromRGBO(231, 222, 250, 0.26),
+          Color.fromRGBO(220, 207, 248, 0.37),
+          Color.fromRGBO(207, 189, 246, 0.51),
+          Color.fromRGBO(192, 168, 243, 0.68),
+          Color.fromRGBO(175, 145, 240, 0.85),
+          Color(0xFFA27FEE),
         ],
         stops: <double>[
           0.0,
@@ -71,19 +73,18 @@ class BubbleGraphPainter extends CustomPainter {
   void _drawCenterBubble(Canvas canvas, Offset center) {
     final double animatedRadius = centerRadius * animation.value;
 
-    // Gradiente exacto según especificación CSS
     final Paint gradientPaint = Paint()
       ..shader = const RadialGradient(
         center: Alignment.center,
         colors: <Color>[
-          Color(0xFFA27FEE), // 0%
-          Color(0xFF9F7DEB), // 37%
-          Color(0xFF9876E4), // 54%
-          Color(0xFF8B6BD7), // 66%
-          Color(0xFF795BC5), // 77%
-          Color(0xFF6146AD), // 87%
-          Color(0xFF442C90), // 96%
-          Color(0xFF331D7F), // 100%
+          Color(0xFFA27FEE),
+          Color(0xFF9F7DEB),
+          Color(0xFF9876E4),
+          Color(0xFF8B6BD7),
+          Color(0xFF795BC5),
+          Color(0xFF6146AD),
+          Color(0xFF442C90),
+          Color(0xFF331D7F),
         ],
         stops: <double>[0.0, 0.37, 0.54, 0.66, 0.77, 0.87, 0.96, 1.0],
       ).createShader(Rect.fromCircle(center: center, radius: animatedRadius));
@@ -98,11 +99,9 @@ class BubbleGraphPainter extends CustomPainter {
   ) {
     final double animatedRadius = bubble.radius * animation.value;
 
-    // Efecto de pulsación
     final double pulseScale = 1.0 + (math.sin(animation.value * math.pi * 4) * 0.02);
     final double pulseRadius = animatedRadius * pulseScale;
 
-    // Borde dashed más delgado
     final Paint borderPaint = Paint()
       ..color = bubble.data.color
       ..style = PaintingStyle.stroke
@@ -110,14 +109,13 @@ class BubbleGraphPainter extends CustomPainter {
 
     _drawDashedCircle(
       canvas,
-      center, // Centrado, no con offset
+      center,
       pulseRadius,
       borderPaint,
       dashWidth: 4,
       dashSpace: 4,
     );
 
-    // Brillo animado más sutil
     final double glowOpacity = math.sin(animation.value * math.pi * 2) * 0.2 + 0.25;
     final Paint glowPaint = Paint()
       ..color = bubble.data.color.withOpacity(glowOpacity)
@@ -138,12 +136,11 @@ class BubbleGraphPainter extends CustomPainter {
   }) {
     final double circumference = 2 * math.pi * radius;
     final int dashCount = (circumference / (dashWidth + dashSpace)).floor();
-    final double totalDashSpace = dashWidth + dashSpace;
     final double adjustedDashAngle = (dashWidth / circumference) * 2 * math.pi;
     final double adjustedSpaceAngle = (dashSpace / circumference) * 2 * math.pi;
 
     final Path path = Path();
-    double currentAngle = -math.pi / 2; // Comenzar desde arriba
+    double currentAngle = -math.pi / 2;
 
     for (int i = 0; i < dashCount; i++) {
       final double x1 = center.dx + radius * math.cos(currentAngle);
