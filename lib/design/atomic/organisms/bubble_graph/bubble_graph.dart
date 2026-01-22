@@ -34,9 +34,11 @@ class BubbleGraph extends StatefulWidget {
 }
 
 class _BubbleGraphState extends State<BubbleGraph>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late AnimationController _controller;
+  late AnimationController _tooltipController;
   late Animation<double> _animation;
+  late Animation<double> _tooltipAnimation;
   List<BubblePosition> _bubblePositions = <BubblePosition>[];
   BubblePosition? _selectedBubble;
   Offset? _graphCenter;
@@ -49,10 +51,26 @@ class _BubbleGraphState extends State<BubbleGraph>
       duration: widget.animationDuration,
     );
 
+    _tooltipController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
+    );
+
     _animation = CurvedAnimation(
       parent: _controller,
       curve: Curves.easeInOutCubic,
     );
+
+    _tooltipAnimation = CurvedAnimation(
+      parent: _tooltipController,
+      curve: Curves.easeOutCubic,
+    );
+
+    _controller.addStatusListener((AnimationStatus status) {
+      if (status == AnimationStatus.completed) {
+        _tooltipController.forward();
+      }
+    });
 
     _calculateBubblePositions();
     _controller.forward();
@@ -63,6 +81,7 @@ class _BubbleGraphState extends State<BubbleGraph>
     super.didUpdateWidget(oldWidget);
     if (oldWidget.data != widget.data || oldWidget.total != widget.total) {
       _calculateBubblePositions();
+      _tooltipController.reset();
       _controller
         ..reset()
         ..forward();
@@ -72,6 +91,7 @@ class _BubbleGraphState extends State<BubbleGraph>
   @override
   void dispose() {
     _controller.dispose();
+    _tooltipController.dispose();
     super.dispose();
   }
 
@@ -168,7 +188,7 @@ class _BubbleGraphState extends State<BubbleGraph>
                       return;
                     }
                     
-                    final RenderBox renderBox = context.findRenderObject() as RenderBox;
+                    final RenderBox renderBox = context.findRenderObject()! as RenderBox;
                     final Offset localPosition = renderBox.globalToLocal(details.globalPosition);
                     final Offset center = Offset(constraints.maxWidth / 2, constraints.maxHeight / 2);
                     
@@ -251,16 +271,30 @@ class _BubbleGraphState extends State<BubbleGraph>
                   left: 20,
                   right: 0,
                   child: Center(
-                    child: BubbleTooltip(
-                      value: NumbersFormat.formatCompact(widget.total),
-                      lineStartOffset: Offset(
-                        (widget.width ?? 280) / 2,
-                        0,
-                      ),
-                      lineEndOffset: Offset(
-                        (widget.width ?? 280) / 1.5,
-                        0,
-                      ),
+                    child: AnimatedBuilder(
+                      animation: _tooltipAnimation,
+                      builder: (BuildContext context, Widget? child) {
+                        return Opacity(
+                          opacity: _tooltipAnimation.value,
+                          child: Transform.scale(
+                            scale: 0.8 + (_tooltipAnimation.value * 0.2),
+                            child: Transform.translate(
+                              offset: Offset(0, -20 * (1 - _tooltipAnimation.value)),
+                              child: BubbleTooltip(
+                                value: NumbersFormat.formatCompact(widget.total),
+                                lineStartOffset: Offset(
+                                  (widget.width ?? 280) / 2,
+                                  0,
+                                ),
+                                lineEndOffset: Offset(
+                                  (widget.width ?? 280) / 1.5,
+                                  0,
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ),
