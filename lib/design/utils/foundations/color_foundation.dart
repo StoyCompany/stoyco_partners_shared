@@ -9,7 +9,7 @@
 
 import 'package:flutter/material.dart';
 
-import '../tokens/gen/colors.gen.dart';
+import 'package:stoyco_partners_shared/design/utils/tokens/gen/colors.gen.dart';
 
 class ColorFoundation {
   ColorFoundation._internal();
