@@ -80,6 +80,17 @@ class _PieChartStoycoState extends State<PieChartStoyco>
   }
 
   @override
+  void didUpdateWidget(PieChartStoyco oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.sections != widget.sections) {
+      _scaleController.reset();
+      _animationController
+        ..reset()
+        ..forward();
+    }
+  }
+
+  @override
   void dispose() {
     _animationController.dispose();
     _scaleController.dispose();
@@ -108,16 +119,22 @@ class _PieChartStoycoState extends State<PieChartStoyco>
         (double sum, PieChartSectionData section) => sum + section.value,
       );
       
+      // Usar el mismo sistema de gaps uniforme que el painter
+      final double gapRadians = widget.gapDegrees * math.pi / 180;
+      final int numberOfGaps = widget.sections.length;
+      final double totalGapSpace = gapRadians * numberOfGaps;
+      final double availableSpace = (2 * math.pi) - totalGapSpace;
+      
       double currentAngle = 0;
       for (int i = 0; i < widget.sections.length; i++) {
-        final double sweepAngle = (widget.sections[i].value / total) * 2 * math.pi;
-        final double gapRadians = widget.gapDegrees * math.pi / 180;
+        final double sectionProportion = widget.sections[i].value / total;
+        final double sweepAngle = sectionProportion * availableSpace;
         
-        if (angle >= currentAngle && angle < currentAngle + sweepAngle - gapRadians) {
+        if (angle >= currentAngle && angle < currentAngle + sweepAngle) {
           setState(() => _touchedIndex = i);
           return;
         }
-        currentAngle += sweepAngle;
+        currentAngle += sweepAngle + gapRadians;
       }
     }
     
@@ -150,7 +167,7 @@ class _PieChartStoycoState extends State<PieChartStoyco>
           child: RepaintBoundary(
             child: LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {
-                return GestureDetector(
+                return InkWell(
                   onTapDown: (TapDownDetails details) {
                     final RenderBox box = context.findRenderObject()! as RenderBox;
                     _onTapDown(details, box.size);
@@ -178,6 +195,7 @@ class _PieChartStoycoState extends State<PieChartStoyco>
             ),
           ),
         ),
+        Gap(StoycoScreenSize.height(context, 28)),
       ],
     );
   }
