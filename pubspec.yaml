@@ -1,19 +1,20 @@
 name: stoyco_partners_shared
 description: "A new Flutter package project."
 version: 0.0.5
-homepage:
+homepage: null
 
 environment:
   sdk: ^3.10.1
   flutter: ">=1.17.0"
 
 dependencies:
-  flutter:
-    sdk: flutter
   carousel_slider: ^5.1.1
   cupertino_icons: ^1.0.6
   either_dart: ^1.0.0
   equatable: ^2.0.5
+  fl_chart: ^1.1.1
+  flutter:
+    sdk: flutter
   flutter_dotenv: ^6.0.0
   flutter_native_splash: ^2.4.7
   flutter_statusbarcolor_ns: ^0.6.0
@@ -21,18 +22,18 @@ dependencies:
   gap: ^3.0.1
   get: ^4.6.6
   get_storage: ^2.1.1
-  json_annotation: ^4.9.0
   intl_phone_field: ^3.2.0
-  reactive_forms: ^18.2.2
+  json_annotation: ^4.9.0
   pinput: ^6.0.1
+  reactive_forms: ^18.2.2
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  flutter_lints: ^6.0.0
   build_runner: ^2.4.9
   flutter_gen: ^5.4.0
   flutter_gen_runner: ^5.4.0
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
   json_serializable: ^6.7.1
 
 flutter:

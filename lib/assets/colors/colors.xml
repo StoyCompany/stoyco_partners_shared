@@ -98,4 +98,11 @@
     <!-- light menu -->
     <color name="sa-light-menu">#EFDFEF</color>
 
+    <!-- chart -->
+    <color name="blue-chart">#3C80FF</color>
+    <color name="green-chart">#7BC08F</color>
+    <color name="purple-chart">#F6A0FF</color>
+    <color name="black-chart">#43414A</color>
+
+
 </resources>
