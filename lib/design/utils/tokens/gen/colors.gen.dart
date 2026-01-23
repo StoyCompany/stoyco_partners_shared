@@ -23,8 +23,14 @@ class StoycoColorsToken {
   /// Color: #0D0F33
   static const Color black2 = Color(0xFF0D0F33);
 
+  /// Color: #43414A
+  static const Color blackChart = Color(0xFF43414A);
+
   /// Color: #33000000
   static const Color blackTransparent = Color(0x33000000);
+
+  /// Color: #3C80FF
+  static const Color blueChart = Color(0xFF3C80FF);
 
   /// Color: #CDE8F2
   static const Color blue10 = Color(0xFFCDE8F2);
@@ -79,6 +85,9 @@ class StoycoColorsToken {
 
   /// Color: #F8C3BE
   static const Color failed = Color(0xFFF8C3BE);
+
+  /// Color: #7BC08F
+  static const Color greenChart = Color(0xFF7BC08F);
 
   /// Color: #76DBC3
   static const Color greenClear = Color(0xFF76DBC3);
@@ -142,6 +151,9 @@ class StoycoColorsToken {
 
   /// Color: #253341
   static const Color neutralsN3 = Color(0xFF253341);
+
+  /// Color: #F6A0FF
+  static const Color purpleChart = Color(0xFFF6A0FF);
 
   /// Color: #14121D
   static const Color saDark = Color(0xFF14121D);

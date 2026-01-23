@@ -130,6 +130,11 @@ class _Background {
   final Color fandom = StoycoColorsToken.saLightMenu;
 
   final Color divider = StoycoColorsToken.saLight.withOpacity(0.3);
+
+  final Color chartBlue = StoycoColorsToken.blueChart;
+  final Color chartGreen = StoycoColorsToken.greenChart;
+  final Color chartPurple = StoycoColorsToken.purpleChart;
+  final Color chartBlack = StoycoColorsToken.blackChart;
 }
 
 class _Border {
