@@ -62,9 +62,15 @@ class CustomFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     return ReactiveFormField<String, String>(
       formControlName: formControlName,
-      builder: (field) {
-        final control = field.control;
-        final hasError = control.hasErrors && control.touched;
+      builder: (ReactiveFormFieldState<String, String> field) {
+        final FormControl<String> control = field.control;
+        final bool hasError = control.hasErrors && control.touched;
+
+        // Get the current error message
+        final String? errorMessage = control.hasErrors && control.touched
+            ? control.errors.entries.first.value?.toString()
+            : null;
+        final bool isEmptyError = errorMessage?.isEmpty ?? false;
 
         return isPassword
             ? _PasswordField(
@@ -79,6 +85,7 @@ class CustomFormField extends StatelessWidget {
                 onTap: onTap,
                 readOnly: readOnly,
                 hasError: hasError,
+                isEmptyError: isEmptyError,
                 textColor: textColor,
                 placeholder: placeholder,
                 placeholderColor: placeholderColor,
@@ -155,12 +162,14 @@ class CustomFormField extends StatelessWidget {
                           width: 2,
                         ),
                       ),
-                      errorStyle: TextStyle(
-                        fontFamily: 'Gilroy',
-                        fontWeight: FontWeight.w600,
-                        fontSize: StoycoScreenSize.fontSize(context, 12),
-                        color: ColorFoundation.text.saError,
-                      ),
+                      errorStyle: isEmptyError
+                          ? const TextStyle(height: 0, fontSize: 0)
+                          : TextStyle(
+                              fontFamily: 'Gilroy',
+                              fontWeight: FontWeight.w600,
+                              fontSize: StoycoScreenSize.fontSize(context, 12),
+                              color: ColorFoundation.text.saError,
+                            ),
                       errorMaxLines: 2,
                       prefixText: prefixText,
                       prefixStyle:
@@ -183,6 +192,7 @@ class _PasswordField extends StatefulWidget {
   const _PasswordField({
     required this.formControlName,
     required this.hasError,
+    required this.isEmptyError,
     this.validationMessages,
     this.keyboardType,
     this.inputFormatters,
@@ -206,6 +216,7 @@ class _PasswordField extends StatefulWidget {
 
   final String formControlName;
   final bool hasError;
+  final bool isEmptyError;
   final Map<String, ValidationMessageFunction>? validationMessages;
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
@@ -298,12 +309,14 @@ class _PasswordFieldState extends State<_PasswordField> {
                 width: 2,
               ),
             ),
-            errorStyle: TextStyle(
-              fontFamily: 'Gilroy',
-              fontWeight: FontWeight.w600,
-              fontSize: StoycoScreenSize.fontSize(context, 12),
-              color: ColorFoundation.text.saError,
-            ),
+            errorStyle: widget.isEmptyError
+                ? const TextStyle(height: 0, fontSize: 0)
+                : TextStyle(
+                    fontFamily: 'Gilroy',
+                    fontWeight: FontWeight.w600,
+                    fontSize: StoycoScreenSize.fontSize(context, 12),
+                    color: ColorFoundation.text.saError,
+                  ),
             errorMaxLines: 2,
             prefixText: widget.prefixText,
             prefixStyle:

@@ -51,6 +51,7 @@
     <color name="greenMenu">#B9E9DE</color>
     <color name="greenTable">#E7F6F3</color>
     <color name="sa-success">#819384</color>
+    <color name="sa-green">#7bb187</color>
 
     <!-- colors for gradients, color 1 and color 2 -->
     <color name="header1">#AAD3E1</color>
