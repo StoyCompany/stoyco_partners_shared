@@ -16,6 +16,8 @@ class BarHorizontalChart extends StatefulWidget {
     super.key,
     required this.data,
     required this.categoryConfigs,
+    required this.rangeDate,
+    required this.filtersSelector,
     this.height,
     this.barHeight = 24,
     this.barSpacing = 0,
@@ -26,6 +28,8 @@ class BarHorizontalChart extends StatefulWidget {
 
   final List<BarHorizontalGroupData> data;
   final List<BarHorizontalCategoryConfig> categoryConfigs;
+  final String rangeDate;
+  final List<String> filtersSelector;
   final double? height;
   final double barHeight;
   final double barSpacing;
@@ -157,15 +161,15 @@ class _BarHorizontalChartState extends State<BarHorizontalChart>
             width: StoycoScreenSize.screenWidth(context),
             child: Row(
               children: <Widget>[
-                const Expanded(
+                Expanded(
                   child: ChipMonotoneNoise(
-                    message: 'Selector ',
+                    message: widget.filtersSelector.join(', '),
                   ),
                 ),
                 Gap(StoycoScreenSize.width(context, 16)),
-                const Expanded(
+                Expanded(
                   child: ChipMonotoneNoise(
-                    message: 'Inicio: 01/03/2023 - Hoy',
+                    message: widget.rangeDate,
                   ),
                 ),
               ],
