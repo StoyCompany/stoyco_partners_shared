@@ -4,23 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:stoyco_partners_shared/design/atomic/molecules/chart_legend/chart_legend.dart';
 import 'package:stoyco_partners_shared/design/models/chart_legend_item_model.dart';
+import 'package:stoyco_partners_shared/design/models/pie_chart_section_data.dart';
 import 'package:stoyco_partners_shared/design/responsive/screen_size/stoyco_screen_size.dart';
 
-/// Data model for a pie chart section.
-class PieChartSectionData {
-  const PieChartSectionData({
-    required this.value,
-    required this.color,
-    this.label,
-  });
-
-  final double value;
-  final Color color;
-  final String? label;
-}
-
-class PieChartStoyco extends StatefulWidget {
-  const PieChartStoyco({
+class PieChart extends StatefulWidget {
+  const PieChart({
     super.key,
     required this.sections,
     this.size = 300,
@@ -36,10 +24,10 @@ class PieChartStoyco extends StatefulWidget {
   final Duration animationDuration;
 
   @override
-  State<PieChartStoyco> createState() => _PieChartStoycoState();
+  State<PieChart> createState() => _PieChartState();
 }
 
-class _PieChartStoycoState extends State<PieChartStoyco>
+class _PieChartState extends State<PieChart>
     with TickerProviderStateMixin {
   late AnimationController _animationController;
   late AnimationController _scaleController;
@@ -80,7 +68,7 @@ class _PieChartStoycoState extends State<PieChartStoyco>
   }
 
   @override
-  void didUpdateWidget(PieChartStoyco oldWidget) {
+  void didUpdateWidget(PieChart oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.sections != widget.sections) {
       _scaleController.reset();
