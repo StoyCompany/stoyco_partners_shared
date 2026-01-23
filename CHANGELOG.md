@@ -1,3 +1,10 @@
+## 0.0.8
+
+- Features
+
+- Add sa-green color 
+- Enhance CustomModal with icon and improved error handling
+
 ## 0.0.7
 
 - Features

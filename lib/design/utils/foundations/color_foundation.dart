@@ -55,6 +55,7 @@ class _Text {
   final Color saTextDisabled = StoycoColorsToken.saTextDisabled;
   final Color saError = StoycoColorsToken.saError;
   final Color saSuccess = StoycoColorsToken.saSuccess;
+  final Color saGreen = StoycoColorsToken.saGreen;
 }
 
 class _Background {
