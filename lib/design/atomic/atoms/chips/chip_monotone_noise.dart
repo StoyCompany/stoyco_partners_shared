@@ -6,23 +6,21 @@ import 'package:stoyco_partners_shared/design/utils/foundations/color_foundation
 import 'package:stoyco_partners_shared/design/utils/tokens/gen/fonts.gen.dart';
 
 class ChipMonotoneNoise extends StatelessWidget {
-  const ChipMonotoneNoise({super.key, required this.message});
+  const ChipMonotoneNoise({super.key, required this.message, this.padding});
 
   final String message;
+  final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context) {
+
     return ClipRRect(
-      borderRadius: BorderRadius.circular(
-        StoycoScreenSize.radius(context, 15),
-      ),
+      borderRadius: BorderRadius.circular(StoycoScreenSize.radius(context, 15)),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 0.2, sigmaY: 0.2),
           child: Container(
-            width: StoycoScreenSize.width(context, 60),
-            height: StoycoScreenSize.height(context, 20),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(
                 StoycoScreenSize.radius(context, 15),
@@ -36,11 +34,14 @@ class ChipMonotoneNoise extends StatelessWidget {
             child: Stack(
               children: <Widget>[
                 Positioned.fill(
-                  child: CustomPaint(
-                    painter: _MonotoneNoisePainter(),
-                  ),
+                  child: CustomPaint(painter: _MonotoneNoisePainter()),
                 ),
-                Center(
+                Padding(
+                  padding: padding ?? StoycoScreenSize.symmetric(
+                    context,
+                    horizontal: StoycoScreenSize.width(context, 12),
+                    vertical: StoycoScreenSize.height(context, 4),
+                  ),
                   child: Text(
                     message,
                     maxLines: 1,
@@ -85,12 +86,8 @@ class _MonotoneNoisePainter extends CustomPainter {
     for (int i = 0; i < pointCount; i++) {
       final double x = (nextRandom() % 10000) / 10000 * size.width;
       final double y = (nextRandom() % 10000) / 10000 * size.height;
-      
-      canvas.drawCircle(
-        Offset(x, y),
-        pointSize / 2,
-        noisePaint,
-      );
+
+      canvas.drawCircle(Offset(x, y), pointSize / 2, noisePaint);
     }
   }
 
