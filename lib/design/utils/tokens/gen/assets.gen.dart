@@ -53,8 +53,12 @@ class $LibAssetsIconsGen {
   /// File path: lib/assets/icons/error.svg
   SvgGenImage get error => const SvgGenImage('lib/assets/icons/error.svg');
 
+  /// File path: lib/assets/icons/left_arrow.svg
+  SvgGenImage get leftArrow =>
+      const SvgGenImage('lib/assets/icons/left_arrow.svg');
+
   /// List of all assets
-  List<SvgGenImage> get values => [error];
+  List<SvgGenImage> get values => [error, leftArrow];
 }
 
 class $LibAssetsImagesGen {

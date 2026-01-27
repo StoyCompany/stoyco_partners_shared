@@ -57,6 +57,7 @@ class _Text {
   final Color saTextDisabled = StoycoColorsToken.saTextDisabled;
   final Color saError = StoycoColorsToken.saError;
   final Color saSuccess = StoycoColorsToken.saSuccess;
+  final Color saGreen = StoycoColorsToken.saGreen;
 
   final Color itemMenuBlue = StoycoColorsToken.itemMenuBlue;
   final Color itemMenuRed = StoycoColorsToken.itemMenuRed;

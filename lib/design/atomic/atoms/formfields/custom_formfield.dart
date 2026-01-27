@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:stoyco_partners_shared/design/responsive/screen_size/stoyco_screen_size.dart';
 import 'package:stoyco_partners_shared/design/utils/foundations/color_foundation.dart';
-import 'package:stoyco_partners_shared/design/utils/foundations/font_foundation.dart';
 
 /// A custom reactive text form field for Stoyco Partners.
 ///
@@ -62,9 +62,15 @@ class CustomFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     return ReactiveFormField<String, String>(
       formControlName: formControlName,
-      builder: (field) {
-        final control = field.control;
-        final hasError = control.hasErrors && control.touched;
+      builder: (ReactiveFormFieldState<String, String> field) {
+        final FormControl<String> control = field.control;
+        final bool hasError = control.hasErrors && control.touched;
+
+        // Get the current error message
+        final String? errorMessage = control.hasErrors && control.touched
+            ? control.errors.entries.first.value?.toString()
+            : null;
+        final bool isEmptyError = errorMessage?.isEmpty ?? false;
 
         return isPassword
             ? _PasswordField(
@@ -79,6 +85,7 @@ class CustomFormField extends StatelessWidget {
                 onTap: onTap,
                 readOnly: readOnly,
                 hasError: hasError,
+                isEmptyError: isEmptyError,
                 textColor: textColor,
                 placeholder: placeholder,
                 placeholderColor: placeholderColor,
@@ -103,7 +110,10 @@ class CustomFormField extends StatelessWidget {
                 maxLength: maxLength,
                 onTap: onTap,
                 readOnly: readOnly,
-                style: FontFoundation.label.semiBold14SaDark.copyWith(
+                style: TextStyle(
+                  fontFamily: 'Gilroy',
+                  fontWeight: FontWeight.w600,
+                  fontSize: StoycoScreenSize.fontSize(context, 14),
                   color: hasError
                       ? ColorFoundation.text.saError
                       : (textColor ?? ColorFoundation.text.saDark),
@@ -112,14 +122,15 @@ class CustomFormField extends StatelessWidget {
                     decoration ??
                     InputDecoration(
                       contentPadding: prefixText != null
-                          ? const EdgeInsets.only(left: 4, top: 10)
+                          ? StoycoScreenSize.fromLTRB(context, left: 4, top: 10)
                           : null,
                       hintText: placeholder,
-                      hintStyle: placeholderColor != null
-                          ? FontFoundation.label.medium14SaDark.copyWith(
-                              color: placeholderColor,
-                            )
-                          : FontFoundation.label.medium14SaDark,
+                      hintStyle: TextStyle(
+                        fontFamily: 'Gilroy',
+                        fontWeight: FontWeight.w500,
+                        fontSize: StoycoScreenSize.fontSize(context, 14),
+                        color: placeholderColor ?? ColorFoundation.text.saDark,
+                      ),
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
                           color: underlineColor ?? ColorFoundation.text.saDark,
@@ -151,11 +162,24 @@ class CustomFormField extends StatelessWidget {
                           width: 2,
                         ),
                       ),
-                      errorStyle: FontFoundation.label.semiBold12SaError,
+                      errorStyle: isEmptyError
+                          ? const TextStyle(height: 0, fontSize: 0)
+                          : TextStyle(
+                              fontFamily: 'Gilroy',
+                              fontWeight: FontWeight.w600,
+                              fontSize: StoycoScreenSize.fontSize(context, 12),
+                              color: ColorFoundation.text.saError,
+                            ),
                       errorMaxLines: 2,
                       prefixText: prefixText,
                       prefixStyle:
-                          prefixStyle ?? FontFoundation.label.medium14SaDark,
+                          prefixStyle ??
+                          TextStyle(
+                            fontFamily: 'Gilroy',
+                            fontWeight: FontWeight.w500,
+                            fontSize: StoycoScreenSize.fontSize(context, 14),
+                            color: ColorFoundation.text.saDark,
+                          ),
                     ),
               );
       },
@@ -168,6 +192,7 @@ class _PasswordField extends StatefulWidget {
   const _PasswordField({
     required this.formControlName,
     required this.hasError,
+    required this.isEmptyError,
     this.validationMessages,
     this.keyboardType,
     this.inputFormatters,
@@ -191,6 +216,7 @@ class _PasswordField extends StatefulWidget {
 
   final String formControlName;
   final bool hasError;
+  final bool isEmptyError;
   final Map<String, ValidationMessageFunction>? validationMessages;
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
@@ -233,7 +259,10 @@ class _PasswordFieldState extends State<_PasswordField> {
       maxLength: widget.maxLength,
       onTap: widget.onTap,
       readOnly: widget.readOnly,
-      style: FontFoundation.label.semiBold14SaDark.copyWith(
+      style: TextStyle(
+        fontFamily: 'Gilroy',
+        fontWeight: FontWeight.w600,
+        fontSize: StoycoScreenSize.fontSize(context, 14),
         color: widget.hasError
             ? ColorFoundation.text.saError
             : (widget.textColor ?? ColorFoundation.text.saDark),
@@ -242,14 +271,15 @@ class _PasswordFieldState extends State<_PasswordField> {
           widget.decoration ??
           InputDecoration(
             contentPadding: widget.prefixText != null
-                ? const EdgeInsets.only(left: 4, top: 10)
-                : const EdgeInsets.symmetric(vertical: 12),
+                ? StoycoScreenSize.fromLTRB(context, left: 4, top: 10)
+                : StoycoScreenSize.symmetric(context, vertical: 12),
             hintText: widget.placeholder,
-            hintStyle: widget.placeholderColor != null
-                ? FontFoundation.label.medium14SaDark.copyWith(
-                    color: widget.placeholderColor,
-                  )
-                : FontFoundation.label.medium14SaDark,
+            hintStyle: TextStyle(
+              fontFamily: 'Gilroy',
+              fontWeight: FontWeight.w500,
+              fontSize: StoycoScreenSize.fontSize(context, 14),
+              color: widget.placeholderColor ?? ColorFoundation.text.saDark,
+            ),
             enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(
                 color: widget.underlineColor ?? ColorFoundation.text.saDark,
@@ -279,26 +309,39 @@ class _PasswordFieldState extends State<_PasswordField> {
                 width: 2,
               ),
             ),
-            errorStyle: FontFoundation.label.semiBold12SaError,
+            errorStyle: widget.isEmptyError
+                ? const TextStyle(height: 0, fontSize: 0)
+                : TextStyle(
+                    fontFamily: 'Gilroy',
+                    fontWeight: FontWeight.w600,
+                    fontSize: StoycoScreenSize.fontSize(context, 12),
+                    color: ColorFoundation.text.saError,
+                  ),
             errorMaxLines: 2,
             prefixText: widget.prefixText,
             prefixStyle:
-                widget.prefixStyle ?? FontFoundation.label.medium14SaDark,
+                widget.prefixStyle ??
+                TextStyle(
+                  fontFamily: 'Gilroy',
+                  fontWeight: FontWeight.w500,
+                  fontSize: StoycoScreenSize.fontSize(context, 14),
+                  color: ColorFoundation.text.saDark,
+                ),
             suffixIcon: IconButton(
               padding: EdgeInsets.zero,
               constraints: const BoxConstraints(),
               icon: Icon(
                 _obscureText ? Icons.visibility : Icons.visibility_off,
-                size: 24,
+                size: StoycoScreenSize.fontSize(context, 24),
                 color: widget.iconColor ?? ColorFoundation.text.saDark,
               ),
               onPressed: () {
                 setState(() => _obscureText = !_obscureText);
               },
             ),
-            suffixIconConstraints: const BoxConstraints(
-              minWidth: 40,
-              minHeight: 40,
+            suffixIconConstraints: BoxConstraints(
+              minWidth: StoycoScreenSize.width(context, 40),
+              minHeight: StoycoScreenSize.height(context, 40),
             ),
           ),
     );

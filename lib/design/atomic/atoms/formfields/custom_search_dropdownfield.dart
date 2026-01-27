@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:stoyco_partners_shared/design/responsive/gutter.dart';
+import 'package:stoyco_partners_shared/design/responsive/screen_size/stoyco_screen_size.dart';
 import 'package:stoyco_partners_shared/design/utils/foundations/color_foundation.dart';
-import 'package:stoyco_partners_shared/design/utils/foundations/font_foundation.dart';
+import 'package:stoyco_partners_shared/design/utils/tokens/gen/fonts.gen.dart';
 
 class CustomSearchDropdownfield extends StatefulWidget {
   const CustomSearchDropdownfield({
@@ -35,7 +36,7 @@ class _CustomSearchDropdownfieldState extends State<CustomSearchDropdownfield> {
   var isOpened = false;
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
-  List<String> _filteredItems = [];
+  List<String> _filteredItems = <String>[];
 
   @override
   void initState() {
@@ -99,23 +100,35 @@ class _CustomSearchDropdownfieldState extends State<CustomSearchDropdownfield> {
     return ReactiveFormField<String?, String>(
       formControlName: widget.formControlName,
       validationMessages: widget.validationMessages,
-      builder: (field) {
-        final control = field.control;
-        final selectedValue = control.value;
-        final hasError = control.hasErrors && control.touched;
-        final isEnabled = control.enabled;
+      builder: (ReactiveFormFieldState<String?, String> field) {
+        final FormControl<String?> control = field.control;
+        final String? selectedValue = control.value;
+        final bool hasError = control.hasErrors && control.touched;
+        final bool isEnabled = control.enabled;
 
         final bool isPlaceholder = selectedValue == null;
         final String displayText = selectedValue ?? widget.placeholder;
         final TextStyle textStyle = isPlaceholder
-            ? (widget.placeholderStyle ?? FontFoundation.label.medium14SaLight)
-            : (widget.selectedStyle ?? FontFoundation.label.medium14SaDark);
+            ? (widget.placeholderStyle ??
+                  TextStyle(
+                    fontFamily: StoycoFontFamilyToken.gilroy,
+                    fontWeight: FontWeight.w500,
+                    fontSize: StoycoScreenSize.fontSize(context, 14),
+                    color: ColorFoundation.text.saLight,
+                  ))
+            : (widget.selectedStyle ??
+                  TextStyle(
+                    fontFamily: StoycoFontFamilyToken.gilroy,
+                    fontWeight: FontWeight.w600,
+                    fontSize: StoycoScreenSize.fontSize(context, 14),
+                    color: ColorFoundation.text.saDark,
+                  ));
 
         return Focus(
           focusNode: _focusNode,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+            children: <Widget>[
               GestureDetector(
                 onTap: isEnabled ? () => _toggleDropdown(control) : null,
                 child: Container(
@@ -129,10 +142,10 @@ class _CustomSearchDropdownfieldState extends State<CustomSearchDropdownfield> {
                       ),
                     ),
                   ),
-                  padding: EdgeInsets.symmetric(vertical: 10),
+                  padding: StoycoScreenSize.symmetric(context, vertical: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                    children: <Widget>[
                       Text(
                         displayText,
                         style: isEnabled
@@ -156,31 +169,51 @@ class _CustomSearchDropdownfieldState extends State<CustomSearchDropdownfield> {
               // Validation Error
               if (hasError)
                 Padding(
-                  padding: const EdgeInsets.only(top: 4),
+                  padding: StoycoScreenSize.fromLTRB(context, top: 4),
                   child: Text(
                     field.errorText ?? '',
-                    style: FontFoundation.label.semiBold12SaError,
+                    style: TextStyle(
+                      fontFamily: StoycoFontFamilyToken.gilroy,
+                      fontWeight: FontWeight.w600,
+                      fontSize: StoycoScreenSize.fontSize(context, 12),
+                      color: ColorFoundation.text.saError,
+                    ),
                   ),
                 ),
               if (isOpened)
                 Container(
                   width: double.infinity,
+                  constraints: BoxConstraints(
+                    maxHeight: StoycoScreenSize.height(context, 200),
+                  ),
                   color: ColorFoundation.background.saLight,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
                       // Search bar
                       Padding(
-                        padding: EdgeInsets.symmetric(
+                        padding: StoycoScreenSize.symmetric(
+                          context,
                           horizontal: 8,
                           vertical: 6,
                         ),
                         child: TextField(
                           controller: _searchController,
-                          style: FontFoundation.label.medium14SaDark,
+                          style: TextStyle(
+                            fontFamily: StoycoFontFamilyToken.gilroy,
+                            fontWeight: FontWeight.w500,
+                            fontSize: StoycoScreenSize.fontSize(context, 14),
+                            color: ColorFoundation.text.saDark,
+                          ),
                           decoration: InputDecoration(
                             hintText: widget.searchPlaceholder,
-                            hintStyle: FontFoundation.label.medium14SaLight,
+                            hintStyle: TextStyle(
+                              fontFamily: StoycoFontFamilyToken.gilroy,
+                              fontWeight: FontWeight.w500,
+                              fontSize: StoycoScreenSize.fontSize(context, 14),
+                              color: ColorFoundation.text.saLight,
+                            ),
                             prefixIcon: Icon(
                               Icons.search,
                               color: ColorFoundation.border.saDark,
@@ -203,47 +236,92 @@ class _CustomSearchDropdownfieldState extends State<CustomSearchDropdownfield> {
                                 width: 1,
                               ),
                             ),
-                            contentPadding: EdgeInsets.symmetric(vertical: 12),
+                            contentPadding: StoycoScreenSize.symmetric(
+                              context,
+                              vertical: 12,
+                            ),
                           ),
                         ),
                       ),
-                      // Items list
-                      if (_filteredItems.isEmpty)
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 10,
-                          ),
-                          child: Text(
-                            widget.noResultsText,
-                            style: FontFoundation.label.medium14SaLight,
-                          ),
-                        )
-                      else
-                        ..._filteredItems.asMap().entries.map((entry) {
-                          final index = entry.key;
-                          final item = entry.value;
-                          final isLast = index == _filteredItems.length - 1;
-
-                          return Column(
-                            children: [
-                              GestureDetector(
-                                onTap: () => _selectItem(item, control),
-                                child: Container(
-                                  margin: EdgeInsets.only(top: 10),
-                                  padding: EdgeInsets.symmetric(horizontal: 8),
-                                  child: Text(
-                                    item,
-                                    style:
-                                        FontFoundation.label.semiBold14SaDark,
+                      // Items list - now scrollable
+                      Flexible(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              if (_filteredItems.isEmpty)
+                                Container(
+                                  width: double.infinity,
+                                  padding: StoycoScreenSize.symmetric(
+                                    context,
+                                    horizontal: 8,
+                                    vertical: 10,
                                   ),
-                                ),
-                              ),
-                              if (!isLast) Gutter(10),
+                                  child: Text(
+                                    widget.noResultsText,
+                                    style: TextStyle(
+                                      fontFamily: StoycoFontFamilyToken.gilroy,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: StoycoScreenSize.fontSize(
+                                        context,
+                                        14,
+                                      ),
+                                      color: ColorFoundation.text.saLight,
+                                    ),
+                                  ),
+                                )
+                              else
+                                ..._filteredItems.asMap().entries.map((
+                                  MapEntry<int, String> entry,
+                                ) {
+                                  final int index = entry.key;
+                                  final String item = entry.value;
+                                  final bool isLast =
+                                      index == _filteredItems.length - 1;
+
+                                  return Column(
+                                    children: <Widget>[
+                                      GestureDetector(
+                                        onTap: () => _selectItem(item, control),
+                                        child: Container(
+                                          width: double.infinity,
+                                          margin: StoycoScreenSize.fromLTRB(
+                                            context,
+                                            top: 10,
+                                          ),
+                                          padding: StoycoScreenSize.symmetric(
+                                            context,
+                                            horizontal: 8,
+                                          ),
+                                          child: Text(
+                                            item,
+                                            style: TextStyle(
+                                              fontFamily:
+                                                  StoycoFontFamilyToken.gilroy,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize:
+                                                  StoycoScreenSize.fontSize(
+                                                    context,
+                                                    14,
+                                                  ),
+                                              color:
+                                                  ColorFoundation.text.saDark,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      if (!isLast)
+                                        Gutter(
+                                          StoycoScreenSize.height(context, 10),
+                                        ),
+                                    ],
+                                  );
+                                }),
+                              Gutter(StoycoScreenSize.height(context, 10)),
                             ],
-                          );
-                        }),
-                      Gutter(10),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
