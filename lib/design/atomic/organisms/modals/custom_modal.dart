@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stoyco_partners_shared/design/layout.dart';
+import 'package:stoyco_partners_shared/design/layout_all_imports.dart';
 import 'package:stoyco_partners_shared/design/responsive/screen_size/stoyco_screen_size.dart';
 import 'package:stoyco_partners_shared/design/utils/foundations/color_foundation.dart';
 import 'package:stoyco_partners_shared/design/utils/foundations/font_foundation.dart';

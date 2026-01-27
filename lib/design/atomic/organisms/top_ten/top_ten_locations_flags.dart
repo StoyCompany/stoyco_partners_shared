@@ -89,7 +89,7 @@ class _TopTenLocationsFlagsState extends State<TopTenLocationsFlags>
           if (hasMultipleValues) _ColorHeader(values: _sortedData.first.values),
 
           // Lista de items
-          ...List.generate(_sortedData.length, (int index) {
+          ...List<Widget>.generate(_sortedData.length, (int index) {
             final double delay = index * 0.1;
             return _TopTenLocationItem(
               data: _sortedData[index],
@@ -161,7 +161,7 @@ class _ColorHeader extends StatelessWidget {
                 ),
               ),
             );
-          }).toList(),
+          }),
         ],
       ),
     );

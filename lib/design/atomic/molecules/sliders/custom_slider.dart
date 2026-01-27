@@ -20,29 +20,29 @@ class CustomSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [
+      children: <Widget>[
         CarouselSlider.builder(
           carouselController: _controller,
           options: CarouselOptions(
             viewportFraction: 1.0,
             enableInfiniteScroll: false,
-            onPageChanged: (index, reason) => onPageChanged(index),
+            onPageChanged: (int index, CarouselPageChangedReason reason) => onPageChanged(index),
           ),
           itemCount: sliderItems.length,
-          itemBuilder: (context, itemIndex, pageViewIndex) =>
+          itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) =>
               sliderItems[itemIndex],
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: sliderItems.asMap().entries.map((entry) {
-            final isCurrentSlide = _current == entry.key;
+          children: sliderItems.asMap().entries.map((MapEntry<int, Widget> entry) {
+            final bool isCurrentSlide = _current == entry.key;
 
             return GestureDetector(
               onTap: () => _controller.animateToPage(entry.key),
               child: Container(
                 width: isCurrentSlide ? 14 : 10,
                 height: isCurrentSlide ? 14 : 10,
-                margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: ColorFoundation.text.saLight.withOpacity(

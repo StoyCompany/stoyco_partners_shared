@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:stoyco_partners_shared/design/atomic/atoms/buttons/custom_button.dart';
 import 'package:stoyco_partners_shared/design/utils/foundations/color_foundation.dart';
 import 'package:stoyco_partners_shared/design/utils/tokens/button_tokens.dart';
-import 'custom_button.dart';
 
 class StoycoButton extends StatelessWidget {
   const StoycoButton({
@@ -41,39 +41,6 @@ class StoycoButton extends StatelessWidget {
          child != null || label != null,
          'Provide either a child or a label',
        );
-
-  final VoidCallback? onPressed;
-  final String? label;
-  final Widget? child;
-  final Widget? leading;
-  final Widget? trailing;
-
-  final ButtonVariant variant;
-  final ButtonSize size;
-
-  final bool fullWidth;
-  final bool loading;
-  final String loadingLabel;
-  final bool enabled;
-  final double? elevation;
-  final bool autofocus;
-  final FocusNode? focusNode;
-  final MouseCursor? mouseCursor;
-  final String? semanticsLabel;
-  final int? maxLines;
-
-  final Color? backgroundColor;
-  final Color? foregroundColor;
-  final Color? disabledBackgroundColor;
-  final Color? disabledForegroundColor;
-  final Color? loadingBackgroundColor;
-  final Color? loadingForegroundColor;
-  final BorderSide? borderSide;
-  final BorderRadius? borderRadius;
-  final EdgeInsetsGeometry? padding;
-  final double? width;
-  final double? height;
-  final TextStyle? textStyle;
 
   const StoycoButton.primary({
     Key? key,
@@ -264,20 +231,53 @@ class StoycoButton extends StatelessWidget {
          textStyle: textStyle,
        );
 
+  final VoidCallback? onPressed;
+  final String? label;
+  final Widget? child;
+  final Widget? leading;
+  final Widget? trailing;
+
+  final ButtonVariant variant;
+  final ButtonSize size;
+
+  final bool fullWidth;
+  final bool loading;
+  final String loadingLabel;
+  final bool enabled;
+  final double? elevation;
+  final bool autofocus;
+  final FocusNode? focusNode;
+  final MouseCursor? mouseCursor;
+  final String? semanticsLabel;
+  final int? maxLines;
+
+  final Color? backgroundColor;
+  final Color? foregroundColor;
+  final Color? disabledBackgroundColor;
+  final Color? disabledForegroundColor;
+  final Color? loadingBackgroundColor;
+  final Color? loadingForegroundColor;
+  final BorderSide? borderSide;
+  final BorderRadius? borderRadius;
+  final EdgeInsetsGeometry? padding;
+  final double? width;
+  final double? height;
+  final TextStyle? textStyle;
+
   @override
   Widget build(BuildContext context) {
-    final tokens = ButtonTokens.resolve(variant, size);
+    final ButtonStyleSpec tokens = ButtonTokens.resolve(variant, size);
 
-    Color customDisabledBackgroundColor = ColorFoundation.background.saDisabled;
-    Color customDisabledForegroundColor = ColorFoundation.text.saTextDisabled;
+    final Color customDisabledBackgroundColor = ColorFoundation.background.saDisabled;
+    final Color customDisabledForegroundColor = ColorFoundation.text.saTextDisabled;
 
-    final effectiveBackgroundColor = loading
+    final Color? effectiveBackgroundColor = loading
         ? (loadingBackgroundColor ??
               tokens.loadingBackgroundColor ??
               tokens.backgroundColor)
         : (backgroundColor ?? tokens.backgroundColor);
 
-    final effectiveForegroundColor = loading
+    final Color? effectiveForegroundColor = loading
         ? (loadingForegroundColor ??
               tokens.loadingForegroundColor ??
               tokens.foregroundColor)
@@ -306,7 +306,7 @@ class StoycoButton extends StatelessWidget {
       focusNode: focusNode,
       mouseCursor: mouseCursor,
       semanticsLabel: semanticsLabel ?? label,
-      textStyle: (textStyle ?? tokens.textStyle),
+      textStyle: textStyle ?? tokens.textStyle,
       maxLines: maxLines,
       child: child,
     );

@@ -1,49 +1,46 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:stoyco_partners_shared/design/responsive/breakpoint.dart';
-import 'package:stoyco_partners_shared/design/responsive/layout.dart';
-import 'package:stoyco_partners_shared/design/responsive/pixel.dart';
-import 'package:stoyco_partners_shared/design/responsive/value.dart';
+import 'package:stoyco_partners_shared/design/layout_all_imports.dart';
 
+/// LayoutFormat es una clase base abstracta que define el formato de diseño para diferentes tamaños de pantalla.
+/// Proporciona métodos y propiedades que deben ser implementados por las subclases para definir el comportamiento específico del diseño.
 abstract class LayoutFormat {
   const LayoutFormat();
 
-  /// The size of the media in logical pixels (e.g, the size of the screen).
-  /// Logical pixels are roughly the same visual size across devices.
-  /// Physical pixels are the size of the actual hardware pixels on the device.
-  /// A [pixel] defines whether to use physical or logical pixels.
+  /// El tamaño del medio en píxeles lógicos (por ejemplo, el tamaño de la pantalla).
+  /// Los píxeles lógicos tienen aproximadamente el mismo tamaño visual en todos los dispositivos.
+  /// Los píxeles físicos son el tamaño de los píxeles de hardware reales en el dispositivo.
+  /// Un [pixel] define si se deben usar píxeles físicos o lógicos.
+  LayoutPixelFormat get pixel => LayoutPixelFormat.physical;
 
-  final LayoutPixelFormat pixel = LayoutPixelFormat.physical;
+  /// Un punto de quiebre es el rango de tamaños de pantalla predeterminados que tienen
+  /// requisitos de diseño específicos. En un rango de punto de quiebre dado, el diseño se ajusta
+  /// para adaptarse al tamaño y la orientación de la pantalla.
+  Map<LayoutBreakpoint, double> get breakpoints => const <LayoutBreakpoint, double>{};
 
-  /// A breakpoint is the range of predetermined screen sizes that have specific
-  /// layout requirements. At a given breakpoint range, the layout adjusts
-  /// to suit the screen size and orientation.
-  final Map<LayoutBreakpoint, double> breakpoints =
-      const <LayoutBreakpoint, double>{};
+  /// El contenido se coloca en las áreas de la pantalla que contienen columnas.
+  /// El ancho de las columnas se define utilizando porcentajes, en lugar de valores fijos,
+  /// para permitir que el contenido se adapte de manera flexible a cualquier tamaño de pantalla.
+  /// El número de columnas que se muestran en la cuadrícula está determinado por el
+  /// rango de puntos de quiebre (un rango de tamaños de pantalla predeterminados) en el que se ve una pantalla,
+  /// ya sea un punto de quiebre para móvil, tableta u otro tamaño.
+  LayoutValue<int> get columns => const ConstantLayoutValue<int>(12);
 
-  /// Content is placed in the areas of the screen that contain columns.
-  /// Column width is defined using percentages, rather than fixed values,
-  /// to allow content to flexibly adapt to any screen size.
-  /// The number of columns displayed in the grid is determined by the
-  /// breakpoint range (a range of predetermined screen sizes) at which a screen is viewed,
-  /// whether it’s a breakpoint for mobile, tablet, or another size.
-  final LayoutValue<int> columns = const ConstantLayoutValue(12);
+  /// Los gutters son los espacios entre columnas. Ayudan a separar el contenido.
+  /// Los anchos de los gutters son valores fijos en cada rango de puntos de quiebre.
+  /// Para adaptarse mejor a la pantalla, el ancho del gutter puede cambiar en diferentes puntos de quiebre.
+  /// Los gutters más anchos son más apropiados para pantallas más grandes, ya que crean más espacio en blanco entre columnas.
+  LayoutValue<double> get gutter => const ConstantLayoutValue<double>(0);
 
-  ///  Gutters are the spaces between columns. They help separate content.
-  ///  Gutter widths are fixed values at each breakpoint range.
-  /// To better adapt to the screen, gutter width can change at different breakpoints.
-  /// Wider gutters are more appropriate for larger screens, as they create more whitespace between columns.
-  final LayoutValue<double> gutter = const ConstantLayoutValue(0);
+  /// Los márgenes son el espacio entre el contenido y los bordes izquierdo y derecho de la pantalla.
+  /// Los anchos de los márgenes se definen como valores fijos en cada rango de puntos de quiebre.
+  /// Para adaptarse mejor a la pantalla, el ancho del margen puede cambiar en diferentes puntos de quiebre.
+  /// Los márgenes más anchos son más apropiados para pantallas más grandes, ya que crean más espacio en blanco alrededor del perímetro del contenido.
+  LayoutValue<double> get margin => const ConstantLayoutValue<double>(0);
 
-  /// Margins are the space between content and the left and right edges of the screen.
-  /// Margin widths are defined as fixed values at each breakpoint range.
-  /// To better adapt to the screen, the margin width can change at different breakpoints.
-  /// Wider margins are more appropriate for larger screens, as they create more whitespace around the perimeter of content.
-  final LayoutValue<double> margin = const ConstantLayoutValue(0);
-
-  /// Max width allow in FixedWidth widget.
-  final LayoutValue<double> maxWidth = LayoutValue.screenWidth;
+  /// Ancho máximo permitido en el widget de ancho fijo.
+  LayoutValue<double> get maxWidth => LayoutValue.screenWidth;
 
   VisualDensity visualDensity(BuildContext context) {
     return Theme.of(context).visualDensity;
@@ -65,13 +62,12 @@ abstract class LayoutFormat {
   ) {
     final double width = layoutSize.width;
     final LayoutContext context = LayoutContext(
-      size: layoutSize,
-      breakpoint: breakpointForWidth(layoutSize.width),
-      devicePixelRatio: mediaQuery.devicePixelRatio,
-      visualDensity: visualDensity,
-    );
+        size: layoutSize,
+        breakpoint: breakpointForWidth(layoutSize.width),
+        devicePixelRatio: mediaQuery.devicePixelRatio,
+        visualDensity: visualDensity);
     final double maxWidth = min(width, this.maxWidth.resolveForLayout(context));
-    final double spacing = this.gutter.resolveForLayout(context);
+    final double spacing = gutter.resolveForLayout(context);
     final double margin = this.margin.resolveForLayout(context);
     final int columns = this.columns.resolveForLayout(context);
     return LayoutData(
@@ -89,9 +85,8 @@ abstract class LayoutFormat {
 
   @protected
   LayoutBreakpoint breakpointForWidth(double width) {
-    // Iterate all breakpoints from biggest to smallest
-    for (final LayoutBreakpoint breakpoint
-        in LayoutBreakpoint.values.reversed) {
+    // Itera todos los puntos de quiebre de mayor a menor
+    for (final LayoutBreakpoint breakpoint in LayoutBreakpoint.values.reversed) {
       if (breakpoints[breakpoint] != null &&
           width >= breakpoints[breakpoint]!) {
         return breakpoint;

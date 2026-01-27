@@ -25,15 +25,15 @@ class _LoadingScreenState extends State<LoadingScreen>
       vsync: this,
     );
 
-    _rotationAnimation = TweenSequence<double>([
-      TweenSequenceItem(
+    _rotationAnimation = TweenSequence<double>(<TweenSequenceItem<double>>[
+      TweenSequenceItem<double>(
         tween: Tween<double>(
           begin: 0.0,
           end: math.pi * 2,
         ).chain(CurveTween(curve: Curves.easeInOutBack)),
         weight: 80,
       ),
-      TweenSequenceItem(
+      TweenSequenceItem<double>(
         tween: Tween<double>(
           begin: math.pi * 2,
           end: math.pi * 2,
@@ -42,29 +42,29 @@ class _LoadingScreenState extends State<LoadingScreen>
       ),
     ]).animate(_controller);
 
-    _scaleAnimation = TweenSequence<double>([
-      TweenSequenceItem(
+    _scaleAnimation = TweenSequence<double>(<TweenSequenceItem<double>>[
+      TweenSequenceItem<double>(
         tween: Tween<double>(
           begin: 1.0,
           end: 1.1,
         ).chain(CurveTween(curve: Curves.easeOut)),
         weight: 25,
       ),
-      TweenSequenceItem(
+      TweenSequenceItem<double>(
         tween: Tween<double>(
           begin: 1.1,
           end: 0.95,
         ).chain(CurveTween(curve: Curves.easeInOut)),
         weight: 25,
       ),
-      TweenSequenceItem(
+      TweenSequenceItem<double>(
         tween: Tween<double>(
           begin: 0.95,
           end: 1.05,
         ).chain(CurveTween(curve: Curves.elasticOut)),
         weight: 30,
       ),
-      TweenSequenceItem(
+      TweenSequenceItem<double>(
         tween: Tween<double>(
           begin: 1.05,
           end: 1.0,
@@ -89,7 +89,7 @@ class _LoadingScreenState extends State<LoadingScreen>
       body: Center(
         child: AnimatedBuilder(
           animation: _controller,
-          builder: (context, child) {
+          builder: (BuildContext context, Widget? child) {
             return Transform(
               alignment: Alignment.center,
               transform: Matrix4.identity()

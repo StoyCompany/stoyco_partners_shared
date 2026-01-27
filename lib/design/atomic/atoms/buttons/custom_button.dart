@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:stoyco_partners_shared/design/layout.dart';
+import 'package:stoyco_partners_shared/design/responsive/gutter.dart';
 
 class CustomButton extends StatelessWidget {
   const CustomButton({
@@ -73,8 +73,8 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isDisabled = onPressed == null && !loading;
+    final ThemeData theme = Theme.of(context);
+    final bool isDisabled = onPressed == null && !loading;
 
     final ColorScheme colors = theme.colorScheme;
     final Color resolvedBg = (isDisabled
@@ -91,9 +91,9 @@ class CustomButton extends StatelessWidget {
         padding ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 12);
 
     final TextStyle resolvedTextStyle =
-        (textStyle ??
+        textStyle ??
         theme.textTheme.labelLarge ??
-        const TextStyle(fontSize: 16, fontWeight: FontWeight.w600));
+        const TextStyle(fontSize: 16, fontWeight: FontWeight.w600);
 
     final Color finalTextColor = textStyle?.color ?? resolvedFg;
 
@@ -104,7 +104,7 @@ class CustomButton extends StatelessWidget {
     final Widget body = loading
         ? Row(
             mainAxisSize: MainAxisSize.min,
-            children: [
+            children: <Widget>[
               SizedBox(
                 height: 16,
                 width: 16,
@@ -113,7 +113,7 @@ class CustomButton extends StatelessWidget {
                   radius: 12,
                 ),
               ),
-              Gutter(8),
+              const Gutter(8),
               DefaultTextStyle(
                 style: resolvedTextStyle.copyWith(color: finalTextColor),
                 child: content,
@@ -126,12 +126,12 @@ class CustomButton extends StatelessWidget {
             textStyle: resolvedTextStyle.copyWith(color: finalTextColor),
           );
 
-    final shape = RoundedRectangleBorder(
+    final RoundedRectangleBorder shape = RoundedRectangleBorder(
       borderRadius: resolvedRadius,
       side: borderSide ?? BorderSide.none,
     );
 
-    final button = AnimatedContainer(
+    final AnimatedContainer button = AnimatedContainer(
       duration: animationDuration,
       curve: animationCurve,
       height: height,
@@ -180,24 +180,26 @@ class CustomButton extends StatelessWidget {
     required Widget content,
     required TextStyle textStyle,
   }) {
-    final hasLeading = leading != null;
-    final hasTrailing = trailing != null;
+    final bool hasLeading = leading != null;
+    final bool hasTrailing = trailing != null;
 
-    if (!hasLeading && !hasTrailing) return content;
+    if (!hasLeading && !hasTrailing) {
+      return content;
+    }
 
     return Row(
       mainAxisSize: MainAxisSize.min,
-      children: [
-        if (hasLeading) ...[
+      children: <Widget>[
+        if (hasLeading) ...<Widget>[
           IconTheme.merge(
             data: IconThemeData(size: textStyle.fontSize ?? 16),
             child: leading!,
           ),
-          Gutter(8),
+          const Gutter(8),
         ],
         DefaultTextStyle(style: textStyle, child: content),
-        if (hasTrailing) ...[
-          Gutter(8),
+        if (hasTrailing) ...<Widget>[
+          const Gutter(8),
           IconTheme.merge(
             data: IconThemeData(size: textStyle.fontSize ?? 16),
             child: trailing!,

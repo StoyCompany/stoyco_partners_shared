@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:stoyco_partners_shared/design/responsive/breakpoint.dart';
-import 'package:stoyco_partners_shared/design/responsive/format.dart';
-import 'package:stoyco_partners_shared/design/responsive/formats/material_format.dart';
-import 'package:stoyco_partners_shared/design/responsive/value.dart';
+import 'package:stoyco_partners_shared/design/layout_all_imports.dart';
 
 class LayoutContext {
+
   LayoutContext({
     required this.size,
     required this.breakpoint,
@@ -19,35 +17,43 @@ class LayoutContext {
   final VisualDensity visualDensity;
 }
 
-/// A widget that generates the responsive layout data for its children.
+/// Un widget que genera los datos de diseño responsivo para sus hijos.
 ///
-/// It calculates a [LayoutData] according to the max width of this widget and
-/// the `format` definded.
+/// Calcula un [LayoutData] de acuerdo con el ancho máximo de este widget y
+/// el `formato` definido.
 ///
-/// This layout `format` is [MaterialFormat] by default, but it is possible to
-/// use [BoostrapFormat] or build your own [LayoutFormat]
-/// that defines how the layout should behave for different width sizes.
+/// El `formato` de este diseño es [MaterialFormat] por defecto, pero es posible
+/// usar [BoostrapFormat] o construir su propio [LayoutFormat]
+/// que define cómo debe comportarse el diseño para diferentes tamaños de ancho.
 ///
-/// This [LayoutData] it is accesible from any widget down the tree through
-/// `Layout.of(context)` or `context.layout`
+/// Este [LayoutData] es accesible desde cualquier widget en el árbol a través de
+/// `Layout.of(context)` o `context.layout`
 ///
-/// To generate responsive values for different sizes, use the following method
+/// Para generar valores responsivos para diferentes tamaños, use el siguiente método
 /// `context.layout.value(xs: 1, s:2, m: 3, l:4, xl:5)`
 ///
-/// See also:
-///   - [Margin] A widget that adds a responsive padding to its child. This
-///     padding is calculated by `Layout`
+/// Véase también:
+///   - [Margin] Un widget que agrega un padding responsivo a su hijo. Este
+///     padding es calculado por `Layout`
+
+/// Layout es un widget stateful que proporciona un contexto de diseño para su hijo.
+/// El padding se calcula utilizando `Layout`.
 class Layout extends StatefulWidget {
-  const Layout({super.key, required this.child, this.format});
+  const Layout({
+    super.key,
+    required this.child,
+    this.format,
+  });
 
   final Widget child;
-
   final LayoutFormat? format;
 
+  /// Obtiene los datos de diseño del contexto.
   static LayoutData of(BuildContext context) => context
       .dependOnInheritedWidgetOfExactType<_LayoutInheritedWidget>()!
       .data;
 
+  /// Obtiene los datos de diseño del contexto, si están disponibles.
   static LayoutData? maybeOf(BuildContext context) => context
       .dependOnInheritedWidgetOfExactType<_LayoutInheritedWidget>()
       ?.data;
@@ -56,6 +62,7 @@ class Layout extends StatefulWidget {
   _LayoutState createState() => _LayoutState();
 }
 
+/// LayoutData es una clase que contiene los datos resueltos del diseño.
 class LayoutData extends LayoutContext {
   LayoutData({
     required super.size,
@@ -64,15 +71,17 @@ class LayoutData extends LayoutContext {
     required this.margin,
     required this.format,
     required this.gutter,
-    required this.breakpoint,
+    required super.breakpoint,
     required this.columns,
     required this.maxWidth,
-  }) : fluidMargin = (size.width - maxWidth) / 2,
-       super(breakpoint: breakpoint);
+  }): fluidMargin = (size.width - maxWidth) / 2,
+      _breakpoint = breakpoint;
+
+  final LayoutBreakpoint _breakpoint;
 
   /// Breakpoint screen size for the given context
   @override
-  final LayoutBreakpoint breakpoint;
+  LayoutBreakpoint get breakpoint => _breakpoint;
 
   /// Layout format that defines the properties for the given context
   final LayoutFormat format;
@@ -96,17 +105,10 @@ class LayoutData extends LayoutContext {
   double get fullMargin => fluidMargin + margin;
 
   /// Total margin based on the relative margin and the fluid margin
-  EdgeInsets get horizontalMargin =>
-      EdgeInsets.symmetric(horizontal: fullMargin);
+  EdgeInsets get horizontalMargin => EdgeInsets.symmetric(horizontal: fullMargin);
 
   T value<T>({required T xs, T? sm, T? md, T? lg, T? xl}) {
-    return LayoutValue<T>(
-      xs: xs,
-      sm: sm,
-      md: md,
-      lg: lg,
-      xl: xl,
-    ).resolveForLayout(this);
+    return LayoutValue<T>(xs: xs, sm: sm, md: md, lg: lg, xl: xl).resolveForLayout(this);
   }
 
   T resolve<T>(LayoutValue<T> value) {
@@ -128,15 +130,13 @@ class _LayoutState extends State<Layout> {
       builder: (BuildContext context, BoxConstraints constraints) {
         final Size size = constraints.biggest;
 
-        final MediaQueryData mediaQuery =
-            MediaQuery.maybeOf(context) ??
-            MediaQueryData.fromView(View.of(context));
+        final MediaQueryData mediaQuery = MediaQuery.maybeOf(context) ??
+            MediaQueryData.fromView(
+              View.of(context),
+            );
         final VisualDensity visualDensity = format.visualDensity(context);
         final LayoutData data = format.resolve(
-          format.resolveSize(size, mediaQuery),
-          mediaQuery,
-          visualDensity,
-        );
+            format.resolveSize(size, mediaQuery), mediaQuery, visualDensity);
         return _LayoutInheritedWidget(
           key: _key,
           data: data,
@@ -148,6 +148,7 @@ class _LayoutState extends State<Layout> {
 }
 
 class _LayoutInheritedWidget extends InheritedWidget {
+
   const _LayoutInheritedWidget({
     super.key,
     required this.data,
