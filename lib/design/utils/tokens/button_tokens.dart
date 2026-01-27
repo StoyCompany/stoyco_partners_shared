@@ -7,17 +7,6 @@ enum ButtonVariant { primary, secondary, outline, ghost, destructive }
 enum ButtonSize { xs, sm, md, lg, xl }
 
 class ButtonStyleSpec {
-  final Color? backgroundColor;
-  final Color? foregroundColor;
-  final Color? disabledBackgroundColor;
-  final Color? disabledForegroundColor;
-  final Color? loadingBackgroundColor;
-  final Color? loadingForegroundColor;
-  final BorderSide? borderSide;
-  final BorderRadius borderRadius;
-  final EdgeInsetsGeometry padding;
-  final double height;
-  final TextStyle textStyle;
 
   const ButtonStyleSpec({
     required this.backgroundColor,
@@ -32,13 +21,20 @@ class ButtonStyleSpec {
     required this.height,
     required this.textStyle,
   });
+  final Color? backgroundColor;
+  final Color? foregroundColor;
+  final Color? disabledBackgroundColor;
+  final Color? disabledForegroundColor;
+  final Color? loadingBackgroundColor;
+  final Color? loadingForegroundColor;
+  final BorderSide? borderSide;
+  final BorderRadius borderRadius;
+  final EdgeInsetsGeometry padding;
+  final double height;
+  final TextStyle textStyle;
 }
 
 class _SizeSpec {
-  final double height;
-  final BorderRadius radius;
-  final EdgeInsetsGeometry padding;
-  final double fontSize;
 
   const _SizeSpec({
     required this.height,
@@ -46,6 +42,10 @@ class _SizeSpec {
     required this.padding,
     required this.fontSize,
   });
+  final double height;
+  final BorderRadius radius;
+  final EdgeInsetsGeometry padding;
+  final double fontSize;
 }
 
 class ButtonTokens {
@@ -90,7 +90,7 @@ class ButtonTokens {
   }
 
   static ButtonStyleSpec resolve(ButtonVariant variant, ButtonSize size) {
-    final s = _sizes(size);
+    final _SizeSpec s = _sizes(size);
 
     switch (variant) {
       case ButtonVariant.primary:

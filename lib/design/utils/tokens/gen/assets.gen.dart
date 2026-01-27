@@ -47,6 +47,9 @@ class $LibAssetsColorsGen {
 class $LibAssetsIconsGen {
   const $LibAssetsIconsGen();
 
+  /// Directory path: lib/assets/icons/common
+  $LibAssetsIconsCommonGen get common => const $LibAssetsIconsCommonGen();
+
   /// File path: lib/assets/icons/error.svg
   SvgGenImage get error => const SvgGenImage('lib/assets/icons/error.svg');
 
@@ -71,6 +74,21 @@ class $LibAssetsImagesGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [stoycoLogoWhite, stoycoOnboardingLogo];
+}
+
+class $LibAssetsIconsCommonGen {
+  const $LibAssetsIconsCommonGen();
+
+  /// File path: lib/assets/icons/common/interrogation.svg
+  SvgGenImage get interrogation =>
+      const SvgGenImage('lib/assets/icons/common/interrogation.svg');
+
+  /// File path: lib/assets/icons/common/stoyco.svg
+  SvgGenImage get stoyco =>
+      const SvgGenImage('lib/assets/icons/common/stoyco.svg');
+
+  /// List of all assets
+  List<SvgGenImage> get values => [interrogation, stoyco];
 }
 
 class StoycoAssetsToken {

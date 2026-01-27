@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'gen/fonts.gen.dart';
+import 'package:stoyco_partners_shared/design/utils/tokens/gen/fonts.gen.dart';
 
 /// A utility class that provides access to different text style tokens for the app's typography.
 ///

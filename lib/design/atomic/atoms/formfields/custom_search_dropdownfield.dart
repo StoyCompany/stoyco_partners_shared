@@ -33,7 +33,7 @@ class CustomSearchDropdownfield extends StatefulWidget {
 }
 
 class _CustomSearchDropdownfieldState extends State<CustomSearchDropdownfield> {
-  var isOpened = false;
+  bool isOpened = false;
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
   List<String> _filteredItems = <String>[];
@@ -58,7 +58,7 @@ class _CustomSearchDropdownfieldState extends State<CustomSearchDropdownfield> {
     setState(() {
       _filteredItems = widget.items
           .where(
-            (item) => item.toLowerCase().contains(
+            (String item) => item.toLowerCase().contains(
               _searchController.text.toLowerCase(),
             ),
           )

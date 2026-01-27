@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:stoyco_partners_shared/design/responsive/layout.dart';
+import 'package:stoyco_partners_shared/design/layout_all_imports.dart';
+
+/// Gutter es un widget que proporciona un espacio (gap) entre elementos en un diseño.
+/// El tamaño del espacio puede ser personalizado o determinado por el contexto de diseño.
 
 class Gutter extends StatelessWidget {
-  const Gutter([this.extent, Key? key]) : super(key: key);
+  const Gutter([
+    this.extent,
+    Key? key,
+  ]) : super(key: key);
 
   final double? extent;
 
+  /// Método estático que separa una lista de widgets con un espacio (gap) entre ellos.
   static List<Widget> separateChildren({
     required List<Widget> children,
     double? extent,
-  }) => children.separate(extent);
+  }) =>
+      children.separate(extent);
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +26,13 @@ class Gutter extends StatelessWidget {
   }
 }
 
+/// SliverGutter es un widget que proporciona un espacio (gap) entre elementos en un diseño sliver.
+/// El tamaño del espacio puede ser personalizado o determinado por el contexto de diseño.
 class SliverGutter extends StatelessWidget {
-  const SliverGutter([this.extent, Key? key]) : super(key: key);
+  const SliverGutter([
+    this.extent,
+    Key? key,
+  ]) : super(key: key);
   final double? extent;
 
   @override
@@ -29,16 +42,10 @@ class SliverGutter extends StatelessWidget {
 }
 
 extension ListGutter on List<Widget> {
-  List<Widget> separate([double? extent]) {
-    if (isEmpty || length == 1) return this;
-
-    final result = <Widget>[];
-    for (var i = 0; i < length; i++) {
-      result.add(this[i]);
-      if (i < length - 1) {
-        result.add(Gutter(extent));
-      }
-    }
-    return result;
-  }
+  List<Widget> separate(double? extend) => length <= 1
+    ? this
+    : sublist(1).fold(
+      <Widget>[first],
+      (List<Widget> r, Widget element) => <Widget>[...r, Gutter(extend), element],
+    );
 }

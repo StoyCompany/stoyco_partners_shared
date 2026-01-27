@@ -54,7 +54,7 @@ class CustomFormField extends StatelessWidget {
   final Color? iconColor;
   final String? prefixText;
   final TextStyle? prefixStyle;
-  final ReactiveFormFieldCallback? onTap;
+  final ReactiveFormFieldCallback<dynamic>? onTap;
   final bool readOnly;
   final InputDecoration? decoration;
 
@@ -224,7 +224,7 @@ class _PasswordField extends StatefulWidget {
   final bool autofocus;
   final FocusNode? focusNode;
   final int? maxLength;
-  final ReactiveFormFieldCallback? onTap;
+  final ReactiveFormFieldCallback<dynamic>? onTap;
   final bool readOnly;
   final Color? textColor;
   final String? placeholder;
