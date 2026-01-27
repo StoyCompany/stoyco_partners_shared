@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:stoyco_partners_shared/design/atomic/molecules/content_card_description/content_card_description.dart';
-import 'package:stoyco_partners_shared/design/layout.dart';
+import 'package:stoyco_partners_shared/design/responsive/gutter.dart';
 import 'package:stoyco_partners_shared/design/responsive/screen_size/stoyco_screen_size.dart';
 
 class ContentCard extends StatelessWidget {
