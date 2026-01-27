@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:stoyco_partners_shared/design/atomic/atoms/content_stat/content_stat.dart';
+import 'package:stoyco_partners_shared/design/models/content_card_model.dart';
 import 'package:stoyco_partners_shared/design/responsive/gutter.dart';
 import 'package:stoyco_partners_shared/design/responsive/screen_size/stoyco_screen_size.dart';
 import 'package:stoyco_partners_shared/design/utils/foundations/color_foundation.dart';
 import 'package:stoyco_partners_shared/design/utils/tokens/gen/assets.gen.dart';
 import 'package:stoyco_partners_shared/design/utils/tokens/gen/fonts.gen.dart';
 
-//Todo: refactor hardcoded strings and numbers.
 class ContentCardDescription extends StatelessWidget {
-  const ContentCardDescription({super.key});
+  const ContentCardDescription({super.key, required this.data});
+
+  final ContentCardModel data;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +31,7 @@ class ContentCardDescription extends StatelessWidget {
                 children: Gutter.separateChildren(
                   children: <Widget>[
                     Text(
-                      'Nombre del video muy largo dos renglones max',
+                      data.contentTitle,
                       style: TextStyle(
                         fontFamily: StoycoFontFamilyToken.gilroy,
                         fontSize: StoycoScreenSize.fontSize(context, 12),
@@ -40,7 +42,7 @@ class ContentCardDescription extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(
-                      'Descripcion del video lorem ipsum, lorem ipsum lorem lorem ipsum lorem lor ipsum lorem ipsum lore',
+                      data.contentDescription,
                       style: TextStyle(
                         fontFamily: StoycoFontFamilyToken.gilroy,
                         fontSize: StoycoScreenSize.fontSize(context, 12),
@@ -51,7 +53,7 @@ class ContentCardDescription extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(
-                      '01-10-15',
+                      data.contentDate,
                       style: TextStyle(
                         fontFamily: StoycoFontFamilyToken.gilroy,
                         fontSize: StoycoScreenSize.fontSize(context, 8),
@@ -75,7 +77,7 @@ class ContentCardDescription extends StatelessWidget {
                       width: StoycoScreenSize.width(context, 14),
                       height: StoycoScreenSize.height(context, 14),
                     ),
-                    stat: '1.3k',
+                    stat: data.contentLikes,
                   ),
                   ContentStat(
                     icon: StoycoAssetsToken.lib.assets.icons.share.svg(
@@ -83,7 +85,7 @@ class ContentCardDescription extends StatelessWidget {
                       width: StoycoScreenSize.width(context, 14),
                       height: StoycoScreenSize.height(context, 14),
                     ),
-                    stat: '856',
+                    stat: data.contentShares,
                   ),
                   ContentStat(
                     icon: Icon(
@@ -91,7 +93,7 @@ class ContentCardDescription extends StatelessWidget {
                       color: ColorFoundation.text.saLight,
                       size: StoycoScreenSize.height(context, 14),
                     ),
-                    stat: '15.8k',
+                    stat: data.contentViews,
                   ),
                 ],
                 extent: StoycoScreenSize.height(context, 5),
