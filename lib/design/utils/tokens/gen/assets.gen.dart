@@ -50,12 +50,31 @@ class $LibAssetsIconsGen {
   /// File path: lib/assets/icons/error.svg
   SvgGenImage get error => const SvgGenImage('lib/assets/icons/error.svg');
 
+  /// File path: lib/assets/icons/error_x.svg
+  SvgGenImage get errorX => const SvgGenImage('lib/assets/icons/error_x.svg');
+
   /// File path: lib/assets/icons/left_arrow.svg
   SvgGenImage get leftArrow =>
       const SvgGenImage('lib/assets/icons/left_arrow.svg');
 
+  /// File path: lib/assets/icons/like.svg
+  SvgGenImage get like => const SvgGenImage('lib/assets/icons/like.svg');
+
+  /// File path: lib/assets/icons/mail_box.svg
+  SvgGenImage get mailBox => const SvgGenImage('lib/assets/icons/mail_box.svg');
+
+  /// File path: lib/assets/icons/share.svg
+  SvgGenImage get share => const SvgGenImage('lib/assets/icons/share.svg');
+
   /// List of all assets
-  List<SvgGenImage> get values => [error, leftArrow];
+  List<SvgGenImage> get values => [
+    error,
+    errorX,
+    leftArrow,
+    like,
+    mailBox,
+    share,
+  ];
 }
 
 class $LibAssetsImagesGen {

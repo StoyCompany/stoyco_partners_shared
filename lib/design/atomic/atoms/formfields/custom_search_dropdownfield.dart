@@ -15,6 +15,7 @@ class CustomSearchDropdownfield extends StatefulWidget {
     this.placeholder = 'Elegir un opción',
     this.searchPlaceholder = 'Buscar...',
     this.noResultsText = 'No se encontraron resultados',
+    this.emptyStateText = 'No hay elementos disponibles',
     this.validationMessages,
   });
 
@@ -23,6 +24,7 @@ class CustomSearchDropdownfield extends StatefulWidget {
   final String placeholder;
   final String searchPlaceholder;
   final String noResultsText;
+  final String emptyStateText;
   final TextStyle? placeholderStyle;
   final TextStyle? selectedStyle;
   final Map<String, ValidationMessageFunction>? validationMessages;
@@ -33,7 +35,7 @@ class CustomSearchDropdownfield extends StatefulWidget {
 }
 
 class _CustomSearchDropdownfieldState extends State<CustomSearchDropdownfield> {
-  var isOpened = false;
+  bool isOpened = false;
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
   List<String> _filteredItems = <String>[];
@@ -58,7 +60,7 @@ class _CustomSearchDropdownfieldState extends State<CustomSearchDropdownfield> {
     setState(() {
       _filteredItems = widget.items
           .where(
-            (item) => item.toLowerCase().contains(
+            (String item) => item.toLowerCase().contains(
               _searchController.text.toLowerCase(),
             ),
           )
@@ -105,6 +107,7 @@ class _CustomSearchDropdownfieldState extends State<CustomSearchDropdownfield> {
         final String? selectedValue = control.value;
         final bool hasError = control.hasErrors && control.touched;
         final bool isEnabled = control.enabled;
+        final bool isEmptyList = widget.items.isEmpty;
 
         final bool isPlaceholder = selectedValue == null;
         final String displayText = selectedValue ?? widget.placeholder;
@@ -191,65 +194,90 @@ class _CustomSearchDropdownfieldState extends State<CustomSearchDropdownfield> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      // Search bar
-                      Padding(
-                        padding: StoycoScreenSize.symmetric(
-                          context,
-                          horizontal: 8,
-                          vertical: 6,
-                        ),
-                        child: TextField(
-                          controller: _searchController,
-                          style: TextStyle(
-                            fontFamily: StoycoFontFamilyToken.gilroy,
-                            fontWeight: FontWeight.w500,
-                            fontSize: StoycoScreenSize.fontSize(context, 14),
-                            color: ColorFoundation.text.saDark,
+                      // Search bar - only show if items list is not empty
+                      if (!isEmptyList)
+                        Padding(
+                          padding: StoycoScreenSize.symmetric(
+                            context,
+                            horizontal: 8,
+                            vertical: 6,
                           ),
-                          decoration: InputDecoration(
-                            hintText: widget.searchPlaceholder,
-                            hintStyle: TextStyle(
+                          child: TextField(
+                            controller: _searchController,
+                            style: TextStyle(
                               fontFamily: StoycoFontFamilyToken.gilroy,
                               fontWeight: FontWeight.w500,
                               fontSize: StoycoScreenSize.fontSize(context, 14),
-                              color: ColorFoundation.text.saLight,
+                              color: ColorFoundation.text.saDark,
                             ),
-                            prefixIcon: Icon(
-                              Icons.search,
-                              color: ColorFoundation.border.saDark,
-                            ),
-                            border: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: ColorFoundation.border.saDark,
-                                width: 1,
+                            decoration: InputDecoration(
+                              hintText: widget.searchPlaceholder,
+                              hintStyle: TextStyle(
+                                fontFamily: StoycoFontFamilyToken.gilroy,
+                                fontWeight: FontWeight.w500,
+                                fontSize: StoycoScreenSize.fontSize(
+                                  context,
+                                  14,
+                                ),
+                                color: ColorFoundation.text.saLight,
                               ),
-                            ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
+                              prefixIcon: Icon(
+                                Icons.search,
                                 color: ColorFoundation.border.saDark,
-                                width: 1,
                               ),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: ColorFoundation.border.saDark,
-                                width: 1,
+                              border: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: ColorFoundation.border.saDark,
+                                  width: 1,
+                                ),
                               ),
-                            ),
-                            contentPadding: StoycoScreenSize.symmetric(
-                              context,
-                              vertical: 12,
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: ColorFoundation.border.saDark,
+                                  width: 1,
+                                ),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: ColorFoundation.border.saDark,
+                                  width: 1,
+                                ),
+                              ),
+                              contentPadding: StoycoScreenSize.symmetric(
+                                context,
+                                vertical: 12,
+                              ),
                             ),
                           ),
                         ),
-                      ),
                       // Items list - now scrollable
                       Flexible(
                         child: SingleChildScrollView(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              if (_filteredItems.isEmpty)
+                              if (isEmptyList)
+                                Container(
+                                  width: double.infinity,
+                                  padding: StoycoScreenSize.symmetric(
+                                    context,
+                                    horizontal: 8,
+                                    vertical: 10,
+                                  ),
+                                  child: Text(
+                                    widget.emptyStateText,
+                                    style: TextStyle(
+                                      fontFamily: StoycoFontFamilyToken.gilroy,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: StoycoScreenSize.fontSize(
+                                        context,
+                                        14,
+                                      ),
+                                      color: ColorFoundation.text.saDark,
+                                    ),
+                                  ),
+                                )
+                              else if (_filteredItems.isEmpty)
                                 Container(
                                   width: double.infinity,
                                   padding: StoycoScreenSize.symmetric(
@@ -266,7 +294,7 @@ class _CustomSearchDropdownfieldState extends State<CustomSearchDropdownfield> {
                                         context,
                                         14,
                                       ),
-                                      color: ColorFoundation.text.saLight,
+                                      color: ColorFoundation.text.saDark,
                                     ),
                                   ),
                                 )

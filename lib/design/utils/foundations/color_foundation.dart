@@ -120,6 +120,8 @@ class _Background {
   final Color saHighlights = StoycoColorsToken.saHighlights;
 
   final Color saDisabled = StoycoColorsToken.saDisabled;
+
+  final Color saSkeleton = StoycoColorsToken.saSkeleton;
 }
 
 class _Border {
