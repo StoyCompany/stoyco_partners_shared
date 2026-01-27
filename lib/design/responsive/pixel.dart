@@ -1,7 +1,7 @@
-/// The size of the media in logical pixels (e.g, the size of the screen).
-/// Logical pixels are roughly the same visual size across devices.
-/// Physical pixels are the size of the actual hardware pixels on the device. 
-/// The number of physical pixels per logical pixel is described by the devicePixelRatio.
+/// El tamaño del medio en píxeles lógicos (por ejemplo, el tamaño de la pantalla).
+/// Los píxeles lógicos tienen aproximadamente el mismo tamaño visual en todos los dispositivos.
+/// Los píxeles físicos son el tamaño de los píxeles de hardware reales en el dispositivo.
+/// El número de píxeles físicos por píxel lógico está descrito por el devicePixelRatio.
 enum LayoutPixelFormat {
   logical,
   physical,

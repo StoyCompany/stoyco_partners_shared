@@ -82,6 +82,12 @@
     <color name="failed">#F8C3BE</color>
     <color name="sa-error">#E87D99</color>
 
+    <!-- item menu colors -->
+    <color name="item-menu-red">#DB839A</color>
+    <color name="item-menu-blue">#B2D5DF</color>
+    <color name="item-menu-yellow">#FBE490</color>
+    <color name="item-menu-orange">#FF9F39</color>
+
     <!-- blur -->
     <color name="blur">#B2383838</color>
 
@@ -90,6 +96,17 @@
 
     <!-- menuGrey -->
     <color name="menuGrey">#D9D9D9</color>
+
+    <!-- light menu -->
+    <color name="sa-light-menu">#EFDFEF</color>
+
+    <!-- chart -->
+    <color name="blue-chart">#3C80FF</color>
+    <color name="green-chart">#7BC08F</color>
+    <color name="purple-chart">#F6A0FF</color>
+    <color name="black-chart">#43414A</color>
+
+    <color name="sp-green">#7BB187</color>
 
 
 </resources>

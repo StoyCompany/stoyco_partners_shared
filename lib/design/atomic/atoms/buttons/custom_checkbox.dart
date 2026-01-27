@@ -45,7 +45,7 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
 
   void _handleTap(FormControl<bool?> control) {
     if (control.enabled) {
-      final currentValue = control.value ?? false;
+      final bool currentValue = control.value ?? false;
       control.value = !currentValue;
       control.markAsTouched();
     }
@@ -56,11 +56,11 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
     return ReactiveFormField<bool?, bool>(
       formControlName: widget.formControlName,
       validationMessages: widget.validationMessages,
-      builder: (field) {
-        final control = field.control;
-        final value = control.value ?? false;
-        final hasError = control.hasErrors && control.touched;
-        final isEnabled = control.enabled;
+      builder: (ReactiveFormFieldState<bool?, bool> field) {
+        final FormControl<bool?> control = field.control;
+        final bool value = control.value ?? false;
+        final bool hasError = control.hasErrors && control.touched;
+        final bool isEnabled = control.enabled;
 
         final Color effectiveActiveColor =
             widget.activeColor ?? ColorFoundation.background.saHighlights;
@@ -79,12 +79,12 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
-            children: [
+            children: <Widget>[
               GestureDetector(
                 onTap: () => _handleTap(control),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
-                  children: [
+                  children: <Widget>[
                     // Checkbox
                     AnimatedContainer(
                       duration: const Duration(milliseconds: 200),

@@ -12,6 +12,10 @@ class PhoneNumber extends Equatable {
   /// Creates a [PhoneNumber].
   const PhoneNumber({this.selectedCountry, this.number});
 
+  // JSON Serialization
+  factory PhoneNumber.fromJson(Map<String, dynamic> json) =>
+      _$PhoneNumberFromJson(json);
+
   /// The selected country of the phone number.
   @JsonKey(toJson: _countryToJson, fromJson: _countryFromJson)
   final Country? selectedCountry;
@@ -75,16 +79,14 @@ class PhoneNumber extends Equatable {
     return '+${selectedCountry!.dialCode}$number';
   }
 
-  // JSON Serialization
-  factory PhoneNumber.fromJson(Map<String, dynamic> json) =>
-      _$PhoneNumberFromJson(json);
-
   Map<String, dynamic> toJson() => _$PhoneNumberToJson(this);
 
   // Country serialization helpers
   static Map<String, dynamic>? _countryToJson(Country? country) {
-    if (country == null) return null;
-    return {
+    if (country == null) {
+      return null;
+    }
+    return <String, dynamic>{
       'name': country.name,
       'flag': country.flag,
       'code': country.code,
@@ -95,7 +97,9 @@ class PhoneNumber extends Equatable {
   }
 
   static Country? _countryFromJson(Map<String, dynamic>? json) {
-    if (json == null) return null;
+    if (json == null) {
+      return null;
+    }
     return Country(
       name: json['name'] as String,
       flag: json['flag'] as String,
@@ -103,10 +107,10 @@ class PhoneNumber extends Equatable {
       dialCode: json['dialCode'] as String,
       minLength: json['minLength'] as int,
       maxLength: json['maxLength'] as int,
-      nameTranslations: {},
+      nameTranslations: <String, String>{},
     );
   }
 
   @override
-  List<Object?> get props => [selectedCountry?.code, number];
+  List<Object?> get props => <Object?>[selectedCountry?.code, number];
 }

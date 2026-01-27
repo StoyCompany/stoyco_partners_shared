@@ -9,12 +9,12 @@ class AppTitleHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double titleSize = context.layout.value(xs: 22, md: 25, lg: 28);
+    final double titleSize = context.layout.value(xs: 22, md: 25, lg: 28);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: Gutter.separateChildren(
-        children: [
+        children: <Widget>[
           Text(
             'STOYCO',
             style: FontFoundation.title.mediumSaLight.copyWith(

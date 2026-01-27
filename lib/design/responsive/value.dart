@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
+
 import 'package:flutter/widgets.dart';
-import 'package:stoyco_partners_shared/design/responsive/breakpoint.dart';
-import 'package:stoyco_partners_shared/design/responsive/layout.dart';
+import 'package:stoyco_partners_shared/design/layout_all_imports.dart';
 
 mixin LayoutValueMixin<T> {
   T resolveForLayout(LayoutContext layout);
@@ -14,10 +13,9 @@ mixin LayoutValueMixin<T> {
 
 typedef LayoutValueBuilder<T> = T Function(LayoutContext layout);
 
-/// A responsive value that adapts dynamically to the width of the screen.
+/// Un valor responsivo que se adapta dinámicamente al ancho de la pantalla.
 ///
-/// The `valueBuilder` callback returns the responsive value for a given container
-/// width.
+/// El callback `valueBuilder` devuelve el valor responsivo para un ancho de contenedor dado.
 ///
 /// ```
 /// final isTablet = FluidValue.fromWidth((containerWidth) {
@@ -25,25 +23,27 @@ typedef LayoutValueBuilder<T> = T Function(LayoutContext layout);
 /// });
 /// ```
 ///
-/// Calculating the responsive values is usually done by this library automatically
-/// but it can also be calculated with the following methods:
-/// To get the value for a given width screen use the method `resolveForWidth`.
-/// If there is a [Layout] inside the widget you can also use `resolveForContext`
-/// that will automatically calulate the value for the container width provided by
-/// the closest Layout inside the upper widget tree from the `context` referenced
-/// provided as param.
+/// Calcular los valores responsivos generalmente se hace automáticamente por esta biblioteca,
+/// pero también se puede calcular con los siguientes métodos:
+/// Para obtener el valor para un ancho de pantalla dado, use el método `resolveForWidth`.
+/// Si hay un [Layout] dentro del widget, también puede usar `resolveForContext`
+/// que calculará automáticamente el valor para el ancho del contenedor proporcionado por
+/// el Layout más cercano dentro del árbol de widgets superior desde el `context` proporcionado como parámetro.
 ///
-/// See also:
-///   - [BreakpointValue], a value that adapts dinamically to relative width
-///     screen breakpoints
+/// Véase también:
+///   - [BreakpointValue], un valor que se adapta dinámicamente a los puntos de quiebre de ancho relativo de la pantalla.
 abstract class LayoutValue<T> with LayoutValueMixin<T> {
-  factory LayoutValue({required T xs, T? sm, T? md, T? lg, T? xl}) =
-      BreakpointValue<T>;
-  factory LayoutValue.builder(LayoutValueBuilder<T> builder) =
-      _DefaultLayoutValue<T>;
+  factory LayoutValue({
+    required T xs,
+    T? sm,
+    T? md,
+    T? lg,
+    T? xl,
+  }) = BreakpointValue<T>;
+  factory LayoutValue.builder(LayoutValueBuilder<T> builder) = _DefaultLayoutValue<T>;
   factory LayoutValue.value(T value) = ConstantLayoutValue<T>;
 
-  static const _ScreenWidthValue screenWidth = _ScreenWidthValue();
+  static const ScreenWidthValue screenWidth = ScreenWidthValue();
 }
 
 abstract class BaseLayoutValue<T> implements LayoutValue<T> {
@@ -64,53 +64,50 @@ class _DefaultLayoutValue<T> extends BaseLayoutValue<T> {
   T resolveForLayout(LayoutContext layout) => builder(layout);
 }
 
-/// A responsive value that adapts dynamically dinamically to relative width
-/// screen breakpoints
+/// Un valor responsivo que se adapta dinámicamente a los puntos de quiebre de ancho relativo de la pantalla.
 ///
 /// ```
 /// final cellCount = BreakpointValue(xs: 1, s: 2, sm: 4, lg: 20);
 /// ```
 ///
-/// This class is not usually used directly and if you are using [Layout],
-/// it is recommended to use the `context.layout.value(xs: 1, s: 2, sm: 4, lg: 20);`
-/// to get directly the responsive value.
+/// Esta clase generalmente no se usa directamente y si está utilizando [Layout],
+/// se recomienda usar `context.layout.value(xs: 1, s: 2, sm: 4, lg: 20);`
+/// para obtener directamente el valor responsivo.
 ///
-/// Calculating the responsive values is usually done by this library automatically
-/// but it can also be calculated with the following methods:
-/// To get the value for a given breakpoint use the method `resolveForBreakpoint`.
-/// If there is a [Layout] inside the widget you can also use `resolve(context)`
-/// that will automatically calulate the value for the container width provided by
-/// the closest `Layout` inside the upper widget tree from the `context` referenced
-/// provided as param.
+/// Calcular los valores responsivos generalmente se hace automáticamente por esta biblioteca,
+/// pero también se puede calcular con los siguientes métodos:
+/// Para obtener el valor para un punto de quiebre dado, use el método `resolveForBreakpoint`.
+/// Si hay un [Layout] dentro del widget, también puede usar `resolve(context)`
+/// que calculará automáticamente el valor para el ancho del contenedor proporcionado por
+/// el Layout más cercano dentro del árbol de widgets superior desde el `context` proporcionado como parámetro.
 ///
-/// See also:
-///   - [BreakpointValue], a value that adapts dinamically to relative width
-///     screen breakpoints
+/// Véase también:
+///   - [BreakpointValue], un valor que se adapta dinámicamente a los puntos de quiebre de ancho relativo de la pantalla.
 class BreakpointValue<T> extends BaseLayoutValue<T> {
-  const BreakpointValue({required this.xs, this.sm, this.md, this.lg, this.xl});
+  const BreakpointValue({
+    required this.xs,
+    this.sm,
+    this.md,
+    this.lg,
+    this.xl,
+  });
 
   const BreakpointValue.all({
-    required T xs,
-    required T sm,
-    required T md,
-    required T lg,
-    required T xl,
-  }) : this.xs = xs,
-       this.sm = sm,
-       this.md = md,
-       this.lg = lg,
-       this.xl = xl;
+    required this.xs,
+    required this.sm,
+    required this.md,
+    required this.lg,
+    required this.xl,
+  });
 
   BreakpointValue.fromMap(Map<LayoutBreakpoint, T> values, [T? defaultValue])
-    : assert(
-        values.length == LayoutBreakpoint.values.length || defaultValue != null,
-        'A default value is required if there is not a value asigned to a breakpoint inside the map',
-      ),
-      this.xs = values[LayoutBreakpoint.xs] ?? defaultValue!,
-      this.sm = values[LayoutBreakpoint.sm],
-      this.md = values[LayoutBreakpoint.md],
-      this.lg = values[LayoutBreakpoint.lg],
-      this.xl = values[LayoutBreakpoint.xl];
+      : assert(values.length == LayoutBreakpoint.values.length || defaultValue != null, 'Se requiere un valor predeterminado si no hay un valor asignado a un punto de quiebre dentro del mapa'),
+        xs = values[LayoutBreakpoint.xs] ?? defaultValue!,
+        sm = values[LayoutBreakpoint.sm],
+        md = values[LayoutBreakpoint.md],
+        lg = values[LayoutBreakpoint.lg],
+        xl = values[LayoutBreakpoint.xl];
+
   final T xs;
   final T? sm;
   final T? md;
@@ -138,6 +135,7 @@ class BreakpointValue<T> extends BaseLayoutValue<T> {
   }
 }
 
+/// Un valor constante de diseño.
 class ConstantLayoutValue<T> extends BaseLayoutValue<T> {
   const ConstantLayoutValue(this.value);
   final T value;
@@ -146,8 +144,9 @@ class ConstantLayoutValue<T> extends BaseLayoutValue<T> {
   T resolveForLayout(LayoutContext layout) => value;
 }
 
-class _ScreenWidthValue extends BaseLayoutValue<double> {
-  const _ScreenWidthValue();
+/// Un valor de ancho de pantalla.
+class ScreenWidthValue extends BaseLayoutValue<double> {
+  const ScreenWidthValue();
 
   @override
   double resolveForLayout(LayoutContext layout) => layout.width;

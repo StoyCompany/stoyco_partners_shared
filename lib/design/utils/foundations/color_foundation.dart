@@ -9,7 +9,7 @@
 
 import 'package:flutter/material.dart';
 
-import '../tokens/gen/colors.gen.dart';
+import 'package:stoyco_partners_shared/design/utils/tokens/gen/colors.gen.dart';
 
 class ColorFoundation {
   ColorFoundation._internal();
@@ -51,11 +51,18 @@ class _Text {
 
   final Color blueBackgroundIcons = StoycoColorsToken.blueBackgroundIcons;
 
+  final Color fandom = StoycoColorsToken.saLightMenu;
+
   final Color saHighlights = StoycoColorsToken.saHighlights;
   final Color saTextDisabled = StoycoColorsToken.saTextDisabled;
   final Color saError = StoycoColorsToken.saError;
   final Color saSuccess = StoycoColorsToken.saSuccess;
   final Color saGreen = StoycoColorsToken.saGreen;
+
+  final Color itemMenuBlue = StoycoColorsToken.itemMenuBlue;
+  final Color itemMenuRed = StoycoColorsToken.itemMenuRed;
+  final Color itemMenuYellow = StoycoColorsToken.itemMenuYellow;
+  final Color itemMenuOrange = StoycoColorsToken.itemMenuOrange;
 }
 
 class _Background {
@@ -120,6 +127,19 @@ class _Background {
   final Color saHighlights = StoycoColorsToken.saHighlights;
 
   final Color saDisabled = StoycoColorsToken.saDisabled;
+
+  final Color fandom = StoycoColorsToken.saLightMenu;
+
+  final Color divider = StoycoColorsToken.saLight.withOpacity(0.3);
+
+  final Color chartBlue = StoycoColorsToken.blueChart;
+  final Color chartGreen = StoycoColorsToken.greenChart;
+  final Color chartPurple = StoycoColorsToken.purpleChart;
+  final Color chartBlack = StoycoColorsToken.blackChart;
+
+  final Color errorAler = StoycoColorsToken.saError;
+  final Color successAler = StoycoColorsToken.spGreen;
+  final Color warningAler = StoycoColorsToken.itemMenuYellow;
 
   final Color saSkeleton = StoycoColorsToken.saSkeleton;
 }

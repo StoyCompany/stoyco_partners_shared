@@ -2,14 +2,19 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:stoyco_partners_shared/design/responsive/layout.dart';
 
-/// A widget that adds a padding to its child. This
-/// padding is calculated by `Layout` and can be overridden
-/// by the margin param
+/// Margin es un widget que agrega un padding a su hijo.
+/// Este padding es calculado por `Layout` y puede ser sobrescrito
+/// por el parámetro `margin`.
 ///
-/// See also:
-///  - [SliverMargin] An equivalent to be used inside CustomScrollView
+/// Véase también:
+///  - [SliverMargin] Un equivalente para ser usado dentro de CustomScrollView.
 class Margin extends StatelessWidget {
-  const Margin({super.key, required this.child, this.margin});
+
+  const Margin({
+    super.key,
+    required this.child,
+    this.margin,
+  });
 
   final Widget child;
   final EdgeInsets? margin;
@@ -17,7 +22,10 @@ class Margin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: _padding(layout: context.layout, margin: margin),
+      padding: _padding(
+        layout: context.layout,
+        margin: margin,
+      ),
       child: child,
     );
   }
@@ -42,15 +50,16 @@ class Margin extends StatelessWidget {
   }
 }
 
-/// A widget that adds a padding to its sliver child. This
-/// padding is calculated by `Layout` and can be overrided
-/// by the margin param
-///
-/// See also:
-///  - [Margin] An equivalent to be used outside CustomScrollView
+/// SliverMargin es un widget que agrega un padding a su hijo dentro de un diseño sliver.
+/// Este padding es calculado por `Layout` y puede ser sobrescrito
+/// por el parámetro `margin`.
 class SliverMargin extends SingleChildRenderObjectWidget {
-  const SliverMargin({super.key, required Widget sliver, this.margin})
-    : super(child: sliver);
+
+  const SliverMargin({
+    super.key,
+    required Widget sliver,
+    this.margin,
+  }) : super(child: sliver);
   final EdgeInsets? margin;
 
   @override
@@ -67,9 +76,7 @@ class SliverMargin extends SingleChildRenderObjectWidget {
 
   @override
   void updateRenderObject(
-    BuildContext context,
-    RenderSliverPadding renderObject,
-  ) {
+      BuildContext context, RenderSliverPadding renderObject) {
     final EdgeInsets padding = Margin._padding(
       layout: context.layout,
       fluid: false,
@@ -80,18 +87,20 @@ class SliverMargin extends SingleChildRenderObjectWidget {
       ..padding = padding
       ..textDirection = Directionality.of(context);
   }
+
 }
 
-/// A widget that adds a fluid padding to its child. This padding has the goal
-/// to constrain the child to a given max width according to the screen size
+/// Un widget que agrega un padding fluido a su hijo. Este padding tiene como objetivo
+/// restringir el hijo a un ancho máximo dado según el tamaño de la pantalla.
 ///
-/// This padding is calculated by [Layout]. It also containes the relative
-/// margin provided by the [Margin] widget and this can be overrided
-/// with the margin param.
+/// Este padding es calculado por [Layout]. También contiene el margen relativo
+/// proporcionado por el widget [Margin] y este puede ser sobrescrito
+/// con el parámetro margin.
 ///
-/// See also:
-///  - [SliverFluidMargin] An equitvalent to be used inside CustomScrollView
+/// Véase también:
+///  - [SliverFluidMargin] Un equivalente para ser usado dentro de CustomScrollView
 class FluidMargin extends StatelessWidget {
+
   const FluidMargin({
     super.key,
     required this.child,
@@ -120,6 +129,7 @@ class FluidMargin extends StatelessWidget {
 
 /// Equivalent of [FluidMargin] for sliver widgets
 class SliverFluidMargin extends SingleChildRenderObjectWidget {
+
   const SliverFluidMargin({
     super.key,
     required Widget sliver,
@@ -147,9 +157,7 @@ class SliverFluidMargin extends SingleChildRenderObjectWidget {
 
   @override
   void updateRenderObject(
-    BuildContext context,
-    RenderSliverPadding renderObject,
-  ) {
+      BuildContext context, RenderSliverPadding renderObject) {
     final EdgeInsets padding = Margin._padding(
       layout: context.layout,
       fluid: fluid,
@@ -161,9 +169,11 @@ class SliverFluidMargin extends SingleChildRenderObjectWidget {
       ..padding = padding
       ..textDirection = Directionality.of(context);
   }
+
 }
 
 class SliverFluidBox extends StatelessWidget {
+
   const SliverFluidBox({
     super.key,
     this.child,
@@ -182,7 +192,9 @@ class SliverFluidBox extends StatelessWidget {
       fluid: fluid,
       margin: margin,
       maxWidth: maxWidth,
-      sliver: SliverToBoxAdapter(child: child),
+      sliver: SliverToBoxAdapter(
+        child: child,
+      ),
     );
   }
 }

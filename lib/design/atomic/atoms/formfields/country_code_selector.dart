@@ -144,9 +144,9 @@ class _CountryCodeSelectorState extends State<CountryCodeSelector> {
                 Padding(
                   padding: StoycoScreenSize.fromLTRB(context, top: 4, left: 12),
                   child: Builder(
-                    builder: (context) {
-                      final errorKey = control.errors.keys.first;
-                      final errorValue = control.errors[errorKey];
+                    builder: (BuildContext context) {
+                      final String errorKey = control.errors.keys.first;
+                      final dynamic errorValue = control.errors[errorKey];
 
                       String message = errorKey;
                       if (widget.validationMessages != null &&

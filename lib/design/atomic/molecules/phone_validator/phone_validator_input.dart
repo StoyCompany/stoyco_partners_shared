@@ -125,7 +125,9 @@ class PhoneValidatorInputState extends State<PhoneValidatorInput> {
         return ColorFoundation.text.saSuccess;
       case ValidationState.error:
         return ColorFoundation.text.saError;
-      default:
+      case ValidationState.idle:
+        return ColorFoundation.text.saHighlights;
+      case ValidationState.validating:
         return ColorFoundation.text.saHighlights;
     }
   }
@@ -209,7 +211,7 @@ class PhoneValidatorInputState extends State<PhoneValidatorInput> {
     // Success state
     if (_validationState == ValidationState.success) {
       return Row(
-        children: [
+        children: <Widget>[
           Expanded(
             child: Text(
               '¡Código verificado!',

@@ -1,7 +1,6 @@
 import 'package:flutter/widgets.dart';
+import 'package:stoyco_partners_shared/design/utils/foundations/color_foundation.dart';
 import 'package:stoyco_partners_shared/design/utils/tokens/text_token.dart';
-
-import 'color_foundation.dart';
 
 class FontFoundation {
   FontFoundation._internal();
