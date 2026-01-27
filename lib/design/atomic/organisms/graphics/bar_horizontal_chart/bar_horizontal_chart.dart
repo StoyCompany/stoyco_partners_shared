@@ -93,11 +93,15 @@ class _BarHorizontalChartState extends State<BarHorizontalChart>
         maxValue = groupTotal;
       }
     }
+    // Validar que maxValue no sea NaN ni infinito
+    if (maxValue.isNaN || maxValue.isInfinite) {
+      maxValue = 0;
+    }
     return maxValue;
   }
 
   List<double> _calculateXAxisScale(double maxValue) {
-    if (maxValue == 0) {
+    if (maxValue == 0 || maxValue.isNaN || maxValue.isInfinite) {
       return <double>[0, 0, 0, 0, 0];
     }
 
@@ -236,7 +240,9 @@ class _BarHorizontalChartState extends State<BarHorizontalChart>
                               children: xAxisScale.map((double value) {
                                 final double position = value / chartMaxValue;
                                 return Positioned(
-                                  left: position * (constraints.maxWidth - yAxisWidth),
+                                  left: position.isNaN || position.isInfinite
+                                      ? 0
+                                      : position * (constraints.maxWidth - yAxisWidth),
                                   child: Text(
                                     NumbersFormat.formatCompact(value),
                                     style: TextStyle(
