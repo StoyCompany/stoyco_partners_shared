@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:stoyco_partners_shared/design/models/selector_item.dart';
 import 'package:stoyco_partners_shared/design/responsive/screen_size/stoyco_screen_size.dart';
 import 'package:stoyco_partners_shared/design/utils/foundations/color_foundation.dart';
 import 'package:stoyco_partners_shared/design/utils/tokens/gen/fonts.gen.dart';
@@ -28,7 +29,7 @@ import 'package:stoyco_partners_shared/design/utils/tokens/gen/fonts.gen.dart';
 /// )
 /// ```
 /// {@endtemplate}
-class Selector extends StatefulWidget {
+class Selector<T> extends StatefulWidget {
   /// {@macro selector}
   const Selector({
     super.key,
@@ -39,24 +40,24 @@ class Selector extends StatefulWidget {
   });
 
   /// List of string options to display in the modal.
-  final List<String> items;
+  final List<SelectorItem<T>> items;
 
   /// The initial selected value.
-  final String initialValue;
+  final SelectorItem<T> initialValue;
 
   /// Callback when a new value is selected.
-  final ValueChanged<String> onChanged;
+  final ValueChanged<SelectorItem<T>> onChanged;
 
   /// Title displayed at the top of the modal. Defaults to "Ordenar Por".
   final String modalTitle;
 
   @override
-  State<Selector> createState() => _SelectorState();
+  State<Selector<T>> createState() => _SelectorState<T>();
 }
 
-class _SelectorState extends State<Selector> {
+class _SelectorState<T> extends State<Selector<T>> {
   /// The currently selected value maintained internally.
-  late String _selectedValue;
+  late SelectorItem<T> _selectedValue;
 
   @override
   void initState() {
@@ -65,7 +66,7 @@ class _SelectorState extends State<Selector> {
   }
 
   @override
-  void didUpdateWidget(Selector oldWidget) {
+  void didUpdateWidget(Selector<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.initialValue != widget.initialValue) {
       setState(() {
@@ -86,7 +87,7 @@ class _SelectorState extends State<Selector> {
     final ScrollController scrollController = ScrollController();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final int selectedIndex = widget.items.indexOf(_selectedValue);
+      final int selectedIndex = widget.items.indexWhere((SelectorItem<T> item) => item.label == _selectedValue.label);
       if (selectedIndex > 0 && scrollController.hasClients) {
         final double itemHeight = StoycoScreenSize.height(context, 50);
         final double targetPosition = selectedIndex * itemHeight;
@@ -146,14 +147,10 @@ class _SelectorState extends State<Selector> {
                   ),
                   itemCount: widget.items.length,
                   separatorBuilder: (BuildContext context, int index) {
-                    final String currentItem = widget.items[index];
-                    final bool isCurrentSelected =
-                        currentItem == _selectedValue;
+                    final SelectorItem<T> currentItem = widget.items[index];
+                    final bool isCurrentSelected = currentItem.label == _selectedValue.label;
 
-                    final bool isNextSelected =
-                        index + 1 < widget.items.length &&
-                        widget.items[index + 1] == _selectedValue;
-
+                    final bool isNextSelected = index + 1 < widget.items.length && widget.items[index + 1].label == _selectedValue.label;
                     if (isCurrentSelected || isNextSelected) {
                       return const SizedBox.shrink();
                     }
@@ -165,8 +162,8 @@ class _SelectorState extends State<Selector> {
                     );
                   },
                   itemBuilder: (BuildContext context, int index) {
-                    final String item = widget.items[index];
-                    final bool isSelected = item == _selectedValue;
+                    final SelectorItem<T> item = widget.items[index];
+                    final bool isSelected = item.label == _selectedValue.label;
 
                     return GestureDetector(
                       onTap: () {
@@ -191,7 +188,7 @@ class _SelectorState extends State<Selector> {
                               : null,
                         ),
                         child: Text(
-                          item,
+                          item.label,
                           style: TextStyle(
                             fontFamily: StoycoFontFamilyToken.gilroy,
                             fontWeight: isSelected
@@ -236,7 +233,7 @@ class _SelectorState extends State<Selector> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Text(
-              _selectedValue,
+              _selectedValue.label,
               style: TextStyle(
                 fontFamily: StoycoFontFamilyToken.gilroy,
                 fontWeight: FontWeight.bold,
