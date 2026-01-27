@@ -2,7 +2,6 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:stoyco_partners_shared/design/atomic/atoms/chips/chip_monotone_noise.dart';
 import 'package:stoyco_partners_shared/design/atomic/molecules/chart_legend/chart_legend.dart';
 import 'package:stoyco_partners_shared/design/atomic/organisms/graphics/bar_horizontal_chart/bar_horizontal_chart_data.dart';
 import 'package:stoyco_partners_shared/design/models/chart_legend_item_model.dart';
@@ -16,8 +15,6 @@ class BarHorizontalChart extends StatefulWidget {
     super.key,
     required this.data,
     required this.categoryConfigs,
-    required this.rangeDate,
-    required this.filtersSelector,
     this.height,
     this.barHeight = 24,
     this.barSpacing = 0,
@@ -28,8 +25,6 @@ class BarHorizontalChart extends StatefulWidget {
 
   final List<BarHorizontalGroupData> data;
   final List<BarHorizontalCategoryConfig> categoryConfigs;
-  final String rangeDate;
-  final List<String> filtersSelector;
   final double? height;
   final double barHeight;
   final double barSpacing;
@@ -107,9 +102,7 @@ class _BarHorizontalChartState extends State<BarHorizontalChart>
     }
 
     // Redondear hacia arriba a un número "bonito"
-    final double magnitude = math
-        .pow(10, (math.log(maxValue) / math.ln10).floor())
-        .toDouble();
+    final double magnitude = math.pow(10, (math.log(maxValue) / math.ln10).floor()).toDouble();
     final double normalized = maxValue / magnitude;
 
     double niceMax;
@@ -142,42 +135,16 @@ class _BarHorizontalChartState extends State<BarHorizontalChart>
     for (final BarHorizontalGroupData group in widget.data) {
       final double visibleBars = _countVisibleBarsInGroup(group);
       final double spacingInGroup = (visibleBars - 1) * widget.barSpacing;
-      totalHeight +=
-          (visibleBars * widget.barHeight) +
-          spacingInGroup +
-          (widget.groupSpacing * 2);
+      totalHeight += (visibleBars * widget.barHeight) + spacingInGroup + (widget.groupSpacing * 2);
     }
     final double calculatedHeight = totalHeight + 60;
 
     return Column(
-      mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Padding(
-          padding: StoycoScreenSize.symmetric(
-            context,
-            horizontal: 16,
-          ),
-          child: SizedBox(
-            width: StoycoScreenSize.screenWidth(context),
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  child: ChipMonotoneNoise(
-                    message: widget.filtersSelector.join(', '),
-                  ),
-                ),
-                Gap(StoycoScreenSize.width(context, 16)),
-                Expanded(
-                  child: ChipMonotoneNoise(
-                    message: widget.rangeDate,
-                  ),
-                ),
-              ],
-            ),
-          ),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: ChartLegend(items: legendItems),
         ),
-        Gap(StoycoScreenSize.height(context, 28)),
-        ChartLegend(items: legendItems),
         Gap(StoycoScreenSize.height(context, 28)),
         SizedBox(
           height: widget.height ?? calculatedHeight,
@@ -192,28 +159,22 @@ class _BarHorizontalChartState extends State<BarHorizontalChart>
 
                 return Column(
                   children: <Widget>[
-                    // Chart area
                     Expanded(
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          // Y-axis (ranges)
                           SizedBox(
                             width: yAxisWidth,
                             child: Column(
                               children: widget.data.map((
                                 BarHorizontalGroupData group,
                               ) {
-                                final double visibleBars =
-                                    _countVisibleBarsInGroup(group);
-                                final double spacingInGroup =
-                                    (visibleBars - 1) * widget.barSpacing;
-                                final double groupHeight =
-                                    (visibleBars * widget.barHeight) +
-                                    spacingInGroup;
+                                final double visibleBars = _countVisibleBarsInGroup(group);
+                                final double spacingInGroup = (visibleBars - 1) * widget.barSpacing;
+                                final double groupHeight = (visibleBars * widget.barHeight) + spacingInGroup;
+
                                 return SizedBox(
-                                  height:
-                                      groupHeight + (widget.groupSpacing * 2),
+                                  height: groupHeight + (widget.groupSpacing * 2),
                                   child: Padding(
                                     padding: EdgeInsets.only(
                                       top: widget.groupSpacing,
@@ -228,11 +189,9 @@ class _BarHorizontalChartState extends State<BarHorizontalChart>
                                             context,
                                             14,
                                           ),
-                                          color:
-                                              ColorFoundation.background.white,
+                                          color: ColorFoundation.background.white,
                                           fontWeight: FontWeight.bold,
-                                          fontFamily:
-                                              StoycoFontFamilyToken.gilroy,
+                                          fontFamily: StoycoFontFamilyToken.gilroy,
                                         ),
                                       ),
                                     ),
@@ -277,9 +236,7 @@ class _BarHorizontalChartState extends State<BarHorizontalChart>
                               children: xAxisScale.map((double value) {
                                 final double position = value / chartMaxValue;
                                 return Positioned(
-                                  left:
-                                      position *
-                                      (constraints.maxWidth - yAxisWidth),
+                                  left: position * (constraints.maxWidth - yAxisWidth),
                                   child: Text(
                                     NumbersFormat.formatCompact(value),
                                     style: TextStyle(
