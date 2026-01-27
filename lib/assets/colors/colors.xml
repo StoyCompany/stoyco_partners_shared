@@ -14,6 +14,7 @@
     <color name="grey6">#EAEBEB</color>
     <color name="grey7">#545F71</color>
     <color name="sa-text-disabled">#6B6974</color>
+    <color name="sa-skeleton">#57535d</color>
 
     <!-- black colors -->
     <color name="black">#2F2F2F</color>

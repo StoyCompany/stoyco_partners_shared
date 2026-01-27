@@ -140,6 +140,8 @@ class _Background {
   final Color errorAler = StoycoColorsToken.saError;
   final Color successAler = StoycoColorsToken.spGreen;
   final Color warningAler = StoycoColorsToken.itemMenuYellow;
+
+  final Color saSkeleton = StoycoColorsToken.saSkeleton;
 }
 
 class _Border {
