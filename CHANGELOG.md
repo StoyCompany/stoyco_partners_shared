@@ -1,3 +1,28 @@
+## 1.0.0
+
+### Features
+
+- **BarHorizontalChart**:
+  - Added validation for `maxValue` to prevent rendering issues with invalid values.
+  - Refactored to remove unused properties and improve layout for better performance.
+  - Introduced `rangeDate` and `filtersSelector` for enhanced data display.
+
+- **CategoryItemModel**:
+  - Updated to require `id` for improved data consistency.
+
+- **SelectorItem**:
+  - Added a new class to improve type safety in selectors.
+  - Refactored `Selector` component to use `SelectorItem` for better maintainability.
+
+- **ChipMonotoneNoise**:
+  - Added padding option for better layout customization.
+
+- **Loading Screens**:
+  - Refactored animations to improve type safety and enhance user experience.
+
+- **ColorFoundation**:
+  - Added `spGreen` color for alerts and updated related components.
+
 ## 0.0.8
 
 - Features
