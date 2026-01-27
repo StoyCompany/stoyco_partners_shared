@@ -182,6 +182,9 @@ class StoycoColorsToken {
   /// Color: #29000000
   static const Color shadow1 = Color(0x29000000);
 
+  /// Color: #7BB187
+  static const Color spGreen = Color(0xFF7BB187);
+
   /// Color: #F25444
   static const Color tertiary1 = Color(0xFFF25444);
 

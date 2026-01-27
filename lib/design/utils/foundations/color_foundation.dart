@@ -135,6 +135,10 @@ class _Background {
   final Color chartGreen = StoycoColorsToken.greenChart;
   final Color chartPurple = StoycoColorsToken.purpleChart;
   final Color chartBlack = StoycoColorsToken.blackChart;
+
+  final Color errorAler = StoycoColorsToken.saError;
+  final Color successAler = StoycoColorsToken.spGreen;
+  final Color warningAler = StoycoColorsToken.itemMenuYellow;
 }
 
 class _Border {
