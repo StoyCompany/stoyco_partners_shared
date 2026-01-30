@@ -89,14 +89,14 @@ class _CustomDropdownFieldState extends State<CustomDropdownField> {
                     fontFamily: StoycoFontFamilyToken.gilroy,
                     fontSize: StoycoScreenSize.fontSize(context, 14),
                     fontWeight: FontWeight.w500,
-                    color: ColorFoundation.text.saLight,
+                    color: ColorFoundation.text.saDark,
                   ))
             : (widget.selectedStyle ??
                   TextStyle(
                     fontFamily: StoycoFontFamilyToken.gilroy,
-                    fontSize: StoycoScreenSize.fontSize(context, 14),
-                    fontWeight: FontWeight.w500,
-                    color: ColorFoundation.text.saDark,
+                      fontWeight: FontWeight.w600,
+                      fontSize: StoycoScreenSize.fontSize(context, 14),
+                      color: ColorFoundation.text.saDark,
                   ));
 
         return Focus(
@@ -150,8 +150,8 @@ class _CustomDropdownFieldState extends State<CustomDropdownField> {
                     style: TextStyle(
                       fontFamily: StoycoFontFamilyToken.gilroy,
                       color: ColorFoundation.text.saError,
-                      fontSize: StoycoScreenSize.fontSize(context, 14),
-                      fontWeight: FontWeight.w400,
+                      fontSize: StoycoScreenSize.fontSize(context, 12),
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),

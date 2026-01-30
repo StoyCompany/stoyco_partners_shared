@@ -23,7 +23,7 @@ class ContentCardDescription extends StatelessWidget {
           children: <Widget>[
             Container(
               constraints: BoxConstraints(
-                maxWidth: StoycoScreenSize.width(context, 148),
+                maxWidth: StoycoScreenSize.width(context, 146),
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -49,7 +49,7 @@ class ContentCardDescription extends StatelessWidget {
                         color: ColorFoundation.text.saLight,
                         fontWeight: FontWeight.w300,
                       ),
-                      maxLines: 3,
+                      maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(
