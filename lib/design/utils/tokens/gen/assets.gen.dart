@@ -47,6 +47,9 @@ class $LibAssetsColorsGen {
 class $LibAssetsIconsGen {
   const $LibAssetsIconsGen();
 
+  /// File path: lib/assets/icons/alert.svg
+  SvgGenImage get alert => const SvgGenImage('lib/assets/icons/alert.svg');
+
   /// Directory path: lib/assets/icons/common
   $LibAssetsIconsCommonGen get common => const $LibAssetsIconsCommonGen();
 
@@ -71,6 +74,7 @@ class $LibAssetsIconsGen {
 
   /// List of all assets
   List<SvgGenImage> get values => [
+    alert,
     error,
     errorX,
     leftArrow,

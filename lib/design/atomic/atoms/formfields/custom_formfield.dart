@@ -33,6 +33,7 @@ class CustomFormField extends StatelessWidget {
     this.onTap,
     this.readOnly = false,
     this.decoration,
+    this.showErrors = true,
   });
 
   final String formControlName;
@@ -57,6 +58,7 @@ class CustomFormField extends StatelessWidget {
   final ReactiveFormFieldCallback<dynamic>? onTap;
   final bool readOnly;
   final InputDecoration? decoration;
+  final bool showErrors; // Add this field
 
   @override
   Widget build(BuildContext context) {
@@ -64,10 +66,15 @@ class CustomFormField extends StatelessWidget {
       formControlName: formControlName,
       builder: (ReactiveFormFieldState<String, String> field) {
         final FormControl<String> control = field.control;
-        final bool hasError = control.hasErrors && control.touched;
+        final bool hasError =
+            showErrors && control.hasErrors && control.touched; // Modified
 
         // Get the current error message
-        final String? errorMessage = control.hasErrors && control.touched
+        final String? errorMessage =
+            showErrors &&
+                control.hasErrors &&
+                control
+                    .touched // Modified
             ? control.errors.entries.first.value?.toString()
             : null;
         final bool isEmptyError = errorMessage?.isEmpty ?? false;
@@ -96,6 +103,7 @@ class CustomFormField extends StatelessWidget {
                 prefixText: prefixText,
                 prefixStyle: prefixStyle,
                 decoration: decoration,
+                showErrors: showErrors, // Pass to password field
               )
             : ReactiveTextField<String>(
                 formControlName: formControlName,
@@ -110,6 +118,8 @@ class CustomFormField extends StatelessWidget {
                 maxLength: maxLength,
                 onTap: onTap,
                 readOnly: readOnly,
+                showErrors: (FormControl<String> control) =>
+                    showErrors && control.touched, // Add this line
                 style: TextStyle(
                   fontFamily: 'Gilroy',
                   fontWeight: FontWeight.w600,
@@ -212,6 +222,7 @@ class _PasswordField extends StatefulWidget {
     this.prefixText,
     this.prefixStyle,
     this.decoration,
+    this.showErrors = true,
   });
 
   final String formControlName;
@@ -236,6 +247,7 @@ class _PasswordField extends StatefulWidget {
   final String? prefixText;
   final TextStyle? prefixStyle;
   final InputDecoration? decoration;
+  final bool showErrors;
 
   @override
   State<_PasswordField> createState() => _PasswordFieldState();
@@ -259,6 +271,8 @@ class _PasswordFieldState extends State<_PasswordField> {
       maxLength: widget.maxLength,
       onTap: widget.onTap,
       readOnly: widget.readOnly,
+      showErrors: (FormControl<String> control) =>
+          widget.showErrors && control.touched,
       style: TextStyle(
         fontFamily: 'Gilroy',
         fontWeight: FontWeight.w600,
