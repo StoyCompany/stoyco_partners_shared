@@ -1,3 +1,21 @@
+## 1.0.2
+
+### Features
+
+- Adjusted design of fields
+- Added alert icon
+
+### Features
+
+- **ContenCard**:
+  - Added ContentCard widget to use in the Content Section inside a list
+
+- **ContentCardDescription**:
+  - Added ContentCardDescription widget. It is part of the ContentCard structure. Right now, it follows the Video/News type of content.
+
+- **ContentCardSkeleton**:
+  - Added an Skeleton layout for the ContentCard Using the 'skeletonizer' package. It is intented to be used in the app alongside the Skeletonizer widget when loading.
+
 ## 1.0.1
 
 ### Features
