@@ -1,3 +1,11 @@
+## 1.0.3
+
+### Features
+
+- Enhance custom checkbox with label tapping
+- Enhance design of country code selector to be consistent
+- Fix timer color not changing when error is present
+
 ## 1.0.2
 
 ### Features

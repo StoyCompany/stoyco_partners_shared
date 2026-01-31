@@ -17,6 +17,7 @@ class CustomCheckbox extends StatefulWidget {
     this.checkColor,
     this.spacing = 10,
     this.validationMessages,
+    this.onLabelTap,
   });
 
   final String formControlName;
@@ -29,6 +30,7 @@ class CustomCheckbox extends StatefulWidget {
   final Color? checkColor;
   final double spacing;
   final Map<String, ValidationMessageFunction>? validationMessages;
+  final VoidCallback? onLabelTap;
 
   @override
   State<CustomCheckbox> createState() => _CustomCheckboxState();
@@ -43,7 +45,7 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
     super.dispose();
   }
 
-  void _handleTap(FormControl<bool?> control) {
+  void _handleCheckboxTap(FormControl<bool?> control) {
     if (control.enabled) {
       final bool currentValue = control.value ?? false;
       control.value = !currentValue;
@@ -80,13 +82,13 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              GestureDetector(
-                onTap: () => _handleTap(control),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    // Checkbox
-                    AnimatedContainer(
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  // Checkbox
+                  GestureDetector(
+                    onTap: () => _handleCheckboxTap(control),
+                    child: AnimatedContainer(
                       duration: const Duration(milliseconds: 200),
                       width: widget.checkboxSize,
                       height: widget.checkboxSize,
@@ -112,9 +114,12 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
                             )
                           : null,
                     ),
-                    Gutter(widget.spacing),
-                    // Label
-                    Flexible(
+                  ),
+                  Gutter(widget.spacing),
+                  // Label
+                  GestureDetector(
+                    onTap: widget.onLabelTap,
+                    child: Flexible(
                       child: Text(
                         widget.label,
                         style: isEnabled
@@ -124,8 +129,8 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
                               ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ],
           ),

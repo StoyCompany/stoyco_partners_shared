@@ -251,7 +251,9 @@ class PhoneValidatorInputState extends State<PhoneValidatorInput> {
         children: <Widget>[
           Text(
             _formatTime(_remainingSeconds),
-            style: FontFoundation.paragraph.semiBold14SaHighlights,
+            style: FontFoundation.paragraph.semiBold14SaHighlights.copyWith(
+              color: ColorFoundation.text.saError,
+            ),
           ),
           Gutter(StoycoScreenSize.width(context, 4)),
           Expanded(

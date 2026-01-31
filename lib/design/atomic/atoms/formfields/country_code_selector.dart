@@ -121,7 +121,7 @@ class _CountryCodeSelectorState extends State<CountryCodeSelector> {
             children: <Widget>[
               Row(
                 key: _rowKey,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
                   // Country Code Selector
                   _buildCountrySelector(selectedCountry, control, hasError),
@@ -196,7 +196,7 @@ class _CountryCodeSelectorState extends State<CountryCodeSelector> {
     final bool isEnabled = control.enabled;
 
     return SizedBox(
-      width: StoycoScreenSize.width(context, 66),
+      width: StoycoScreenSize.width(context, 50),
       child: GestureDetector(
         onTap: isEnabled ? _toggleDropdown : null,
         child: Container(
@@ -210,15 +210,17 @@ class _CountryCodeSelectorState extends State<CountryCodeSelector> {
               ),
             ),
           ),
-          padding: StoycoScreenSize.symmetric(context, vertical: 4),
+          padding: StoycoScreenSize.fromLTRB(context, bottom: 8),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Expanded(
                 child: Text(
                   selectedCountry.flag,
                   style: TextStyle(
-                    fontSize: StoycoScreenSize.fontSize(context, 24),
+                    fontSize: StoycoScreenSize.fontSize(context, 20),
+                    height: 1.0,
                   ),
                 ),
               ),
@@ -416,11 +418,10 @@ class _PhoneNumberInputState extends State<_PhoneNumberInput> {
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
-      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         // Prefix Container
         Container(
-          padding: StoycoScreenSize.fromLTRB(context, bottom: 10),
+          padding: StoycoScreenSize.fromLTRB(context, bottom: 8),
           decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(
@@ -440,6 +441,7 @@ class _PhoneNumberInputState extends State<_PhoneNumberInput> {
                         .withOpacity(0.5),
               fontSize: StoycoScreenSize.fontSize(context, 14),
               fontWeight: FontWeight.w500,
+              height: 1.0,
             ),
           ),
         ),
@@ -457,15 +459,22 @@ class _PhoneNumberInputState extends State<_PhoneNumberInput> {
               color: hasError
                   ? ColorFoundation.text.saError
                   : (widget.textColor ?? ColorFoundation.text.saDark),
+              height: 1.0,
             ),
             decoration: InputDecoration(
-              contentPadding: StoycoScreenSize.fromLTRB(context, left: 4),
+              contentPadding: StoycoScreenSize.fromLTRB(
+                context,
+                left: 4,
+                bottom: 8,
+              ),
+              isDense: true,
               hintText: widget.placeholder,
               hintStyle: TextStyle(
                 fontFamily: StoycoFontFamilyToken.gilroy,
                 fontWeight: FontWeight.w500,
                 fontSize: StoycoScreenSize.fontSize(context, 14),
                 color: ColorFoundation.text.saDark,
+                height: 1.0,
               ),
               enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(
