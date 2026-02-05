@@ -138,7 +138,9 @@ class _CustomSearchDropdownfieldState extends State<CustomSearchDropdownfield> {
                   decoration: BoxDecoration(
                     border: Border(
                       bottom: BorderSide(
-                        color: hasError
+                        color: !isEnabled
+                            ? ColorFoundation.text.saTextDisabled
+                            : hasError
                             ? ColorFoundation.text.saError
                             : ColorFoundation.border.saDark,
                         width: 2,
@@ -215,7 +217,10 @@ class _CustomSearchDropdownfieldState extends State<CustomSearchDropdownfield> {
                               hintStyle: TextStyle(
                                 fontFamily: StoycoFontFamilyToken.gilroy,
                                 fontWeight: FontWeight.w500,
-                                fontSize: StoycoScreenSize.fontSize(context, 14),
+                                fontSize: StoycoScreenSize.fontSize(
+                                  context,
+                                  14,
+                                ),
                                 color: ColorFoundation.text.saLight,
                               ),
                               prefixIcon: Icon(

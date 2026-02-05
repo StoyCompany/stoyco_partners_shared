@@ -94,9 +94,9 @@ class _CustomDropdownFieldState extends State<CustomDropdownField> {
             : (widget.selectedStyle ??
                   TextStyle(
                     fontFamily: StoycoFontFamilyToken.gilroy,
-                      fontWeight: FontWeight.w600,
-                      fontSize: StoycoScreenSize.fontSize(context, 14),
-                      color: ColorFoundation.text.saDark,
+                    fontWeight: FontWeight.w600,
+                    fontSize: StoycoScreenSize.fontSize(context, 14),
+                    color: ColorFoundation.text.saDark,
                   ));
 
         return Focus(
@@ -110,7 +110,9 @@ class _CustomDropdownFieldState extends State<CustomDropdownField> {
                   decoration: BoxDecoration(
                     border: Border(
                       bottom: BorderSide(
-                        color: hasError
+                        color: !isEnabled
+                            ? ColorFoundation.text.saTextDisabled
+                            : hasError
                             ? ColorFoundation.text.saError
                             : ColorFoundation.border.saDark,
                         width: 2,
