@@ -58,7 +58,7 @@ class CustomFormField extends StatelessWidget {
   final ReactiveFormFieldCallback<dynamic>? onTap;
   final bool readOnly;
   final InputDecoration? decoration;
-  final bool showErrors; // Add this field
+  final bool showErrors;
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +67,8 @@ class CustomFormField extends StatelessWidget {
       builder: (ReactiveFormFieldState<String, String> field) {
         final FormControl<String> control = field.control;
         final bool hasError =
-            showErrors && control.hasErrors && control.touched; // Modified
+            showErrors && control.hasErrors && control.touched;
+        final bool isDisabled = !control.enabled;
 
         // Get the current error message
         final String? errorMessage =
@@ -78,6 +79,13 @@ class CustomFormField extends StatelessWidget {
             ? control.errors.entries.first.value?.toString()
             : null;
         final bool isEmptyError = errorMessage?.isEmpty ?? false;
+
+        // Determine text color based on state
+        final Color effectiveTextColor = isDisabled
+            ? ColorFoundation.text.saTextDisabled
+            : hasError
+            ? ColorFoundation.text.saError
+            : (textColor ?? ColorFoundation.text.saDark);
 
         return isPassword
             ? _PasswordField(
@@ -93,6 +101,7 @@ class CustomFormField extends StatelessWidget {
                 readOnly: readOnly,
                 hasError: hasError,
                 isEmptyError: isEmptyError,
+                isDisabled: isDisabled,
                 textColor: textColor,
                 placeholder: placeholder,
                 placeholderColor: placeholderColor,
@@ -103,7 +112,7 @@ class CustomFormField extends StatelessWidget {
                 prefixText: prefixText,
                 prefixStyle: prefixStyle,
                 decoration: decoration,
-                showErrors: showErrors, // Pass to password field
+                showErrors: showErrors,
               )
             : ReactiveTextField<String>(
                 formControlName: formControlName,
@@ -119,14 +128,12 @@ class CustomFormField extends StatelessWidget {
                 onTap: onTap,
                 readOnly: readOnly,
                 showErrors: (FormControl<String> control) =>
-                    showErrors && control.touched, // Add this line
+                    showErrors && control.touched,
                 style: TextStyle(
                   fontFamily: 'Gilroy',
                   fontWeight: FontWeight.w600,
                   fontSize: StoycoScreenSize.fontSize(context, 14),
-                  color: hasError
-                      ? ColorFoundation.text.saError
-                      : (textColor ?? ColorFoundation.text.saDark),
+                  color: effectiveTextColor,
                 ),
                 decoration:
                     decoration ??
@@ -161,6 +168,12 @@ class CustomFormField extends StatelessWidget {
                           color:
                               errorUnderlineColor ??
                               ColorFoundation.text.saError,
+                          width: 2,
+                        ),
+                      ),
+                      disabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: ColorFoundation.text.saTextDisabled,
                           width: 2,
                         ),
                       ),
@@ -203,6 +216,7 @@ class _PasswordField extends StatefulWidget {
     required this.formControlName,
     required this.hasError,
     required this.isEmptyError,
+    required this.isDisabled,
     this.validationMessages,
     this.keyboardType,
     this.inputFormatters,
@@ -228,6 +242,7 @@ class _PasswordField extends StatefulWidget {
   final String formControlName;
   final bool hasError;
   final bool isEmptyError;
+  final bool isDisabled;
   final Map<String, ValidationMessageFunction>? validationMessages;
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
@@ -258,6 +273,13 @@ class _PasswordFieldState extends State<_PasswordField> {
 
   @override
   Widget build(BuildContext context) {
+    // Determine text color based on state
+    final Color effectiveTextColor = widget.isDisabled
+        ? ColorFoundation.text.saTextDisabled
+        : widget.hasError
+        ? ColorFoundation.text.saError
+        : (widget.textColor ?? ColorFoundation.text.saDark);
+
     return ReactiveTextField<String>(
       formControlName: widget.formControlName,
       validationMessages: widget.validationMessages,
@@ -277,9 +299,7 @@ class _PasswordFieldState extends State<_PasswordField> {
         fontFamily: 'Gilroy',
         fontWeight: FontWeight.w600,
         fontSize: StoycoScreenSize.fontSize(context, 14),
-        color: widget.hasError
-            ? ColorFoundation.text.saError
-            : (widget.textColor ?? ColorFoundation.text.saDark),
+        color: effectiveTextColor,
       ),
       decoration:
           widget.decoration ??
@@ -313,6 +333,12 @@ class _PasswordFieldState extends State<_PasswordField> {
               borderSide: BorderSide(
                 color:
                     widget.errorUnderlineColor ?? ColorFoundation.text.saError,
+                width: 2,
+              ),
+            ),
+            disabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: ColorFoundation.text.saTextDisabled,
                 width: 2,
               ),
             ),

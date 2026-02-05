@@ -111,21 +111,41 @@ class _CustomSearchDropdownfieldState extends State<CustomSearchDropdownfield> {
 
         final bool isPlaceholder = selectedValue == null;
         final String displayText = selectedValue ?? widget.placeholder;
+
+        // Determine text color based on state
+        final Color effectiveTextColor = !isEnabled
+            ? ColorFoundation.text.saTextDisabled
+            : ColorFoundation.text.saDark;
+
         final TextStyle textStyle = isPlaceholder
             ? (widget.placeholderStyle ??
-                  TextStyle(
-                    fontFamily: StoycoFontFamilyToken.gilroy,
-                    fontWeight: FontWeight.w500,
-                    fontSize: StoycoScreenSize.fontSize(context, 14),
-                    color: ColorFoundation.text.saLight,
-                  ))
+                      TextStyle(
+                        fontFamily: StoycoFontFamilyToken.gilroy,
+                        fontWeight: FontWeight.w500,
+                        fontSize: StoycoScreenSize.fontSize(context, 14),
+                        color: effectiveTextColor,
+                      ))
+                  .copyWith(color: effectiveTextColor)
             : (widget.selectedStyle ??
-                  TextStyle(
-                    fontFamily: StoycoFontFamilyToken.gilroy,
-                    fontWeight: FontWeight.w600,
-                    fontSize: StoycoScreenSize.fontSize(context, 14),
-                    color: ColorFoundation.text.saDark,
-                  ));
+                      TextStyle(
+                        fontFamily: StoycoFontFamilyToken.gilroy,
+                        fontWeight: FontWeight.w600,
+                        fontSize: StoycoScreenSize.fontSize(context, 14),
+                        color: effectiveTextColor,
+                      ))
+                  .copyWith(color: effectiveTextColor);
+
+        // Determine border color based on state
+        final Color borderColor = !isEnabled
+            ? ColorFoundation.text.saTextDisabled
+            : hasError
+            ? ColorFoundation.text.saError
+            : ColorFoundation.border.saDark;
+
+        // Determine icon color based on state
+        final Color iconColor = !isEnabled
+            ? ColorFoundation.text.saTextDisabled
+            : ColorFoundation.text.saDark;
 
         return Focus(
           focusNode: _focusNode,
@@ -137,33 +157,19 @@ class _CustomSearchDropdownfieldState extends State<CustomSearchDropdownfield> {
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border(
-                      bottom: BorderSide(
-                        color: hasError
-                            ? ColorFoundation.text.saError
-                            : ColorFoundation.border.saDark,
-                        width: 2,
-                      ),
+                      bottom: BorderSide(color: borderColor, width: 2),
                     ),
                   ),
                   padding: StoycoScreenSize.symmetric(context, vertical: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text(
-                        displayText,
-                        style: isEnabled
-                            ? textStyle
-                            : textStyle.copyWith(
-                                color: textStyle.color?.withOpacity(0.5),
-                              ),
-                      ),
+                      Text(displayText, style: textStyle),
                       Icon(
                         isOpened
                             ? Icons.keyboard_arrow_up
                             : Icons.keyboard_arrow_down,
-                        color: isEnabled
-                            ? ColorFoundation.text.saDark
-                            : ColorFoundation.text.saDark.withOpacity(0.5),
+                        color: iconColor,
                       ),
                     ],
                   ),
