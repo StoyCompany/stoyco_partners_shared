@@ -116,10 +116,9 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
                     ),
                   ),
                   Gutter(widget.spacing),
-                  // Label
-                  GestureDetector(
-                    onTap: widget.onLabelTap,
-                    child: Flexible(
+                  Flexible(
+                    child: GestureDetector(
+                      onTap: widget.onLabelTap,
                       child: Text(
                         widget.label,
                         style: isEnabled

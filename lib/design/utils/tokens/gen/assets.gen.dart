@@ -69,6 +69,9 @@ class $LibAssetsIconsGen {
   /// File path: lib/assets/icons/mail_box.svg
   SvgGenImage get mailBox => const SvgGenImage('lib/assets/icons/mail_box.svg');
 
+  /// File path: lib/assets/icons/message.svg
+  SvgGenImage get message => const SvgGenImage('lib/assets/icons/message.svg');
+
   /// File path: lib/assets/icons/share.svg
   SvgGenImage get share => const SvgGenImage('lib/assets/icons/share.svg');
 
@@ -80,6 +83,7 @@ class $LibAssetsIconsGen {
     leftArrow,
     like,
     mailBox,
+    message,
     share,
   ];
 }
