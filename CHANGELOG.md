@@ -1,8 +1,17 @@
+## 1.0.6
+
+### Features
+
+- Added DTO-s for all content types
+- Added card design for all content types to create content lists
+
+
 ## 1.0.5
 
 ### Features
 
 - Refactored FormFields to have the correct color palette when disabled
+
 ## 1.0.4
 
 ### Features
