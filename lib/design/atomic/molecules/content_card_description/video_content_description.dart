@@ -54,7 +54,7 @@ class VideoContentDescription extends ContentCardDescription {
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(
-                      data.publishDate,
+                      'Publicado ${data.publishDate}',
                       style: TextStyle(
                         fontFamily: StoycoFontFamilyToken.gilroy,
                         fontSize: StoycoScreenSize.fontSize(context, 8),
