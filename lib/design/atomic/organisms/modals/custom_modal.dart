@@ -138,7 +138,11 @@ class CustomModal extends StatelessWidget {
                   children: Gutter.separateChildren(
                     children: <Widget>[
                       icon ?? const SizedBox.shrink(),
-                      Text(title, style: FontFoundation.title.bold25saDark),
+                      Text(
+                        title,
+                        style: FontFoundation.title.bold25saDark,
+                        textAlign: TextAlign.center,
+                      ),
                       Text(
                         description,
                         textAlign: TextAlign.center,
