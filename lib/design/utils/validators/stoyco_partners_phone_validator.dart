@@ -5,7 +5,9 @@ class StoycoPartnersPhoneValidator extends Validator<PhoneNumber?> {
   @override
   Map<String, dynamic>? validate(AbstractControl<PhoneNumber?> control) {
     final PhoneNumber? phoneNumber = control.value;
-    if (phoneNumber == null || phoneNumber.number!.isEmpty) {
+    if (phoneNumber == null ||
+        phoneNumber.number == null ||
+        phoneNumber.number!.isEmpty) {
       return <String, dynamic>{'phoneNumberMissing': 'Phone number is null'};
     }
 

@@ -165,7 +165,6 @@ class PhoneValidatorInputState extends State<PhoneValidatorInput> {
             },
             hapticFeedbackType: HapticFeedbackType.lightImpact,
             onChanged: (String pin) {
-              // Clear error state when user starts typing again
               if (_validationState == ValidationState.error) {
                 setState(() {
                   _validationState = ValidationState.idle;
@@ -199,9 +198,7 @@ class PhoneValidatorInputState extends State<PhoneValidatorInput> {
           Gutter(StoycoScreenSize.height(context, 15)),
           // Show timer, error message, or success message
           if (_validationState != ValidationState.validating)
-            _buildStatusRow()
-          else
-            const SizedBox.shrink(),
+            SizedBox(width: double.infinity, child: _buildStatusRow()),
         ],
       ),
     );
