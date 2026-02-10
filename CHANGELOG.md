@@ -1,3 +1,9 @@
+## 1.0.7
+
+### Features
+
+- Enhance null validation and flexible design of phone input validator
+
 ## 1.0.6
 
 ### Features
