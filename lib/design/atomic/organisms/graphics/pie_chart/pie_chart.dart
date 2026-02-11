@@ -6,6 +6,8 @@ import 'package:stoyco_partners_shared/design/atomic/molecules/chart_legend/char
 import 'package:stoyco_partners_shared/design/models/chart_legend_item_model.dart';
 import 'package:stoyco_partners_shared/design/models/pie_chart_section_data.dart';
 import 'package:stoyco_partners_shared/design/responsive/screen_size/stoyco_screen_size.dart';
+import 'package:stoyco_partners_shared/design/utils/foundations/color_foundation.dart';
+import 'package:stoyco_partners_shared/design/utils/tokens/gen/fonts.gen.dart';
 
 class PieChart extends StatefulWidget {
   const PieChart({
@@ -85,7 +87,7 @@ class _PieChartState extends State<PieChart>
     super.dispose();
   }
 
-  void _onTapDown(TapDownDetails details, Size size) {
+  void _onTapDown(TapDownDetails details, Size size, List<PieChartSectionData> filteredSections) {
     final Offset localPosition = details.localPosition;
     final Offset center = Offset(size.width / 2, size.height / 2);
     final double dx = localPosition.dx - center.dx;
@@ -102,20 +104,20 @@ class _PieChartState extends State<PieChart>
         angle += 2 * math.pi;
       }
       
-      final double total = widget.sections.fold<double>(
+      final double total = filteredSections.fold<double>(
         0,
         (double sum, PieChartSectionData section) => sum + section.value,
       );
       
       // Usar el mismo sistema de gaps uniforme que el painter
       final double gapRadians = widget.gapDegrees * math.pi / 180;
-      final int numberOfGaps = widget.sections.length;
+      final int numberOfGaps = filteredSections.length;
       final double totalGapSpace = gapRadians * numberOfGaps;
       final double availableSpace = (2 * math.pi) - totalGapSpace;
       
       double currentAngle = 0;
-      for (int i = 0; i < widget.sections.length; i++) {
-        final double sectionProportion = widget.sections[i].value / total;
+      for (int i = 0; i < filteredSections.length; i++) {
+        final double sectionProportion = filteredSections[i].value / total;
         final double sweepAngle = sectionProportion * availableSpace;
         
         if (angle >= currentAngle && angle < currentAngle + sweepAngle) {
@@ -131,12 +133,48 @@ class _PieChartState extends State<PieChart>
 
   @override
   Widget build(BuildContext context) {
-    final List<ChartLegendItemModel> legendItems = widget.sections.map((PieChartSectionData section) {
-      final double total = widget.sections.fold<double>(
-        0,
-        (double sum, PieChartSectionData s) => sum + s.value,
+    // Calculate total first
+    final double total = widget.sections.fold<double>(
+      0,
+      (double sum, PieChartSectionData s) => sum + s.value,
+    );
+
+    // Filter out sections with value 0 or percentage that rounds to 0
+    final List<PieChartSectionData> filteredSections = widget.sections
+        .where((PieChartSectionData section) {
+          if (section.value == 0) {
+            return false;
+          }
+          final double percentage = (section.value / total) * 100;
+          return percentage.round() > 0;
+        })
+        .toList();
+
+    if (filteredSections.isEmpty) {
+      return SizedBox(
+        height: StoycoScreenSize.height(context, 200),
+        child: Center(
+          child: Text(
+            'Sin datos disponibles',
+            style: TextStyle(
+              fontSize: StoycoScreenSize.width(context, 16),
+              color: ColorFoundation.text.fandom,
+              fontWeight: FontWeight.w400,
+              fontFamily: StoycoFontFamilyToken.gilroy,
+            ),
+          ),
+        ),
       );
-      final double percentage = (section.value / total) * 100;
+    }
+
+    // Recalculate total with filtered sections for accurate percentages
+    final double filteredTotal = filteredSections.fold<double>(
+      0,
+      (double sum, PieChartSectionData s) => sum + s.value,
+    );
+
+    final List<ChartLegendItemModel> legendItems = filteredSections.map((PieChartSectionData section) {
+      final double percentage = (section.value / filteredTotal) * 100;
       return ChartLegendItemModel(
         color: section.color,
         label: section.label ?? '',
@@ -158,7 +196,7 @@ class _PieChartState extends State<PieChart>
                 return InkWell(
                   onTapDown: (TapDownDetails details) {
                     final RenderBox box = context.findRenderObject()! as RenderBox;
-                    _onTapDown(details, box.size);
+                    _onTapDown(details, box.size, filteredSections);
                   },
                   child: AnimatedBuilder(
                     animation: Listenable.merge(<Listenable>[_animation, _scaleAnimation]),
@@ -168,7 +206,7 @@ class _PieChartState extends State<PieChart>
                         child: CustomPaint(
                           size: Size(constraints.maxWidth, constraints.maxHeight),
                           painter: _PieChartPainter(
-                            sections: widget.sections,
+                            sections: filteredSections,
                             strokeWidth: widget.strokeWidth,
                             gapDegrees: widget.gapDegrees,
                             animation: _animation,

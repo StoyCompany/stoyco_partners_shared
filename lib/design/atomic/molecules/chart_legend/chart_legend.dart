@@ -142,7 +142,10 @@ class _ChartLegendItem extends StatelessWidget {
           ),
           if (item.value.isNotEmpty)...<Widget>[
             SizedBox(height: StoycoScreenSize.height(context, 8)),
-            ChipMonotoneNoise(message: item.value),
+            ChipMonotoneNoise(
+              message: item.value,
+              padding: StoycoScreenSize.symmetric(  context, horizontal: 20),
+            ),
           ],
         ],
       ),

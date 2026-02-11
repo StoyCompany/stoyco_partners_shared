@@ -131,6 +131,23 @@ class _BarHorizontalChartState extends State<BarHorizontalChart>
 
   @override
   Widget build(BuildContext context) {
+    if (widget.data.isEmpty) {
+      return SizedBox(
+        height: StoycoScreenSize.height(context, 200),
+        child: Center(
+          child: Text(
+            'Sin datos disponibles',
+            style: TextStyle(
+              fontSize: StoycoScreenSize.width(context, 16),
+              color: ColorFoundation.text.fandom,
+              fontWeight: FontWeight.w400,
+              fontFamily: StoycoFontFamilyToken.gilroy,
+            ),
+          ),
+        ),
+      );
+    }
+
     final double maxValue = _calculateMaxValue();
     final List<double> xAxisScale = _calculateXAxisScale(maxValue);
     final double chartMaxValue = xAxisScale.last;

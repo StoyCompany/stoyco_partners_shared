@@ -53,6 +53,10 @@ final class NumbersFormat {
     return isNegative ? '-$result' : result;
   }
 
+  static String formatWithCommasInt(int number) {
+    return formatWithCommas(number.toDouble(), decimals: 0);
+  }
+
   static String _formatValue(double value, String suffix, int decimals) {
     if (value % 1 == 0) {
       return '${value.toStringAsFixed(0)}$suffix';

@@ -59,6 +59,10 @@ class $LibAssetsIconsGen {
   /// File path: lib/assets/icons/error_x.svg
   SvgGenImage get errorX => const SvgGenImage('lib/assets/icons/error_x.svg');
 
+  /// File path: lib/assets/icons/flag_stoyco.svg
+  SvgGenImage get flagStoyco =>
+      const SvgGenImage('lib/assets/icons/flag_stoyco.svg');
+
   /// File path: lib/assets/icons/left_arrow.svg
   SvgGenImage get leftArrow =>
       const SvgGenImage('lib/assets/icons/left_arrow.svg');
@@ -80,6 +84,7 @@ class $LibAssetsIconsGen {
     alert,
     error,
     errorX,
+    flagStoyco,
     leftArrow,
     like,
     mailBox,

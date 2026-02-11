@@ -25,12 +25,10 @@ class _TopTenLocationsFlagsState extends State<TopTenLocationsFlags>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late ScrollController _scrollController;
-  late List<TopTenLocationsData> _sortedData;
 
   @override
   void initState() {
     super.initState();
-    _sortData();
     _scrollController = ScrollController();
     _controller = AnimationController(
       vsync: this,
@@ -43,7 +41,6 @@ class _TopTenLocationsFlagsState extends State<TopTenLocationsFlags>
   void didUpdateWidget(TopTenLocationsFlags oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.data != widget.data) {
-      _sortData();
       _controller
         ..reset()
         ..forward();
@@ -57,55 +54,60 @@ class _TopTenLocationsFlagsState extends State<TopTenLocationsFlags>
     super.dispose();
   }
 
-  void _sortData() {
-    _sortedData = List<TopTenLocationsData>.from(widget.data)
-      ..sort(
-        (TopTenLocationsData a, TopTenLocationsData b) =>
-            b.total.compareTo(a.total),
-      );
-
-    // Limitar a top 10
-    if (_sortedData.length > 10) {
-      _sortedData = _sortedData.sublist(0, 10);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    if (_sortedData.isEmpty) {
-      return const SizedBox.shrink();
+    if (widget.data.isEmpty) {
+      return SizedBox(
+        height: StoycoScreenSize.height(context, 200),
+        child: Center(
+          child: Text(
+            'Sin ranking',
+            style: TextStyle(
+              fontSize: StoycoScreenSize.width(context, 16),
+              color: ColorFoundation.text.fandom,
+              fontWeight: FontWeight.w400,
+              fontFamily: StoycoFontFamilyToken.gilroy,
+            ),
+          ),
+        ),
+      );
     }
 
     // Obtener las categorías del primer elemento para el header
-    final bool hasMultipleValues = _sortedData.first.values.length > 1;
+    final bool hasMultipleValues = widget.data.first.values.length > 1;
 
     return SingleChildScrollView(
       controller: _scrollController,
       scrollDirection: Axis.horizontal,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          // Header con círculos de colores (solo si hay múltiples valores)
-          if (hasMultipleValues) _ColorHeader(values: _sortedData.first.values),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          minWidth: StoycoScreenSize.screenWidth(context),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            // Header con círculos de colores (solo si hay múltiples valores)
+            if (hasMultipleValues) _ColorHeader(values: widget.data.first.values),
 
-          // Lista de items
-          ...List<Widget>.generate(_sortedData.length, (int index) {
-            final double delay = index * 0.1;
-            return _TopTenLocationItem(
-              data: _sortedData[index],
-              position: index + 1,
-              showColorCircles: false,
-              animation: CurvedAnimation(
-                parent: _controller,
-                curve: Interval(
-                  delay,
-                  (delay + 0.3).clamp(0.0, 1.0),
-                  curve: Curves.easeOutCubic,
+            // Lista de items
+            ...List<Widget>.generate(widget.data.length, (int index) {
+              final double delay = index * 0.1;
+              return _TopTenLocationItem(
+                data: widget.data[index],
+                position: index + 1,
+                showColorCircles: false,
+                animation: CurvedAnimation(
+                  parent: _controller,
+                  curve: Interval(
+                    delay,
+                    (delay + 0.3).clamp(0.0, 1.0),
+                    curve: Curves.easeOutCubic,
+                  ),
                 ),
-              ),
-            );
-          }),
-        ],
+              );
+            }),
+          ],
+        ),
       ),
     );
   }
@@ -196,57 +198,59 @@ class _TopTenLocationItem extends StatelessWidget {
               padding: EdgeInsets.only(
                 bottom: StoycoScreenSize.height(context, 12),
               ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  // Position number
-                  SizedBox(
-                    width: StoycoScreenSize.width(context, 24),
-                    child: Text(
-                      '$position.',
-                      style: TextStyle(
-                        fontSize: StoycoScreenSize.width(context, 14),
-                        color: ColorFoundation.text.white,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: StoycoFontFamilyToken.gilroy,
+              child: SizedBox(
+                width: StoycoScreenSize.screenWidth(context) * 0.9,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    // Position number
+                    SizedBox(
+                      width: StoycoScreenSize.width(context, 24),
+                      child: Text(
+                        '$position.',
+                        style: TextStyle(
+                          fontSize: StoycoScreenSize.width(context, 14),
+                          color: ColorFoundation.text.white,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: StoycoFontFamilyToken.gilroy,
+                        ),
                       ),
                     ),
-                  ),
-                  Gap(StoycoScreenSize.width(context, 8)),
-                  // Flag
-                  ConuntryFlag(
-                    conuntryCode: data.codeFlag,
-                    width: StoycoScreenSize.width(context, 24),
-                    height: StoycoScreenSize.height(context, 16),
-                    borderRadius: 2,
-                  ),
-                  Gap(StoycoScreenSize.width(context, 8)),
-                  // Location name with ellipsis
-                  SizedBox(
-                    width: StoycoScreenSize.screenWidth(context) * 0.25,
-                    child: Text(
-                      data.nameLocation,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: StoycoScreenSize.width(context, 14),
-                        color: ColorFoundation.text.white,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: StoycoFontFamilyToken.gilroy,
+                    Gap(StoycoScreenSize.width(context, 4)),
+                    // Flag
+                    ConuntryFlag(
+                      conuntryCode: data.codeFlag,
+                      width: StoycoScreenSize.width(context, 24),
+                      height: StoycoScreenSize.height(context, 16),
+                      borderRadius: 2,
+                    ),
+                    Gap(StoycoScreenSize.width(context, 4)),
+                    // Location name with ellipsis - expandible
+                    Expanded(
+                      child: Text(
+                        data.nameLocation,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: StoycoScreenSize.width(context, 14),
+                          color: ColorFoundation.text.white,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: StoycoFontFamilyToken.gilroy,
+                        ),
                       ),
                     ),
-                  ),
-
-                  Gap(StoycoScreenSize.width(context, 12)), // spacer
-                  // Values section
-                  if (hasMultipleValues)
-                    _MultipleValuesSection(
-                      values: data.values,
-                      showColorCircles: showColorCircles,
-                    )
-                  else
-                    _SingleValueSection(value: data.values.first.value),
-                ],
+                    // Spacer para separar el nombre de los valores
+                    Gap(StoycoScreenSize.width(context, 8)),
+                    // Right side: Values aligned to the right
+                    if (hasMultipleValues)
+                      _MultipleValuesSection(
+                        values: data.values,
+                        showColorCircles: showColorCircles,
+                      )
+                    else
+                      _SingleValueSection(value: data.values.first.value),
+                  ],
+                ),
               ),
             ),
           ),

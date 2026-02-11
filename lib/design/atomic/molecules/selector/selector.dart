@@ -142,6 +142,7 @@ class _SelectorState<T> extends State<Selector<T>> {
                 child: ListView.separated(
                   controller: scrollController,
                   shrinkWrap: true,
+                  physics: const ClampingScrollPhysics(),
                   padding: EdgeInsets.symmetric(
                     horizontal: StoycoScreenSize.width(context, 19),
                   ),
