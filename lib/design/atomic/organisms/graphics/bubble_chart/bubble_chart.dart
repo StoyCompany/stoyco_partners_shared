@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:stoyco_partners_shared/design/atomic/molecules/tooltip/bubble_tooltip.dart';
 import 'package:stoyco_partners_shared/design/atomic/organisms/graphics/bubble_chart/bubble_chart_painter.dart';
 import 'package:stoyco_partners_shared/design/models/bubble_data_model.dart';
+import 'package:stoyco_partners_shared/design/responsive/screen_size/stoyco_screen_size.dart';
 import 'package:stoyco_partners_shared/design/utils/formats/numbers.dart';
+import 'package:stoyco_partners_shared/design/utils/foundations/color_foundation.dart';
 import 'package:stoyco_partners_shared/design/utils/tokens/gen/assets.gen.dart';
+import 'package:stoyco_partners_shared/design/utils/tokens/gen/fonts.gen.dart';
 
 class BubbleChart extends StatefulWidget {
   const BubbleChart({
@@ -40,8 +43,6 @@ class _BubbleChartState extends State<BubbleChart>
   late Animation<double> _animation;
   late Animation<double> _tooltipAnimation;
   List<BubblePosition> _bubblePositions = <BubblePosition>[];
-  BubblePosition? _selectedBubble;
-  Offset? _graphCenter;
 
   @override
   void initState() {
@@ -79,7 +80,29 @@ class _BubbleChartState extends State<BubbleChart>
   @override
   void didUpdateWidget(BubbleChart oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.data != widget.data || oldWidget.total != widget.total) {
+    
+    // Compare length and total first for quick checks
+    if (oldWidget.data.length != widget.data.length || 
+        oldWidget.total != widget.total) {
+      _calculateBubblePositions();
+      _tooltipController.reset();
+      _controller
+        ..reset()
+        ..forward();
+      return;
+    }
+    
+    // Deep comparison of bubble values and colors
+    bool hasChanged = false;
+    for (int i = 0; i < widget.data.length; i++) {
+      if (oldWidget.data[i].value != widget.data[i].value ||
+          oldWidget.data[i].color != widget.data[i].color) {
+        hasChanged = true;
+        break;
+      }
+    }
+    
+    if (hasChanged) {
       _calculateBubblePositions();
       _tooltipController.reset();
       _controller
@@ -168,6 +191,30 @@ class _BubbleChartState extends State<BubbleChart>
 
   @override
   Widget build(BuildContext context) {
+    // Validar si la lista está vacía o si la suma de todos los valores es 0
+    final bool isEmpty = widget.data.isEmpty;
+    final double totalValue = widget.data.fold<double>(
+      0,
+      (double sum, BubbleData item) => sum + item.value,
+    );
+    
+    if (isEmpty || totalValue == 0) {
+      return SizedBox(
+        height: StoycoScreenSize.height(context, 200),
+        child: Center(
+          child: Text(
+            'Sin datos disponibles',
+            style: TextStyle(
+              fontSize: StoycoScreenSize.width(context, 16),
+              color: ColorFoundation.text.fandom,
+              fontWeight: FontWeight.w400,
+              fontFamily: StoycoFontFamilyToken.gilroy,
+            ),
+          ),
+        ),
+      );
+    }
+
     return SizedBox(
       width: widget.width ?? 280,
       height: widget.height ?? 280,
@@ -180,42 +227,19 @@ class _BubbleChartState extends State<BubbleChart>
                 ? widget.data.map((BubbleData d) => d.value).reduce((double a, double b) => a > b ? a : b)
                 : 0.0;
 
+            // Calcular el centro para los tooltips
+            final Offset center = Offset(constraints.maxWidth / 2, constraints.maxHeight / 2);
+
             return Stack(
               children: <Widget>[
-                GestureDetector(
-                  onTapDown: (TapDownDetails details) {
-                    if (_controller.isAnimating) {
-                      return;
-                    }
-                    
-                    final RenderBox renderBox = context.findRenderObject()! as RenderBox;
-                    final Offset localPosition = renderBox.globalToLocal(details.globalPosition);
-                    final Offset center = Offset(constraints.maxWidth / 2, constraints.maxHeight / 2);
-                    
-                    final BubbleChartPainter painter = BubbleChartPainter(
-                      bubbles: _bubblePositions,
-                      animation: _animation,
-                      centerRadius: centerRadius,
-                      total: widget.total,
-                      maxValue: maxValue,
-                    );
-                    
-                    final BubblePosition? bubble = painter.getBubbleAtPosition(localPosition, center);
-                    
-                    setState(() {
-                      _selectedBubble = bubble;
-                      _graphCenter = center;
-                    });
-                  },
-                  child: CustomPaint(
-                    size: Size(constraints.maxWidth, constraints.maxHeight),
-                    painter: BubbleChartPainter(
-                      bubbles: _bubblePositions,
-                      animation: _animation,
-                      centerRadius: centerRadius,
-                      total: widget.total,
-                      maxValue: maxValue,
-                    ),
+                CustomPaint(
+                  size: Size(constraints.maxWidth, constraints.maxHeight),
+                  painter: BubbleChartPainter(
+                    bubbles: _bubblePositions,
+                    animation: _animation,
+                    centerRadius: centerRadius,
+                    total: widget.total,
+                    maxValue: maxValue,
                   ),
                 ),
                 // Logo en el centro
@@ -243,13 +267,21 @@ class _BubbleChartState extends State<BubbleChart>
                     ),
                   ),
                 ),
-                if (_selectedBubble != null && _graphCenter != null && _controller.isCompleted)
-                  Positioned.fill(
-                    child: AnimatedBuilder(
+                // Tooltips para cada burbuja
+                  ..._bubblePositions.asMap().entries.map((MapEntry<int, BubblePosition> entry) {
+                    final int index = entry.key;
+                    final BubblePosition bubble = entry.value;
+                    const double angleRange = math.pi;
+                    final double baseAngle = _bubblePositions.length > 1
+                        ? -angleRange / 2 + (angleRange / (_bubblePositions.length - 1)) * index
+                        : 0;
+                    final double angle = baseAngle;
+                    
+                    return AnimatedBuilder(
                       animation: _tooltipAnimation,
                       builder: (BuildContext context, Widget? child) {
                         final double maxContainerRadius = (widget.width ?? 280) / 2;
-                        final double distanceFromCenter = _selectedBubble!.radius;
+                        final double distanceFromCenter = bubble.radius;
                         final double remainingSpace = maxContainerRadius - distanceFromCenter;
                         final double lineLength = remainingSpace > 66 ? 66 : remainingSpace * 0.7;
                         
@@ -263,52 +295,53 @@ class _BubbleChartState extends State<BubbleChart>
                                 0,
                               ),
                               child: BubbleTooltip(
-                                value: NumbersFormat.formatCompact(_selectedBubble!.data.value),
-                                lineStartOffset: _graphCenter! + Offset(
-                                  _selectedBubble!.radius * math.cos(0),
-                                  _selectedBubble!.radius * math.sin(0),
+                                value: NumbersFormat.formatCompact(bubble.data.value),
+                                lineStartOffset: center + Offset(
+                                  bubble.radius * math.cos(angle),
+                                  bubble.radius * math.sin(angle),
                                 ),
-                                lineEndOffset: _graphCenter! + Offset(
-                                  _selectedBubble!.radius * math.cos(0) + lineLength,
-                                  _selectedBubble!.radius * math.sin(0),
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                Positioned(
-                  top: 40,
-                  left: 20,
-                  right: 0,
-                  child: Center(
-                    child: AnimatedBuilder(
-                      animation: _tooltipAnimation,
-                      builder: (BuildContext context, Widget? child) {
-                        return Opacity(
-                          opacity: _tooltipAnimation.value,
-                          child: Transform.scale(
-                            scale: 0.8 + (_tooltipAnimation.value * 0.2),
-                            child: Transform.translate(
-                              offset: Offset(0, -20 * (1 - _tooltipAnimation.value)),
-                              child: BubbleTooltip(
-                                value: NumbersFormat.formatCompact(widget.total),
-                                lineStartOffset: Offset(
-                                  (widget.width ?? 280) / 2,
-                                  0,
-                                ),
-                                lineEndOffset: Offset(
-                                  (widget.width ?? 280) / 1.5,
-                                  0,
+                                lineEndOffset: center + Offset(
+                                  bubble.radius * math.cos(angle) + lineLength,
+                                  bubble.radius * math.sin(angle),
                                 ),
                               ),
                             ),
                           ),
                         );
                       },
-                    ),
+                    );
+                  }),
+                // Tooltip del total - dinámico basado en el radio exterior
+                Positioned.fill(
+                  child: AnimatedBuilder(
+                    animation: _tooltipAnimation,
+                    builder: (BuildContext context, Widget? child) {
+                      // Calcular la posición del tooltip en el borde de la circunferencia externa
+                      final double maxRadius = math.min(constraints.maxWidth, constraints.maxHeight) / 2;
+                      const double angle = -math.pi / 2; // Hacia arriba
+                      const double lineLength = 50.0;
+                      
+                      return Opacity(
+                        opacity: _tooltipAnimation.value,
+                        child: Transform.scale(
+                          scale: 0.8 + (_tooltipAnimation.value * 0.2),
+                          child: Transform.translate(
+                            offset: Offset(0, -20 * (1 - _tooltipAnimation.value)),
+                            child: BubbleTooltip(
+                              value: NumbersFormat.formatCompact(widget.total),
+                              lineStartOffset: center + Offset(
+                                maxRadius * math.cos(angle),
+                                maxRadius * math.sin(angle),
+                              ),
+                              lineEndOffset: center + Offset(
+                                maxRadius * math.cos(angle) + lineLength,
+                                maxRadius * math.sin(angle),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ),
               ],

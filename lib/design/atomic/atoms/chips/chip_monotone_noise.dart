@@ -6,14 +6,19 @@ import 'package:stoyco_partners_shared/design/utils/foundations/color_foundation
 import 'package:stoyco_partners_shared/design/utils/tokens/gen/fonts.gen.dart';
 
 class ChipMonotoneNoise extends StatelessWidget {
-  const ChipMonotoneNoise({super.key, required this.message, this.padding});
+  const ChipMonotoneNoise({
+    super.key,
+    this.message = '',
+    this.padding,
+    this.child,
+  });
 
+  final Widget? child;
   final String message;
   final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context) {
-
     return ClipRRect(
       borderRadius: BorderRadius.circular(StoycoScreenSize.radius(context, 15)),
       child: BackdropFilter(
@@ -37,22 +42,26 @@ class ChipMonotoneNoise extends StatelessWidget {
                   child: CustomPaint(painter: _MonotoneNoisePainter()),
                 ),
                 Padding(
-                  padding: padding ?? StoycoScreenSize.symmetric(
-                    context,
-                    horizontal: StoycoScreenSize.width(context, 12),
-                    vertical: StoycoScreenSize.height(context, 4),
-                  ),
-                  child: Text(
-                    message,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontFamily: StoycoFontFamilyToken.gilroy,
-                      fontWeight: FontWeight.w700,
-                      fontSize: StoycoScreenSize.fontSize(context, 12),
-                      color: ColorFoundation.text.fandom,
-                    ),
-                  ),
+                  padding:
+                      padding ??
+                      StoycoScreenSize.symmetric(
+                        context,
+                        horizontal: StoycoScreenSize.width(context, 12),
+                        vertical: StoycoScreenSize.height(context, 4),
+                      ),
+                  child:
+                      child ??
+                      Text(
+                        message,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontFamily: StoycoFontFamilyToken.gilroy,
+                          fontWeight: FontWeight.w700,
+                          fontSize: StoycoScreenSize.fontSize(context, 12),
+                          color: ColorFoundation.text.fandom,
+                        ),
+                      ),
                 ),
               ],
             ),

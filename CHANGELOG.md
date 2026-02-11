@@ -1,3 +1,20 @@
+## 1.0.8
+
+### Features
+
+- Add CardContentFlex widget and enhance ChipMonotoneNoise with child support; improve BarHorizontalChart and TopTenLocationsFlags for better data handling and visualization
+- Refactor TopTenLocationsFlags to remove sorting logic and improve rendering
+- Removed the internal sorting of location data in _TopTenLocationsFlagsState.
+- Updated the build method to directly use the widget's data for rendering.
+- Enhanced the UI to display a message when no ranking data is available.
+- Adjusted item layout for better spacing and alignment.
+- Add utility function for formatting integers with commas
+- Introduced formatWithCommasInt method in NumbersFormat for better integer formatting.
+- Add new SVG asset for Stoyco flag
+- Added flag_stoyco.svg to assets and updated asset generation.
+- Create utility for date formatting
+- Added DatesFormats class with a method to format dates in DD/MM/YYYY format.
+
 ## 1.0.7
 
 ### Features

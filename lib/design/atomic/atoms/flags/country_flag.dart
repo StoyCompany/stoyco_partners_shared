@@ -1,6 +1,8 @@
 import 'package:country_flags/country_flags.dart';
 import 'package:flutter/material.dart';
 import 'package:stoyco_partners_shared/design/responsive/screen_size/stoyco_screen_size.dart';
+import 'package:stoyco_partners_shared/design/utils/foundations/color_foundation.dart';
+import 'package:stoyco_partners_shared/design/utils/tokens/gen/assets.gen.dart';
 
   /// {@template conuntry_flag}
   /// A [ConuntryFlag] atom for the Stoyco Subscription Atomic Design System.
@@ -51,6 +53,26 @@ class ConuntryFlag extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Handle Stoyco flag separately
+    if (conuntryCode.toUpperCase() == 'STOYCO') {
+      return Container(
+        width: width,
+        height: height,
+        decoration: BoxDecoration(
+          color: ColorFoundation.background.white,
+          borderRadius: BorderRadius.circular(
+            StoycoScreenSize.radius(context, borderRadius),
+          ),
+        ),
+        padding: StoycoScreenSize.symmetric(context,vertical: 2),
+        child: StoycoAssetsToken.lib.assets.icons.flagStoyco.svg(
+          fit: BoxFit.fitHeight,
+          package: 'stoyco_partners_shared',
+        ),
+      );
+    }
+
+    // Handle country flags from library
     Widget? flagWidget;
     try {
       flagWidget = CountryFlag.fromCountryCode(
