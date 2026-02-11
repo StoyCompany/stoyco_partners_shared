@@ -80,7 +80,29 @@ class _BubbleChartState extends State<BubbleChart>
   @override
   void didUpdateWidget(BubbleChart oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.data != widget.data || oldWidget.total != widget.total) {
+    
+    // Compare length and total first for quick checks
+    if (oldWidget.data.length != widget.data.length || 
+        oldWidget.total != widget.total) {
+      _calculateBubblePositions();
+      _tooltipController.reset();
+      _controller
+        ..reset()
+        ..forward();
+      return;
+    }
+    
+    // Deep comparison of bubble values and colors
+    bool hasChanged = false;
+    for (int i = 0; i < widget.data.length; i++) {
+      if (oldWidget.data[i].value != widget.data[i].value ||
+          oldWidget.data[i].color != widget.data[i].color) {
+        hasChanged = true;
+        break;
+      }
+    }
+    
+    if (hasChanged) {
       _calculateBubblePositions();
       _tooltipController.reset();
       _controller
