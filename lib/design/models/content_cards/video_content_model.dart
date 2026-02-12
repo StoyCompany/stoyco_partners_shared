@@ -13,6 +13,7 @@ class VideoContentModel extends ContentCardModel {
     required this.views,
     required this.likes,
     required this.shares,
+    required this.comments,
     required this.publishDate,
   }) : super(contentType: ContentType.video);
   factory VideoContentModel.fromJson(Map<String, dynamic> json) =>
@@ -23,6 +24,7 @@ class VideoContentModel extends ContentCardModel {
   final int views;
   final int likes;
   final int shares;
+  final int comments;
   final String publishDate;
 
   Map<String, dynamic> toJson() => _$VideoContentModelToJson(this);
@@ -35,6 +37,7 @@ class VideoContentModel extends ContentCardModel {
     views,
     likes,
     shares,
+    comments,
     publishDate,
   ];
 }

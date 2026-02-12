@@ -15,6 +15,7 @@ VideoContentModel _$VideoContentModelFromJson(Map<String, dynamic> json) =>
       views: (json['views'] as num).toInt(),
       likes: (json['likes'] as num).toInt(),
       shares: (json['shares'] as num).toInt(),
+      comments: (json['comments'] as num).toInt(),
       publishDate: json['publishDate'] as String,
     );
 
@@ -27,5 +28,6 @@ Map<String, dynamic> _$VideoContentModelToJson(VideoContentModel instance) =>
       'views': instance.views,
       'likes': instance.likes,
       'shares': instance.shares,
+      'comments': instance.comments,
       'publishDate': instance.publishDate,
     };
