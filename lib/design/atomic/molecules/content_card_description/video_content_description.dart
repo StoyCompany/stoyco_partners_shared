@@ -4,6 +4,7 @@ import 'package:stoyco_partners_shared/design/atomic/templates/content_card_desc
 import 'package:stoyco_partners_shared/design/models/content_cards/video_content_model.dart';
 import 'package:stoyco_partners_shared/design/responsive/gutter.dart';
 import 'package:stoyco_partners_shared/design/responsive/screen_size/stoyco_screen_size.dart';
+import 'package:stoyco_partners_shared/design/utils/formats/numbers.dart';
 import 'package:stoyco_partners_shared/design/utils/foundations/color_foundation.dart';
 import 'package:stoyco_partners_shared/design/utils/tokens/gen/assets.gen.dart';
 import 'package:stoyco_partners_shared/design/utils/tokens/gen/fonts.gen.dart';
@@ -18,7 +19,6 @@ class VideoContentDescription extends ContentCardDescription {
     return SizedBox(
       height: StoycoScreenSize.height(context, 115),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: Gutter.separateChildren(
           children: <Widget>[
@@ -79,7 +79,7 @@ class VideoContentDescription extends ContentCardDescription {
                         width: StoycoScreenSize.width(context, 14),
                         height: StoycoScreenSize.height(context, 14),
                       ),
-                      stat: data.likes.toString(),
+                      stat: NumbersFormat.formatCompact(data.likes.toDouble()),
                     ),
                     tooltipMessage: '${data.likes} Me gusta',
                   ),
@@ -90,7 +90,7 @@ class VideoContentDescription extends ContentCardDescription {
                         width: StoycoScreenSize.width(context, 14),
                         height: StoycoScreenSize.height(context, 14),
                       ),
-                      stat: data.shares.toString(),
+                      stat: NumbersFormat.formatCompact(data.shares.toDouble()),
                     ),
                     tooltipMessage: '${data.shares} Compartidos',
                   ),
@@ -101,7 +101,9 @@ class VideoContentDescription extends ContentCardDescription {
                         width: StoycoScreenSize.width(context, 14),
                         height: StoycoScreenSize.height(context, 14),
                       ),
-                      stat: data.comments.toString(),
+                      stat: NumbersFormat.formatCompact(
+                        data.comments.toDouble(),
+                      ),
                     ),
                     tooltipMessage: '${data.comments} Comentarios',
                   ),
@@ -112,7 +114,7 @@ class VideoContentDescription extends ContentCardDescription {
                         color: ColorFoundation.text.saLight,
                         size: StoycoScreenSize.height(context, 14),
                       ),
-                      stat: data.views.toString(),
+                      stat: NumbersFormat.formatCompact(data.views.toDouble()),
                     ),
                     tooltipMessage: '${data.views} Vistas',
                   ),
@@ -152,12 +154,17 @@ class _ContentStatWithTooltipState extends State<_ContentStatWithTooltip> {
   }
 
   void _showTooltip() {
-    if (_overlayEntry != null) return;
+    if (_overlayEntry != null) {
+      return;
+    }
 
     final RenderBox? renderBox = context.findRenderObject() as RenderBox?;
-    if (renderBox == null) return;
+    if (renderBox == null) {
+      return;
+    }
 
     final Offset offset = renderBox.localToGlobal(Offset.zero);
+    final Size size = renderBox.size;
 
     _overlayEntry = OverlayEntry(
       builder: (BuildContext overlayContext) => GestureDetector(
@@ -168,35 +175,64 @@ class _ContentStatWithTooltipState extends State<_ContentStatWithTooltip> {
           child: Stack(
             children: <Widget>[
               Positioned(
-                left: offset.dx - StoycoScreenSize.width(context, 20),
-                top: offset.dy - StoycoScreenSize.height(context, 50),
-                child: GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: StoycoScreenSize.width(context, 12),
-                      vertical: StoycoScreenSize.height(context, 8),
-                    ),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFA397BE),
-                      borderRadius: BorderRadius.circular(
-                        StoycoScreenSize.width(context, 8),
+                right:
+                    MediaQuery.of(context).size.width -
+                    offset.dx +
+                    StoycoScreenSize.width(context, 8),
+                top:
+                    offset.dy +
+                    (size.height / 2) -
+                    StoycoScreenSize.height(context, 20),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: _removeTooltip,
+                      child: Container(
+                        padding: EdgeInsets.all(
+                          StoycoScreenSize.width(context, 4),
+                        ),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.close,
+                          size: StoycoScreenSize.width(context, 12),
+                          color: ColorFoundation.text.saDark,
+                        ),
                       ),
                     ),
-                    constraints: BoxConstraints(
-                      maxWidth: StoycoScreenSize.width(context, 150),
-                    ),
-                    child: Text(
-                      widget.tooltipMessage,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontFamily: StoycoFontFamilyToken.gilroy,
-                        fontSize: StoycoScreenSize.fontSize(context, 12),
-                        fontWeight: FontWeight.w500,
-                        color: const Color(0xFF14121D),
+                    Gutter(StoycoScreenSize.width(context, 8)),
+                    GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: StoycoScreenSize.width(context, 12),
+                          vertical: StoycoScreenSize.height(context, 8),
+                        ),
+                        decoration: BoxDecoration(
+                          color: ColorFoundation.background.saLight,
+                          borderRadius: BorderRadius.circular(
+                            StoycoScreenSize.width(context, 8),
+                          ),
+                        ),
+                        constraints: BoxConstraints(
+                          maxWidth: StoycoScreenSize.width(context, 150),
+                        ),
+                        child: Text(
+                          widget.tooltipMessage,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontFamily: StoycoFontFamilyToken.gilroy,
+                            fontSize: StoycoScreenSize.fontSize(context, 10),
+                            fontWeight: FontWeight.w500,
+                            color: ColorFoundation.text.saDark,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
               ),
             ],

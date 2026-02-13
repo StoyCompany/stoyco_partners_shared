@@ -79,6 +79,9 @@ class $LibAssetsIconsGen {
   /// File path: lib/assets/icons/share.svg
   SvgGenImage get share => const SvgGenImage('lib/assets/icons/share.svg');
 
+  /// File path: lib/assets/icons/x_icon.svg
+  SvgGenImage get xIcon => const SvgGenImage('lib/assets/icons/x_icon.svg');
+
   /// List of all assets
   List<SvgGenImage> get values => [
     alert,
@@ -90,6 +93,7 @@ class $LibAssetsIconsGen {
     mailBox,
     message,
     share,
+    xIcon,
   ];
 }
 
