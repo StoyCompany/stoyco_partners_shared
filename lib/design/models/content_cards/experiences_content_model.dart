@@ -19,6 +19,9 @@ class ExperiencesContentModel extends ContentCardModel {
     this.finishDate,
   }) : super(contentType: ContentType.experiences);
 
+  factory ExperiencesContentModel.fromJson(Map<String, dynamic> json) =>
+      _$ExperiencesContentModelFromJson(json);
+
   final String name;
   final int capacity;
   final int totalTickets;
@@ -28,9 +31,6 @@ class ExperiencesContentModel extends ContentCardModel {
   final String eventDate;
   final bool isFinished;
   final String? finishDate;
-
-  factory ExperiencesContentModel.fromJson(Map<String, dynamic> json) =>
-      _$ExperiencesContentModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$ExperiencesContentModelToJson(this);
 
