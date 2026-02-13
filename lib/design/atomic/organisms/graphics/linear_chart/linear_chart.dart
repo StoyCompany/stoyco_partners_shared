@@ -27,9 +27,32 @@ class LinearChart extends StatefulWidget {
   State<LinearChart> createState() => _LinearChartState();
 }
 
-class _LinearChartState extends State<LinearChart> {
+class _LinearChartState extends State<LinearChart>
+    with SingleTickerProviderStateMixin {
   int? _touchedSpotIndex;
   String? _touchedLineKey;
+  late AnimationController _animationController;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: widget.animationDuration,
+      vsync: this,
+    );
+    _animation = CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOutCubic,
+    );
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
 
   List<ChartLegendItemModel> get legendItems => widget.lineConfigs
       .map(
@@ -75,7 +98,6 @@ class _LinearChartState extends State<LinearChart> {
   Widget _buildTooltipContent(LinearChartPoint point) {
     final List<Widget> items = <Widget>[];
 
-    // Label del punto
     items.add(
       Text(
         point.label,
@@ -90,7 +112,6 @@ class _LinearChartState extends State<LinearChart> {
 
     items.add(Gap(StoycoScreenSize.height(context, 8)));
 
-    // Valores por categoría
     final Map<String, double> values = <String, double>{
       'Male': point.male,
       'Female': point.female,
@@ -117,7 +138,6 @@ class _LinearChartState extends State<LinearChart> {
 
     items.add(Gap(StoycoScreenSize.height(context, 8)));
 
-    // Total
     items.add(
       Text(
         'Total: ${NumbersFormat.formatWithCommas(point.total)}',
@@ -156,7 +176,6 @@ class _LinearChartState extends State<LinearChart> {
       );
     }
 
-    // Verificar si hay al menos una línea con datos
     bool hasData = false;
     for (final LinearChartLineConfig config in widget.lineConfigs) {
       final List<LinearChartPoint> points = _getPointsForLine(config.key);
@@ -187,7 +206,6 @@ class _LinearChartState extends State<LinearChart> {
     final double minY = widget.data!.rangeY.first;
     final double rangeMaxY = widget.data!.rangeY.last;
     final double dataMaxY = _calculateMaxValue();
-    // Usar el mayor entre el rango definido y los datos reales
     final double maxY = dataMaxY > rangeMaxY ? dataMaxY : rangeMaxY;
 
     return Column(
@@ -211,234 +229,251 @@ class _LinearChartState extends State<LinearChart> {
                   ),
                   child: Stack(
                     children: <Widget>[
-                      LineChart(
-                        LineChartData(
-                          minY: minY,
-                          maxY: maxY,
-                          minX: 0,
-                          maxX: (widget.data!.rangeX.length - 1).toDouble(),
-                          gridData: FlGridData(
-                            show: true,
-                            drawVerticalLine: false,
-                            checkToShowHorizontalLine: (double value) {
-                              // Asegurar que se muestren todas las líneas incluyendo min y max
-                              return true;
-                            },
-                            horizontalInterval:
-                                widget.data!.rangeY.isNotEmpty &&
-                                    widget.data!.rangeY.length > 1
-                                ? (maxY - minY) /
-                                      (widget.data!.rangeY.length - 1)
-                                : (maxY - minY) / 4,
-                            getDrawingHorizontalLine: (double value) {
-                              return FlLine(
-                                color: ColorFoundation.background.white,
-                                strokeWidth: 0.5,
-                              );
-                            },
-                          ),
-                          titlesData: FlTitlesData(
-                            show: true,
-                            rightTitles: const AxisTitles(
-                              sideTitles: SideTitles(showTitles: false),
-                            ),
-                            topTitles: const AxisTitles(
-                              sideTitles: SideTitles(showTitles: false),
-                            ),
-                            bottomTitles: AxisTitles(
-                              sideTitles: SideTitles(
-                                showTitles: true,
-                                reservedSize: 40,
-                                interval: 1,
-                                getTitlesWidget:
-                                    (double value, TitleMeta meta) {
-                                      final int index = value.toInt();
-                                      if (index >= 0 &&
-                                          index < widget.data!.rangeX.length) {
-                                        String label =
-                                            widget.data!.rangeX[index];
-                                        // Capitalizar primera letra
-                                        if (label.isNotEmpty) {
-                                          label =
-                                              label[0].toUpperCase() +
-                                              label.substring(1);
-                                        }
-                                        return Padding(
-                                          padding: const EdgeInsets.only(
-                                            top: 8.0,
-                                          ),
-                                          child: Text(
-                                            label,
-                                            style: TextStyle(
-                                              fontSize: StoycoScreenSize.width(
-                                                context,
-                                                15,
-                                              ),
-                                              color: ColorFoundation.text.white,
-                                              fontWeight: FontWeight.w500,
-                                              fontFamily:
-                                                  StoycoFontFamilyToken.gilroy,
-                                            ),
-                                            textAlign: TextAlign.center,
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        );
-                                      }
-                                      return const SizedBox();
-                                    },
-                              ),
-                            ),
-                            leftTitles: AxisTitles(
-                              sideTitles: SideTitles(
-                                showTitles: true,
-                                reservedSize: 50,
-                                interval: widget.data!.rangeY.length > 1
+                      AnimatedBuilder(
+                        animation: _animation,
+                        builder: (BuildContext context, Widget? child) {
+                          return LineChart(
+                            LineChartData(
+                              minY: minY,
+                              maxY: maxY,
+                              minX: 0,
+                              maxX: (widget.data!.rangeX.length - 1).toDouble(),
+                              gridData: FlGridData(
+                                show: true,
+                                drawVerticalLine: false,
+                                checkToShowHorizontalLine: (double value) {
+                                  return true;
+                                },
+                                horizontalInterval:
+                                    widget.data!.rangeY.isNotEmpty &&
+                                        widget.data!.rangeY.length > 1
                                     ? (maxY - minY) /
                                           (widget.data!.rangeY.length - 1)
-                                    : 1,
-                                getTitlesWidget:
-                                    (double value, TitleMeta meta) {
-                                      return Padding(
-                                        padding: const EdgeInsets.only(
-                                          right: 8.0,
-                                        ),
-                                        child: Text(
-                                          NumbersFormat.formatCompact(value),
-                                          style: TextStyle(
-                                            fontSize: StoycoScreenSize.width(
-                                              context,
-                                              15,
-                                            ),
-                                            color: ColorFoundation.text.white,
-                                            fontWeight: FontWeight.w500,
-                                            fontFamily:
-                                                StoycoFontFamilyToken.gilroy,
-                                          ),
-                                          textAlign: TextAlign.right,
-                                        ),
-                                      );
-                                    },
+                                    : (maxY - minY) / 4,
+                                getDrawingHorizontalLine: (double value) {
+                                  return FlLine(
+                                    color: ColorFoundation.background.white,
+                                    strokeWidth: 0.5,
+                                  );
+                                },
                               ),
-                            ),
-                          ),
-                          borderData: FlBorderData(show: false),
-                          lineBarsData: widget.lineConfigs.map((
-                            LinearChartLineConfig config,
-                          ) {
-                            final List<LinearChartPoint> points =
-                                _getPointsForLine(config.key);
-
-                            if (points.isEmpty) {
-                              return LineChartBarData(spots: <FlSpot>[]);
-                            }
-
-                            return LineChartBarData(
-                              show: true,
-                              spots: List<FlSpot>.generate(
-                                points.length,
-                                (int index) => FlSpot(
-                                  index.toDouble(),
-                                  points[index].total,
+                              titlesData: FlTitlesData(
+                                show: true,
+                                rightTitles: const AxisTitles(
+                                  sideTitles: SideTitles(showTitles: false),
+                                ),
+                                topTitles: const AxisTitles(
+                                  sideTitles: SideTitles(showTitles: false),
+                                ),
+                                bottomTitles: AxisTitles(
+                                  sideTitles: SideTitles(
+                                    showTitles: true,
+                                    reservedSize: 40,
+                                    interval: 1,
+                                    getTitlesWidget:
+                                        (double value, TitleMeta meta) {
+                                          final int index = value.toInt();
+                                          if (index >= 0 &&
+                                              index <
+                                                  widget.data!.rangeX.length) {
+                                            String label =
+                                                widget.data!.rangeX[index];
+                                            if (label.isNotEmpty) {
+                                              label =
+                                                  label[0].toUpperCase() +
+                                                  label.substring(1);
+                                            }
+                                            return Padding(
+                                              padding: const EdgeInsets.only(
+                                                top: 8.0,
+                                              ),
+                                              child: Text(
+                                                label,
+                                                style: TextStyle(
+                                                  fontSize:
+                                                      StoycoScreenSize.width(
+                                                        context,
+                                                        15,
+                                                      ),
+                                                  color: ColorFoundation
+                                                      .text
+                                                      .white,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontFamily:
+                                                      StoycoFontFamilyToken
+                                                          .gilroy,
+                                                ),
+                                                textAlign: TextAlign.center,
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            );
+                                          }
+                                          return const SizedBox();
+                                        },
+                                  ),
+                                ),
+                                leftTitles: AxisTitles(
+                                  sideTitles: SideTitles(
+                                    showTitles: true,
+                                    reservedSize: 50,
+                                    interval: widget.data!.rangeY.length > 1
+                                        ? (maxY - minY) /
+                                              (widget.data!.rangeY.length - 1)
+                                        : 1,
+                                    getTitlesWidget:
+                                        (double value, TitleMeta meta) {
+                                          return Padding(
+                                            padding: const EdgeInsets.only(
+                                              right: 8.0,
+                                            ),
+                                            child: Text(
+                                              NumbersFormat.formatCompact(
+                                                value,
+                                              ),
+                                              style: TextStyle(
+                                                fontSize:
+                                                    StoycoScreenSize.width(
+                                                      context,
+                                                      15,
+                                                    ),
+                                                color:
+                                                    ColorFoundation.text.white,
+                                                fontWeight: FontWeight.w500,
+                                                fontFamily:
+                                                    StoycoFontFamilyToken
+                                                        .gilroy,
+                                              ),
+                                              textAlign: TextAlign.right,
+                                            ),
+                                          );
+                                        },
+                                  ),
                                 ),
                               ),
-                              isCurved: true,
-                              curveSmoothness: 0.3,
-                              color: config.color,
-                              barWidth: config.strokeWidth,
-                              isStrokeCapRound: true,
-                              preventCurveOverShooting: true,
-                              dotData: FlDotData(
-                                show: true,
-                                getDotPainter:
+                              borderData: FlBorderData(show: false),
+                              lineBarsData: widget.lineConfigs.map((
+                                LinearChartLineConfig config,
+                              ) {
+                                final List<LinearChartPoint> points =
+                                    _getPointsForLine(config.key);
+
+                                if (points.isEmpty) {
+                                  return LineChartBarData(spots: <FlSpot>[]);
+                                }
+
+                                final int pointsToShow =
+                                    (_animation.value * points.length).ceil();
+
+                                return LineChartBarData(
+                                  show: true,
+                                  spots: List<FlSpot>.generate(
+                                    pointsToShow,
+                                    (int index) => FlSpot(
+                                      index.toDouble(),
+                                      points[index].total,
+                                    ),
+                                  ),
+                                  isCurved: true,
+                                  curveSmoothness: 0.3,
+                                  color: config.color,
+                                  barWidth: config.strokeWidth,
+                                  isStrokeCapRound: true,
+                                  preventCurveOverShooting: true,
+                                  dotData: FlDotData(
+                                    show: true,
+                                    getDotPainter:
+                                        (
+                                          FlSpot spot,
+                                          double percent,
+                                          LineChartBarData barData,
+                                          int index,
+                                        ) {
+                                          final bool isTouched =
+                                              _touchedLineKey == config.key &&
+                                              _touchedSpotIndex == index;
+                                          return FlDotCirclePainter(
+                                            radius: isTouched
+                                                ? config.dotSize * 1.8
+                                                : config.dotSize,
+                                            color: ColorFoundation
+                                                .background
+                                                .white,
+                                            strokeWidth: 1,
+                                            strokeColor: config.color,
+                                          );
+                                        },
+                                  ),
+                                  belowBarData: BarAreaData(show: false),
+                                );
+                              }).toList(),
+                              lineTouchData: LineTouchData(
+                                enabled: true,
+                                touchSpotThreshold: 15,
+                                getTouchedSpotIndicator:
                                     (
-                                      FlSpot spot,
-                                      double percent,
                                       LineChartBarData barData,
-                                      int index,
+                                      List<int> spotIndexes,
                                     ) {
-                                      final bool isTouched =
-                                          _touchedLineKey == config.key &&
-                                          _touchedSpotIndex == index;
-                                      return FlDotCirclePainter(
-                                        radius: isTouched
-                                            ? config.dotSize * 1.8
-                                            : config.dotSize,
-                                        color: ColorFoundation.background.white,
-                                        strokeWidth: 1,
-                                        strokeColor: config.color,
-                                      );
+                                      return spotIndexes.map((int index) {
+                                        return const TouchedSpotIndicatorData(
+                                          FlLine(
+                                            color: Color(0xFFA397BE),
+                                            strokeWidth: 1,
+                                            dashArray: <int>[2, 2],
+                                          ),
+                                          FlDotData(show: false),
+                                        );
+                                      }).toList();
+                                    },
+                                touchTooltipData: LineTouchTooltipData(
+                                  getTooltipColor: (LineBarSpot spot) =>
+                                      Colors.transparent,
+                                  getTooltipItems:
+                                      (List<LineBarSpot> touchedSpots) {
+                                        return touchedSpots.map((
+                                          LineBarSpot spot,
+                                        ) {
+                                          return const LineTooltipItem(
+                                            '',
+                                            TextStyle(),
+                                          );
+                                        }).toList();
+                                      },
+                                ),
+                                touchCallback:
+                                    (
+                                      FlTouchEvent event,
+                                      LineTouchResponse? touchResponse,
+                                    ) {
+                                      if (event is FlTapUpEvent &&
+                                          touchResponse?.lineBarSpots != null) {
+                                        final LineBarSpot spot =
+                                            touchResponse!.lineBarSpots!.first;
+                                        setState(() {
+                                          if (_touchedSpotIndex ==
+                                                  spot.spotIndex &&
+                                              _touchedLineKey ==
+                                                  widget
+                                                      .lineConfigs[spot
+                                                          .barIndex]
+                                                      .key) {
+                                            _touchedSpotIndex = null;
+                                            _touchedLineKey = null;
+                                          } else {
+                                            _touchedSpotIndex = spot.spotIndex;
+                                            _touchedLineKey = widget
+                                                .lineConfigs[spot.barIndex]
+                                                .key;
+                                          }
+                                        });
+                                      }
                                     },
                               ),
-                              belowBarData: BarAreaData(show: false),
-                            );
-                          }).toList(),
-                          lineTouchData: LineTouchData(
-                            enabled: true,
-                            touchSpotThreshold: 15,
-                            getTouchedSpotIndicator:
-                                (
-                                  LineChartBarData barData,
-                                  List<int> spotIndexes,
-                                ) {
-                                  return spotIndexes.map((int index) {
-                                    return const TouchedSpotIndicatorData(
-                                      FlLine(
-                                        color: Color(0xFFA397BE),
-                                        strokeWidth: 1,
-                                        dashArray: <int>[2, 2],
-                                      ),
-                                      FlDotData(show: false),
-                                    );
-                                  }).toList();
-                                },
-                            touchTooltipData: LineTouchTooltipData(
-                              getTooltipColor: (LineBarSpot spot) =>
-                                  Colors.transparent,
-                              getTooltipItems:
-                                  (List<LineBarSpot> touchedSpots) {
-                                    return touchedSpots.map((LineBarSpot spot) {
-                                      return const LineTooltipItem(
-                                        '',
-                                        TextStyle(),
-                                      );
-                                    }).toList();
-                                  },
                             ),
-                            touchCallback:
-                                (
-                                  FlTouchEvent event,
-                                  LineTouchResponse? touchResponse,
-                                ) {
-                                  if (event is FlTapUpEvent &&
-                                      touchResponse?.lineBarSpots != null) {
-                                    final LineBarSpot spot =
-                                        touchResponse!.lineBarSpots!.first;
-                                    setState(() {
-                                      if (_touchedSpotIndex == spot.spotIndex &&
-                                          _touchedLineKey ==
-                                              widget
-                                                  .lineConfigs[spot.barIndex]
-                                                  .key) {
-                                        // Si se toca el mismo punto, cerrar tooltip
-                                        _touchedSpotIndex = null;
-                                        _touchedLineKey = null;
-                                      } else {
-                                        // Mostrar tooltip del nuevo punto
-                                        _touchedSpotIndex = spot.spotIndex;
-                                        _touchedLineKey = widget
-                                            .lineConfigs[spot.barIndex]
-                                            .key;
-                                      }
-                                    });
-                                  }
-                                },
-                          ),
-                        ),
-                        duration: widget.animationDuration,
-                        curve: Curves.easeInOutCubic,
+                          );
+                        },
                       ),
-                      // Tooltip personalizado
                       if (_touchedSpotIndex != null && _touchedLineKey != null)
                         Builder(
                           builder: (BuildContext context) {
