@@ -281,9 +281,14 @@ class _BarHorizontalChartState extends State<BarHorizontalChart>
 
     return Column(
       children: <Widget>[
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: ChartLegend(items: legendItems),
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: StoycoScreenSize.width(context, 16),
+          ),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: ChartLegend(items: legendItems),
+          ),
         ),
         Gap(StoycoScreenSize.height(context, 28)),
         SizedBox(
@@ -476,7 +481,7 @@ class _BarHorizontalChartState extends State<BarHorizontalChart>
                       final double groupCenterY = yPosition + (selectedGroupHeight + (widget.groupSpacing * 2)) / 2;
                       
                       // Centrar el tooltip en el grupo
-                      double desiredTop = groupCenterY - (estimatedTooltipHeight / 2);
+                      final double desiredTop = groupCenterY - (estimatedTooltipHeight / 2);
                       
                       // Asegurar que el tooltip no se salga por arriba
                       double finalTop = math.max(0, desiredTop);

@@ -88,7 +88,9 @@ class _TopTenLocationsFlagsState extends State<TopTenLocationsFlags>
               break;
             }
           }
-          if (hasNonZeroValue) break;
+          if (hasNonZeroValue) {
+            break;
+          }
         }
         
         if (hasNonZeroValue && !visibleCategoryColors.contains(categoryColor)) {
@@ -99,43 +101,58 @@ class _TopTenLocationsFlagsState extends State<TopTenLocationsFlags>
 
     final bool hasMultipleValues = visibleCategoryColors.length > 1;
 
-    return SingleChildScrollView(
-      controller: _scrollController,
-      scrollDirection: Axis.horizontal,
-      physics: const ClampingScrollPhysics(),
-      child: ConstrainedBox(
-        constraints: BoxConstraints(
-          minWidth: StoycoScreenSize.screenWidth(context),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
+    // Calcular ancho cuando hay múltiples categorías
+    // Asegurar que siempre sea mayor al ancho de pantalla para que funcione el scroll
+    final double screenWidth = StoycoScreenSize.screenWidth(context);
+    final double contentWidth = hasMultipleValues
+        ? screenWidth * (0.80 + (visibleCategoryColors.length * 0.08))
+        : screenWidth;
+
+    final Widget content = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
             // Header con círculos de colores (solo si hay múltiples valores)
             if (hasMultipleValues) 
               _ColorHeader(
                 allValues: widget.data.first.values,
                 visibleColors: visibleCategoryColors,
+                contentWidth: contentWidth,
               ),
 
             // Lista de items
-            ...List<Widget>.generate(widget.data.length, (int index) {
-              final double delay = index * 0.1;
-              return _TopTenLocationItem(
-                data: widget.data[index],
-                position: index + 1,
-                visibleColors: visibleCategoryColors,
-                animation: CurvedAnimation(
-                  parent: _controller,
-                  curve: Interval(
-                    delay,
-                    (delay + 0.3).clamp(0.0, 1.0),
-                    curve: Curves.easeOutCubic,
-                  ),
-                ),
-              );
-            }),
-          ],
-        ),
+        ...List<Widget>.generate(widget.data.length, (int index) {
+          final double delay = index * 0.1;
+          return _TopTenLocationItem(
+            data: widget.data[index],
+            position: index + 1,
+            visibleColors: visibleCategoryColors,
+            contentWidth: contentWidth,
+            animation: CurvedAnimation(
+              parent: _controller,
+              curve: Interval(
+                delay,
+                (delay + 0.3).clamp(0.0, 1.0),
+                curve: Curves.easeOutCubic,
+              ),
+            ),
+          );
+        }),
+      ],
+    );
+
+    // Si hay una sola categoría, no usar scroll
+    if (!hasMultipleValues) {
+      return content;
+    }
+
+    // Con múltiples categorías, usar scroll horizontal con ancho definido
+    return SingleChildScrollView(
+      controller: _scrollController,
+      scrollDirection: Axis.horizontal,
+      physics: const ClampingScrollPhysics(),
+      child: SizedBox(
+        width: contentWidth,
+        child: content,
       ),
     );
   }
@@ -145,16 +162,15 @@ class _ColorHeader extends StatelessWidget {
   const _ColorHeader({
     required this.allValues,
     required this.visibleColors,
+    required this.contentWidth,
   });
 
   final List<TopTenLocationsValue> allValues;
   final List<Color> visibleColors;
+  final double contentWidth;
 
   @override
   Widget build(BuildContext context) {
-    // Calcular ancho dinámico según cantidad de valores visibles
-    final double widthMultiplier = 0.75 + (visibleColors.length * 0.1);
-    
     // Filtrar valores por colores visibles
     final List<TopTenLocationsValue> visibleValues = allValues
         .where((TopTenLocationsValue v) => visibleColors.contains(v.colorValue))
@@ -163,7 +179,7 @@ class _ColorHeader extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(bottom: StoycoScreenSize.height(context, 8)),
       child: SizedBox(
-        width: StoycoScreenSize.screenWidth(context) * widthMultiplier,
+        width: contentWidth,
         child: Row(
           children: <Widget>[
             // Columna izquierda vacía (espacio para número + bandera + nombre)
@@ -217,19 +233,18 @@ class _TopTenLocationItem extends StatelessWidget {
     required this.position,
     required this.animation,
     required this.visibleColors,
+    required this.contentWidth,
   });
 
   final TopTenLocationsData data;
   final int position;
   final Animation<double> animation;
   final List<Color> visibleColors;
+  final double contentWidth;
 
   @override
   Widget build(BuildContext context) {
     final bool hasMultipleValues = visibleColors.length > 1;
-    
-    // Calcular ancho dinámico según cantidad de valores visibles
-    final double widthMultiplier = 0.75 + (visibleColors.length * 0.1);
 
     return AnimatedBuilder(
       animation: animation,
@@ -243,70 +258,67 @@ class _TopTenLocationItem extends StatelessWidget {
                 bottom: StoycoScreenSize.height(context, 12),
               ),
               child: SizedBox(
-                width: StoycoScreenSize.screenWidth(context) * widthMultiplier,
+                width: hasMultipleValues ? contentWidth : null,
                 child: Row(
                   children: <Widget>[
-                    // COLUMNA IZQUIERDA: Número + Bandera + Nombre
-                    Expanded(
-                      child: Row(
-                        children: <Widget>[
-                          // Position number
-                          Text(
-                            '$position.',
-                            style: TextStyle(
-                              fontSize: StoycoScreenSize.width(context, 14),
-                              color: ColorFoundation.text.white,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: StoycoFontFamilyToken.gilroy,
-                            ),
-                          ),
-                          Gap(StoycoScreenSize.width(context, 8)),
-                          // Flag
-                          ConuntryFlag(
-                            conuntryCode: data.codeFlag,
-                            width: StoycoScreenSize.width(context, 24),
-                            height: StoycoScreenSize.height(context, 16),
-                            borderRadius: 2,
-                          ),
-                          Gap(StoycoScreenSize.width(context, 8)),
-                          // Location name with ellipsis - expandible
-                          Expanded(
-                            child: Text(
-                              data.nameLocation,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: StoycoScreenSize.width(context, 14),
-                                color: ColorFoundation.text.white,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: StoycoFontFamilyToken.gilroy,
-                              ),
-                            ),
-                          ),
-                        ],
+                  // Position number con ancho fijo y alineado a la derecha
+                  SizedBox(
+                    width: StoycoScreenSize.width(context, 20),
+                    child: Text(
+                      '$position.',
+                      textAlign: TextAlign.right,
+                      style: TextStyle(
+                        fontSize: StoycoScreenSize.width(context, 14),
+                        color: ColorFoundation.text.white,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: StoycoFontFamilyToken.gilroy,
                       ),
                     ),
-                    
-                    // Espacio entre columnas
-                    Gap(StoycoScreenSize.width(context, 16)),
-                    
-                    // COLUMNA DERECHA: Valores
-                    if (hasMultipleValues)
-                      _MultipleValuesSection(
-                        allValues: data.values,
-                        visibleColors: visibleColors,
-                      )
-                    else if (visibleColors.isNotEmpty)
-                      _SingleValueSection(
-                        value: data.values.firstWhere(
-                          (TopTenLocationsValue v) => v.colorValue == visibleColors.first,
-                          orElse: () => data.values.first,
-                        ).value,
+                  ),
+                  Gap(StoycoScreenSize.width(context, 8)),
+                  // Flag con tamaño fijo
+                  ConuntryFlag(
+                    conuntryCode: data.codeFlag,
+                    width: StoycoScreenSize.width(context, 24),
+                    height: StoycoScreenSize.height(context, 16),
+                    borderRadius: 2,
+                  ),
+                  Gap(StoycoScreenSize.width(context, 8)),
+                  // Location name with ellipsis - expandible
+                  Expanded(
+                    child: Text(
+                      data.nameLocation,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: StoycoScreenSize.width(context, 14),
+                        color: ColorFoundation.text.white,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: StoycoFontFamilyToken.gilroy,
                       ),
-                  ],
-                ),
+                    ),
+                  ),
+                  
+                  // Espacio entre columnas
+                  Gap(StoycoScreenSize.width(context, 16)),
+                  
+                  // COLUMNA DERECHA: Valores
+                  if (hasMultipleValues)
+                    _MultipleValuesSection(
+                      allValues: data.values,
+                      visibleColors: visibleColors,
+                    )
+                  else if (visibleColors.isNotEmpty)
+                    _SingleValueSection(
+                      value: data.values.firstWhere(
+                        (TopTenLocationsValue v) => v.colorValue == visibleColors.first,
+                        orElse: () => data.values.first,
+                      ).value,
+                    ),
+                ],
               ),
             ),
+          ),
           ),
         );
       },
