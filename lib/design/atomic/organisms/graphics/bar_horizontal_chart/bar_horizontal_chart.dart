@@ -110,7 +110,9 @@ class _BarHorizontalChartState extends State<BarHorizontalChart>
     }
 
     // Redondear hacia arriba a un número "bonito"
-    final double magnitude = math.pow(10, (math.log(maxValue) / math.ln10).floor()).toDouble();
+    final double magnitude = math
+        .pow(10, (math.log(maxValue) / math.ln10).floor())
+        .toDouble();
     final double normalized = maxValue / magnitude;
 
     double niceMax;
@@ -131,12 +133,11 @@ class _BarHorizontalChartState extends State<BarHorizontalChart>
 
   bool _hasDataInRange(List<double> xAxisScale) {
     if (xAxisScale.isEmpty || xAxisScale.first == 0) {
-      return true; // Si comienza en 0, siempre hay datos
+      return true;
     }
 
     final double minRange = xAxisScale.first;
-    
-    // Verificar si algún grupo tiene al menos un valor mayor al rango mínimo
+
     for (final BarHorizontalGroupData group in widget.data) {
       for (final double value in group.categories.values) {
         if (value >= minRange) {
@@ -144,7 +145,7 @@ class _BarHorizontalChartState extends State<BarHorizontalChart>
         }
       }
     }
-    
+
     return false;
   }
 
@@ -153,14 +154,16 @@ class _BarHorizontalChartState extends State<BarHorizontalChart>
   }
 
   double _calculateGroupTotal(BarHorizontalGroupData group) {
-    return group.categories.values.fold(0.0, (double sum, double value) => sum + value);
+    return group.categories.values.fold(
+      0.0,
+      (double sum, double value) => sum + value,
+    );
   }
 
   Widget _buildTooltipContent(BarHorizontalGroupData group) {
     final double total = _calculateGroupTotal(group);
     final List<Widget> items = <Widget>[];
 
-    // Nombre del rango
     items.add(
       Text(
         group.range,
@@ -175,7 +178,6 @@ class _BarHorizontalChartState extends State<BarHorizontalChart>
 
     items.add(Gap(StoycoScreenSize.height(context, 4)));
 
-    // Valores por categoría
     for (final BarHorizontalCategoryConfig config in widget.categoryConfigs) {
       final double value = group.categories[config.key] ?? 0;
       if (value > 0) {
@@ -195,7 +197,6 @@ class _BarHorizontalChartState extends State<BarHorizontalChart>
 
     items.add(Gap(StoycoScreenSize.height(context, 4)));
 
-    // Total
     items.add(
       Text(
         'Total: ${NumbersFormat.formatWithCommas(total)}',
@@ -235,14 +236,14 @@ class _BarHorizontalChartState extends State<BarHorizontalChart>
     }
 
     final double maxValue = _calculateMaxValue();
-    final List<double> xAxisScale = widget.xAxisValues ?? _calculateXAxisScale(maxValue);
-    
+    final List<double> xAxisScale =
+        widget.xAxisValues ?? _calculateXAxisScale(maxValue);
+
     // Validar que los xAxisValues tengan máximo 5 elementos
-    final List<double> validatedXAxisScale = xAxisScale.length > 5 
-        ? xAxisScale.sublist(0, 5) 
+    final List<double> validatedXAxisScale = xAxisScale.length > 5
+        ? xAxisScale.sublist(0, 5)
         : xAxisScale;
-    
-    // Verificar si hay datos en el rango proporcionado
+
     if (!_hasDataInRange(validatedXAxisScale)) {
       return SizedBox(
         height: StoycoScreenSize.height(context, 200),
@@ -260,21 +261,24 @@ class _BarHorizontalChartState extends State<BarHorizontalChart>
         ),
       );
     }
-    
+
     final double chartMaxValue = validatedXAxisScale.last;
 
-    // Invertir el orden de los datos para que el primer elemento esté abajo
-    final List<BarHorizontalGroupData> reversedData = widget.data.reversed.toList();
+    final List<BarHorizontalGroupData> reversedData = widget.data.reversed
+        .toList();
 
-    // Altura mínima por grupo para evitar que se corte el texto
     const double minGroupHeight = 60.0;
 
     double totalHeight = 0;
     for (final BarHorizontalGroupData group in reversedData) {
       final double visibleBars = _countVisibleBarsInGroup(group);
       final double spacingInGroup = (visibleBars - 1) * widget.barSpacing;
-      final double calculatedGroupHeight = (visibleBars * widget.barHeight) + spacingInGroup;
-      final double groupHeight = math.max(calculatedGroupHeight, minGroupHeight);
+      final double calculatedGroupHeight =
+          (visibleBars * widget.barHeight) + spacingInGroup;
+      final double groupHeight = math.max(
+        calculatedGroupHeight,
+        minGroupHeight,
+      );
       totalHeight += groupHeight + (widget.groupSpacing * 2);
     }
     final double calculatedHeight = totalHeight + 60;
@@ -310,200 +314,273 @@ class _BarHorizontalChartState extends State<BarHorizontalChart>
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                          SizedBox(
-                            width: yAxisWidth,
-                            child: Column(
-                              children: reversedData.asMap().entries.map((
-                                MapEntry<int, BarHorizontalGroupData> entry,
-                              ) {
-                                final BarHorizontalGroupData group = entry.value;
-                                final double visibleBars = _countVisibleBarsInGroup(group);
-                                final double spacingInGroup = (visibleBars - 1) * widget.barSpacing;
-                                final double calculatedGroupHeight = (visibleBars * widget.barHeight) + spacingInGroup;
-                                final double groupHeight = math.max(calculatedGroupHeight, minGroupHeight);
+                              SizedBox(
+                                width: yAxisWidth,
+                                child: Column(
+                                  children: reversedData.asMap().entries.map((
+                                    MapEntry<int, BarHorizontalGroupData> entry,
+                                  ) {
+                                    final BarHorizontalGroupData group =
+                                        entry.value;
+                                    final double visibleBars =
+                                        _countVisibleBarsInGroup(group);
+                                    final double spacingInGroup =
+                                        (visibleBars - 1) * widget.barSpacing;
+                                    final double calculatedGroupHeight =
+                                        (visibleBars * widget.barHeight) +
+                                        spacingInGroup;
+                                    final double groupHeight = math.max(
+                                      calculatedGroupHeight,
+                                      minGroupHeight,
+                                    );
 
-                                return SizedBox(
-                                  height: groupHeight + (widget.groupSpacing * 2),
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                      top: widget.groupSpacing,
-                                      bottom: widget.groupSpacing,
-                                      right: StoycoScreenSize.width(context, 8),
+                                    return SizedBox(
+                                      height:
+                                          groupHeight +
+                                          (widget.groupSpacing * 2),
+                                      child: Padding(
+                                        padding: EdgeInsets.only(
+                                          top: widget.groupSpacing,
+                                          bottom: widget.groupSpacing,
+                                          right: StoycoScreenSize.width(
+                                            context,
+                                            8,
+                                          ),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            group.range,
+                                            style: TextStyle(
+                                              fontSize: StoycoScreenSize.width(
+                                                context,
+                                                14,
+                                              ),
+                                              color: ColorFoundation
+                                                  .background
+                                                  .white,
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily:
+                                                  StoycoFontFamilyToken.gilroy,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                              // Bars area con GestureDetector
+                              Expanded(
+                                child: Stack(
+                                  children: <Widget>[
+                                    // Barras animadas
+                                    AnimatedBuilder(
+                                      animation: _animation,
+                                      builder:
+                                          (
+                                            BuildContext context,
+                                            Widget? child,
+                                          ) {
+                                            return CustomPaint(
+                                              size: Size(
+                                                chartWidth,
+                                                chartHeight,
+                                              ),
+                                              painter: _BarHorizontalPainter(
+                                                data: reversedData,
+                                                categoryConfigs:
+                                                    widget.categoryConfigs,
+                                                maxValue: chartMaxValue,
+                                                barHeight: widget.barHeight,
+                                                barSpacing: widget.barSpacing,
+                                                groupSpacing:
+                                                    widget.groupSpacing,
+                                                barBorderRadius:
+                                                    widget.barBorderRadius,
+                                                animation: _animation,
+                                                xAxisScale: xAxisScale,
+                                                minGroupHeight: minGroupHeight,
+                                              ),
+                                            );
+                                          },
                                     ),
-                                    child: Center(
+                                    ...reversedData.asMap().entries.map((
+                                      MapEntry<int, BarHorizontalGroupData>
+                                      entry,
+                                    ) {
+                                      final int index = entry.key;
+                                      final BarHorizontalGroupData group =
+                                          entry.value;
+
+                                      double yPosition = 0;
+                                      for (int i = 0; i < index; i++) {
+                                        final double visibleBars =
+                                            _countVisibleBarsInGroup(
+                                              reversedData[i],
+                                            );
+                                        final double spacingInGroup =
+                                            (visibleBars - 1) *
+                                            widget.barSpacing;
+                                        final double calculatedGroupHeight =
+                                            (visibleBars * widget.barHeight) +
+                                            spacingInGroup;
+                                        final double groupHeight = math.max(
+                                          calculatedGroupHeight,
+                                          minGroupHeight,
+                                        );
+                                        yPosition +=
+                                            groupHeight +
+                                            (widget.groupSpacing * 2);
+                                      }
+
+                                      final double visibleBars =
+                                          _countVisibleBarsInGroup(group);
+                                      final double spacingInGroup =
+                                          (visibleBars - 1) * widget.barSpacing;
+                                      final double calculatedGroupHeight =
+                                          (visibleBars * widget.barHeight) +
+                                          spacingInGroup;
+                                      final double groupHeight = math.max(
+                                        calculatedGroupHeight,
+                                        minGroupHeight,
+                                      );
+
+                                      return Positioned(
+                                        left: 0,
+                                        top: yPosition,
+                                        width: chartWidth,
+                                        height:
+                                            groupHeight +
+                                            (widget.groupSpacing * 2),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              _selectedGroupIndex =
+                                                  _selectedGroupIndex == index
+                                                  ? null
+                                                  : index;
+                                            });
+                                          },
+                                          child: Container(
+                                            color: Colors.transparent,
+                                          ),
+                                        ),
+                                      );
+                                    }),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        // X-axis
+                        Row(
+                          children: <Widget>[
+                            const SizedBox(width: yAxisWidth),
+                            Expanded(
+                              child: SizedBox(
+                                height: xAxisHeight,
+                                child: Stack(
+                                  children: xAxisScale.map((double value) {
+                                    final double position =
+                                        value / chartMaxValue;
+                                    return Positioned(
+                                      left:
+                                          position.isNaN || position.isInfinite
+                                          ? 0
+                                          : position *
+                                                (constraints.maxWidth -
+                                                    yAxisWidth),
                                       child: Text(
-                                        group.range,
+                                        NumbersFormat.formatCompact(value),
                                         style: TextStyle(
                                           fontSize: StoycoScreenSize.width(
                                             context,
-                                            14,
+                                            15,
                                           ),
-                                          color: ColorFoundation.background.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: StoycoFontFamilyToken.gilroy,
+                                          color:
+                                              ColorFoundation.background.fandom,
+                                          fontWeight: FontWeight.w400,
+                                          fontFamily:
+                                              StoycoFontFamilyToken.gilroy,
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                );
-                              }).toList(),
-                            ),
-                          ),
-                          // Bars area con GestureDetector
-                          Expanded(
-                            child: Stack(
-                              children: <Widget>[
-                                // Barras animadas
-                                AnimatedBuilder(
-                                  animation: _animation,
-                                  builder: (BuildContext context, Widget? child) {
-                                    return CustomPaint(
-                                      size: Size(chartWidth, chartHeight),
-                                      painter: _BarHorizontalPainter(
-                                        data: reversedData,
-                                        categoryConfigs: widget.categoryConfigs,
-                                        maxValue: chartMaxValue,
-                                        barHeight: widget.barHeight,
-                                        barSpacing: widget.barSpacing,
-                                        groupSpacing: widget.groupSpacing,
-                                        barBorderRadius: widget.barBorderRadius,
-                                        animation: _animation,
-                                        xAxisScale: xAxisScale,
-                                        minGroupHeight: minGroupHeight,
-                                      ),
                                     );
-                                  },
+                                  }).toList(),
                                 ),
-                                // GestureDetectors para cada grupo
-                                ...reversedData.asMap().entries.map((
-                                  MapEntry<int, BarHorizontalGroupData> entry,
-                                ) {
-                                  final int index = entry.key;
-                                  final BarHorizontalGroupData group = entry.value;
-                                  
-                                  // Calcular la posici\u00f3n Y del grupo
-                                  double yPosition = 0;
-                                  for (int i = 0; i < index; i++) {
-                                    final double visibleBars = _countVisibleBarsInGroup(reversedData[i]);
-                                    final double spacingInGroup = (visibleBars - 1) * widget.barSpacing;
-                                    final double calculatedGroupHeight = (visibleBars * widget.barHeight) + spacingInGroup;
-                                    final double groupHeight = math.max(calculatedGroupHeight, minGroupHeight);
-                                    yPosition += groupHeight + (widget.groupSpacing * 2);
-                                  }
-                                  
-                                  final double visibleBars = _countVisibleBarsInGroup(group);
-                                  final double spacingInGroup = (visibleBars - 1) * widget.barSpacing;
-                                  final double calculatedGroupHeight = (visibleBars * widget.barHeight) + spacingInGroup;
-                                  final double groupHeight = math.max(calculatedGroupHeight, minGroupHeight);
-
-                                  return Positioned(
-                                    left: 0,
-                                    top: yPosition,
-                                    width: chartWidth,
-                                    height: groupHeight + (widget.groupSpacing * 2),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          _selectedGroupIndex = _selectedGroupIndex == index ? null : index;
-                                        });
-                                      },
-                                      child: Container(
-                                        color: Colors.transparent,
-                                      ),
-                                    ),
-                                  );
-                                }),
-                              ],
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    // X-axis
-                    Row(
-                      children: <Widget>[
-                        const SizedBox(width: yAxisWidth),
-                        Expanded(
-                          child: SizedBox(
-                            height: xAxisHeight,
-                            child: Stack(
-                              children: xAxisScale.map((double value) {
-                                final double position = value / chartMaxValue;
-                                return Positioned(
-                                  left: position.isNaN || position.isInfinite
-                                      ? 0
-                                      : position * (constraints.maxWidth - yAxisWidth),
-                                  child: Text(
-                                    NumbersFormat.formatCompact(value),
-                                    style: TextStyle(
-                                      fontSize: StoycoScreenSize.width(
-                                        context,
-                                        15,
-                                      ),
-                                      color: ColorFoundation.background.fandom,
-                                      fontWeight: FontWeight.w400,
-                                      fontFamily: StoycoFontFamilyToken.gilroy,
-                                    ),
-                                  ),
-                                );
-                              }).toList(),
-                            ),
-                          ),
+                          ],
                         ),
                       ],
                     ),
+                    if (_selectedGroupIndex != null)
+                      Builder(
+                        builder: (BuildContext context) {
+                          double yPosition = 0;
+                          for (int i = 0; i < _selectedGroupIndex!; i++) {
+                            final double visibleBars = _countVisibleBarsInGroup(
+                              reversedData[i],
+                            );
+                            final double spacingInGroup =
+                                (visibleBars - 1) * widget.barSpacing;
+                            final double calculatedGroupHeight =
+                                (visibleBars * widget.barHeight) +
+                                spacingInGroup;
+                            final double groupHeight = math.max(
+                              calculatedGroupHeight,
+                              minGroupHeight,
+                            );
+                            yPosition +=
+                                groupHeight + (widget.groupSpacing * 2);
+                          }
+
+                          final double selectedVisibleBars =
+                              _countVisibleBarsInGroup(
+                                reversedData[_selectedGroupIndex!],
+                              );
+                          final double selectedSpacingInGroup =
+                              (selectedVisibleBars - 1) * widget.barSpacing;
+                          final double selectedCalculatedGroupHeight =
+                              (selectedVisibleBars * widget.barHeight) +
+                              selectedSpacingInGroup;
+                          final double selectedGroupHeight = math.max(
+                            selectedCalculatedGroupHeight,
+                            minGroupHeight,
+                          );
+
+                          const double estimatedTooltipHeight = 150.0;
+
+                          final double groupCenterY =
+                              yPosition +
+                              (selectedGroupHeight +
+                                      (widget.groupSpacing * 2)) /
+                                  2;
+
+                          final double desiredTop =
+                              groupCenterY - (estimatedTooltipHeight / 2);
+
+                          double finalTop = math.max(0, desiredTop);
+
+                          if (finalTop + estimatedTooltipHeight > chartHeight) {
+                            finalTop = chartHeight - estimatedTooltipHeight;
+                          }
+
+                          return Positioned(
+                            left: yAxisWidth,
+                            right: 0,
+                            top: finalTop,
+                            child: Center(
+                              child: ChipMonotoneNoise(
+                                child: _buildTooltipContent(
+                                  reversedData[_selectedGroupIndex!],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
                   ],
-                ),
-                // Tooltip encima de todo
-                if (_selectedGroupIndex != null)
-                  Builder(
-                    builder: (BuildContext context) {
-                      // Calcular la posición Y del grupo seleccionado
-                      double yPosition = 0;
-                      for (int i = 0; i < _selectedGroupIndex!; i++) {
-                        final double visibleBars = _countVisibleBarsInGroup(reversedData[i]);
-                        final double spacingInGroup = (visibleBars - 1) * widget.barSpacing;
-                        final double calculatedGroupHeight = (visibleBars * widget.barHeight) + spacingInGroup;
-                        final double groupHeight = math.max(calculatedGroupHeight, minGroupHeight);
-                        yPosition += groupHeight + (widget.groupSpacing * 2);
-                      }
-                      
-                      // Obtener altura del grupo seleccionado
-                      final double selectedVisibleBars = _countVisibleBarsInGroup(reversedData[_selectedGroupIndex!]);
-                      final double selectedSpacingInGroup = (selectedVisibleBars - 1) * widget.barSpacing;
-                      final double selectedCalculatedGroupHeight = (selectedVisibleBars * widget.barHeight) + selectedSpacingInGroup;
-                      final double selectedGroupHeight = math.max(selectedCalculatedGroupHeight, minGroupHeight);
-                      
-                      // Altura estimada del tooltip (ajustar según contenido)
-                      const double estimatedTooltipHeight = 150.0;
-                      
-                      // Calcular el centro del grupo seleccionado
-                      final double groupCenterY = yPosition + (selectedGroupHeight + (widget.groupSpacing * 2)) / 2;
-                      
-                      // Centrar el tooltip en el grupo
-                      final double desiredTop = groupCenterY - (estimatedTooltipHeight / 2);
-                      
-                      // Asegurar que el tooltip no se salga por arriba
-                      double finalTop = math.max(0, desiredTop);
-                      
-                      // Si se sale por abajo, ajustar
-                      if (finalTop + estimatedTooltipHeight > chartHeight) {
-                        finalTop = chartHeight - estimatedTooltipHeight;
-                      }
-                      
-                      return Positioned(
-                        left: yAxisWidth,
-                        right: 0,
-                        top: finalTop,
-                        child: Center(
-                          child: ChipMonotoneNoise(
-                            child: _buildTooltipContent(reversedData[_selectedGroupIndex!]),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-              ],
                 );
               },
             ),
@@ -555,14 +632,16 @@ class _BarHorizontalPainter extends CustomPainter {
     // Draw bars
     for (int groupIndex = 0; groupIndex < data.length; groupIndex++) {
       final BarHorizontalGroupData group = data[groupIndex];
-      
-      // Calcular altura del grupo
+
       final double visibleBars = _countVisibleBarsInGroup(group);
       final double spacingInGroup = (visibleBars - 1) * barSpacing;
-      final double calculatedGroupHeight = (visibleBars * barHeight) + spacingInGroup;
-      final double groupHeight = math.max(calculatedGroupHeight, minGroupHeight);
+      final double calculatedGroupHeight =
+          (visibleBars * barHeight) + spacingInGroup;
+      final double groupHeight = math.max(
+        calculatedGroupHeight,
+        minGroupHeight,
+      );
 
-      // Línea divisora al inicio del grupo
       final double lineY = currentY + (groupSpacing / 2);
       canvas.drawLine(
         Offset(0, lineY),
@@ -570,8 +649,7 @@ class _BarHorizontalPainter extends CustomPainter {
         separatorPaint,
       );
       currentY += groupSpacing;
-      
-      // Centrar las barras verticalmente dentro del grupo si el grupo es más alto que las barras
+
       final double verticalOffset = (groupHeight - calculatedGroupHeight) / 2;
       double barY = currentY + verticalOffset;
 
@@ -614,11 +692,10 @@ class _BarHorizontalPainter extends CustomPainter {
           }
         }
       }
-      
+
       // Avanzar al siguiente grupo
       currentY += groupHeight;
 
-      // Línea divisora al final del grupo
       final double endLineY = currentY + (groupSpacing / 2);
       canvas.drawLine(
         Offset(0, endLineY),
