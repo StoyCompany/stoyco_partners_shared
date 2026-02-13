@@ -2,6 +2,31 @@
 
 ### Features
 
+- **LinearChart**:
+  - Added new LinearChart component with animated line drawing
+  - Implemented interactive tooltips with touch indicators using dashed lines
+  - Added support for multiple line series with customizable colors and styles
+  - Implemented horizontal scrolling for large datasets
+  - Added null data validation with informative messages
+  - Implemented dynamic Y-axis scaling based on actual data values
+  - Added white dots with colored borders for data points
+  - Implemented grid customization with adjustable line weights
+  - Added label capitalization for X-axis values
+  - Integrated with fl_chart library for smooth animations
+
+- **TopTenLocationsFlags**:
+  - Optimized list width calculation for better space utilization
+  - Removed horizontal scroll when displaying single category
+  - Improved alignment of position numbers and country flags
+  - Enhanced spacing and layout for better visual consistency
+
+- **BarHorizontalChart**:
+  - Added horizontal padding to chart legend for better spacing
+
+- **Code Quality**:
+  - Removed all Spanish comments from codebase
+  - Improved code documentation consistency across chart components
+
 
 
 ## 1.0.8
