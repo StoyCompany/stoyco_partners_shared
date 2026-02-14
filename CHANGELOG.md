@@ -1,3 +1,9 @@
+## 1.0.9
+
+### Features
+
+- Add ContentStatWithTooltip widget for enhanced content statistics display with tooltips
+
 ## 1.0.8
 
 ### Features
