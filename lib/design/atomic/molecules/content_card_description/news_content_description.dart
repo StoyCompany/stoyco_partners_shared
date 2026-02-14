@@ -80,7 +80,7 @@ class NewsContentDescription extends ContentCardDescription {
                       ),
                       stat: NumbersFormat.formatCompact(data.likes.toDouble()),
                     ),
-                    tooltipMessage: '${data.likes} Me gusta',
+                    tooltipMessage: 'Total de likes de la noticia',
                   ),
                   ContentStatWithTooltip(
                     contentStat: ContentStat(
@@ -91,7 +91,8 @@ class NewsContentDescription extends ContentCardDescription {
                       ),
                       stat: NumbersFormat.formatCompact(data.shares.toDouble()),
                     ),
-                    tooltipMessage: '${data.shares} Compartidos',
+                    tooltipMessage:
+                        'Total de veces que se compartió la noticia',
                   ),
                   ContentStatWithTooltip(
                     contentStat: ContentStat(
@@ -104,7 +105,7 @@ class NewsContentDescription extends ContentCardDescription {
                         data.comments.toDouble(),
                       ),
                     ),
-                    tooltipMessage: '${data.comments} Comentarios',
+                    tooltipMessage: 'Total de comentarios de la noticia',
                   ),
                   ContentStatWithTooltip(
                     contentStat: ContentStat(
@@ -115,7 +116,7 @@ class NewsContentDescription extends ContentCardDescription {
                       ),
                       stat: NumbersFormat.formatCompact(data.views.toDouble()),
                     ),
-                    tooltipMessage: '${data.views} Vistas',
+                    tooltipMessage: 'Total de visualizaciones de la noticia',
                   ),
                 ],
                 extent: StoycoScreenSize.height(context, 5),

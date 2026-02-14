@@ -80,7 +80,7 @@ class VideoContentDescription extends ContentCardDescription {
                       ),
                       stat: NumbersFormat.formatCompact(data.likes.toDouble()),
                     ),
-                    tooltipMessage: '${data.likes} Me gusta',
+                    tooltipMessage: 'Total de likes del video',
                   ),
                   ContentStatWithTooltip(
                     contentStat: ContentStat(
@@ -91,7 +91,7 @@ class VideoContentDescription extends ContentCardDescription {
                       ),
                       stat: NumbersFormat.formatCompact(data.shares.toDouble()),
                     ),
-                    tooltipMessage: '${data.shares} Compartidos',
+                    tooltipMessage: 'Total de veces que se compartió el video',
                   ),
                   ContentStatWithTooltip(
                     contentStat: ContentStat(
@@ -104,7 +104,7 @@ class VideoContentDescription extends ContentCardDescription {
                         data.comments.toDouble(),
                       ),
                     ),
-                    tooltipMessage: '${data.comments} Comentarios',
+                    tooltipMessage: 'Total de comentarios del video',
                   ),
                   ContentStatWithTooltip(
                     contentStat: ContentStat(
@@ -115,7 +115,7 @@ class VideoContentDescription extends ContentCardDescription {
                       ),
                       stat: NumbersFormat.formatCompact(data.views.toDouble()),
                     ),
-                    tooltipMessage: '${data.views} Vistas',
+                    tooltipMessage: 'Total de visualizaciones del video',
                   ),
                 ],
                 extent: StoycoScreenSize.height(context, 5),

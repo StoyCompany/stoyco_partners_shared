@@ -58,56 +58,56 @@ class _ContentStatWithTooltipState extends State<ContentStatWithTooltip> {
                     offset.dy +
                     (size.height / 2) -
                     StoycoScreenSize.height(context, 20),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: _removeTooltip,
-                      child: Container(
-                        padding: EdgeInsets.all(
-                          StoycoScreenSize.width(context, 4),
-                        ),
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          Icons.close,
-                          size: StoycoScreenSize.width(context, 12),
-                          color: ColorFoundation.text.saDark,
-                        ),
+                child: GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: StoycoScreenSize.width(context, 12),
+                      vertical: StoycoScreenSize.height(context, 8),
+                    ),
+                    decoration: BoxDecoration(
+                      color: ColorFoundation.background.saLight,
+                      borderRadius: BorderRadius.circular(
+                        StoycoScreenSize.width(context, 5),
                       ),
                     ),
-                    Gutter(StoycoScreenSize.width(context, 8)),
-                    GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: StoycoScreenSize.width(context, 12),
-                          vertical: StoycoScreenSize.height(context, 8),
-                        ),
-                        decoration: BoxDecoration(
-                          color: ColorFoundation.background.saLight,
-                          borderRadius: BorderRadius.circular(
-                            StoycoScreenSize.width(context, 8),
-                          ),
-                        ),
-                        constraints: BoxConstraints(
-                          maxWidth: StoycoScreenSize.width(context, 150),
-                        ),
-                        child: Text(
-                          widget.tooltipMessage,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontFamily: StoycoFontFamilyToken.gilroy,
-                            fontSize: StoycoScreenSize.fontSize(context, 10),
-                            fontWeight: FontWeight.w500,
-                            color: ColorFoundation.text.saDark,
-                          ),
-                        ),
-                      ),
+                    constraints: BoxConstraints(
+                      maxWidth: StoycoScreenSize.width(context, 180),
                     ),
-                  ],
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        GestureDetector(
+                          onTap: _removeTooltip,
+                          child: Container(
+                            padding: EdgeInsets.all(
+                              StoycoScreenSize.width(context, 4),
+                            ),
+                            child: Icon(
+                              Icons.close,
+                              size: StoycoScreenSize.width(context, 12),
+                              color: ColorFoundation.text.saDark,
+                            ),
+                          ),
+                        ),
+                        Gutter(StoycoScreenSize.width(context, 10)),
+                        Flexible(
+                          child: Text(
+                            widget.tooltipMessage,
+                            textAlign: TextAlign.start,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontFamily: StoycoFontFamilyToken.gilroy,
+                              fontSize: StoycoScreenSize.fontSize(context, 10),
+                              fontWeight: FontWeight.w500,
+                              color: ColorFoundation.text.saDark,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ],
