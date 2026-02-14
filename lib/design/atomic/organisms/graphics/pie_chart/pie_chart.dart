@@ -29,8 +29,7 @@ class PieChart extends StatefulWidget {
   State<PieChart> createState() => _PieChartState();
 }
 
-class _PieChartState extends State<PieChart>
-    with TickerProviderStateMixin {
+class _PieChartState extends State<PieChart> with TickerProviderStateMixin {
   late AnimationController _animationController;
   late AnimationController _scaleController;
   late Animation<double> _animation;
@@ -44,28 +43,28 @@ class _PieChartState extends State<PieChart>
       vsync: this,
       duration: widget.animationDuration,
     );
-    
+
     _scaleController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 600),
     );
-    
+
     _animation = CurvedAnimation(
       parent: _animationController,
       curve: Curves.easeInOutCubic,
     );
-    
+
     _scaleAnimation = CurvedAnimation(
       parent: _scaleController,
       curve: Curves.easeOutBack,
     );
-    
+
     _animationController.addStatusListener((AnimationStatus status) {
       if (status == AnimationStatus.completed) {
         _scaleController.forward();
       }
     });
-    
+
     _animationController.forward();
   }
 
@@ -87,39 +86,43 @@ class _PieChartState extends State<PieChart>
     super.dispose();
   }
 
-  void _onTapDown(TapDownDetails details, Size size, List<PieChartSectionData> filteredSections) {
+  void _onTapDown(
+    TapDownDetails details,
+    Size size,
+    List<PieChartSectionData> filteredSections,
+  ) {
     final Offset localPosition = details.localPosition;
     final Offset center = Offset(size.width / 2, size.height / 2);
     final double dx = localPosition.dx - center.dx;
     final double dy = localPosition.dy - center.dy;
     final double distance = math.sqrt(dx * dx + dy * dy);
-    
+
     final double outerRadius = size.width / 2;
     final double innerRadius = outerRadius - widget.strokeWidth;
-    
+
     if (distance >= innerRadius && distance <= outerRadius) {
       double angle = math.atan2(dy, dx);
       angle = (angle + math.pi / 2) % (2 * math.pi);
       if (angle < 0) {
         angle += 2 * math.pi;
       }
-      
+
       final double total = filteredSections.fold<double>(
         0,
         (double sum, PieChartSectionData section) => sum + section.value,
       );
-      
+
       // Usar el mismo sistema de gaps uniforme que el painter
       final double gapRadians = widget.gapDegrees * math.pi / 180;
       final int numberOfGaps = filteredSections.length;
       final double totalGapSpace = gapRadians * numberOfGaps;
       final double availableSpace = (2 * math.pi) - totalGapSpace;
-      
+
       double currentAngle = 0;
       for (int i = 0; i < filteredSections.length; i++) {
         final double sectionProportion = filteredSections[i].value / total;
         final double sweepAngle = sectionProportion * availableSpace;
-        
+
         if (angle >= currentAngle && angle < currentAngle + sweepAngle) {
           setState(() => _touchedIndex = i);
           return;
@@ -127,7 +130,7 @@ class _PieChartState extends State<PieChart>
         currentAngle += sweepAngle + gapRadians;
       }
     }
-    
+
     setState(() => _touchedIndex = null);
   }
 
@@ -140,15 +143,15 @@ class _PieChartState extends State<PieChart>
     );
 
     // Filter out sections with value 0 or percentage that rounds to 0
-    final List<PieChartSectionData> filteredSections = widget.sections
-        .where((PieChartSectionData section) {
-          if (section.value == 0) {
-            return false;
-          }
-          final double percentage = (section.value / total) * 100;
-          return percentage.round() > 0;
-        })
-        .toList();
+    final List<PieChartSectionData> filteredSections = widget.sections.where((
+      PieChartSectionData section,
+    ) {
+      if (section.value == 0) {
+        return false;
+      }
+      final double percentage = (section.value / total) * 100;
+      return percentage.round() > 0;
+    }).toList();
 
     if (filteredSections.isEmpty) {
       return SizedBox(
@@ -173,7 +176,9 @@ class _PieChartState extends State<PieChart>
       (double sum, PieChartSectionData s) => sum + s.value,
     );
 
-    final List<ChartLegendItemModel> legendItems = filteredSections.map((PieChartSectionData section) {
+    final List<ChartLegendItemModel> legendItems = filteredSections.map((
+      PieChartSectionData section,
+    ) {
       final double percentage = (section.value / filteredTotal) * 100;
       return ChartLegendItemModel(
         color: section.color,
@@ -195,16 +200,23 @@ class _PieChartState extends State<PieChart>
               builder: (BuildContext context, BoxConstraints constraints) {
                 return InkWell(
                   onTapDown: (TapDownDetails details) {
-                    final RenderBox box = context.findRenderObject()! as RenderBox;
+                    final RenderBox box =
+                        context.findRenderObject()! as RenderBox;
                     _onTapDown(details, box.size, filteredSections);
                   },
                   child: AnimatedBuilder(
-                    animation: Listenable.merge(<Listenable>[_animation, _scaleAnimation]),
+                    animation: Listenable.merge(<Listenable>[
+                      _animation,
+                      _scaleAnimation,
+                    ]),
                     builder: (BuildContext context, Widget? child) {
                       return Transform.scale(
                         scale: 0.8 + (_scaleAnimation.value * 0.2),
                         child: CustomPaint(
-                          size: Size(constraints.maxWidth, constraints.maxHeight),
+                          size: Size(
+                            constraints.maxWidth,
+                            constraints.maxHeight,
+                          ),
                           painter: _PieChartPainter(
                             sections: filteredSections,
                             strokeWidth: widget.strokeWidth,
@@ -246,68 +258,61 @@ class _PieChartPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final Offset center = Offset(size.width / 2, size.height / 2);
     final double radius = size.width / 2;
-    final double total = sections.fold<double>(0, (double sum, PieChartSectionData s) => sum + s.value);
-    
-    // Calcular el gap uniforme para todos los espacios
+    final double total = sections.fold<double>(
+      0,
+      (double sum, PieChartSectionData s) => sum + s.value,
+    );
+
     final double gapRadians = gapDegrees * math.pi / 180;
     final int numberOfGaps = sections.length;
     final double totalGapSpace = gapRadians * numberOfGaps;
-    
-    // El espacio disponible para las secciones es la circunferencia completa menos todos los gaps
+
     final double availableSpace = (2 * math.pi) - totalGapSpace;
-    
+
     double startAngle = -math.pi / 2;
     double cumulativeProgress = 0;
-    
+
     for (int i = 0; i < sections.length; i++) {
       final PieChartSectionData section = sections[i];
       final bool isTouched = i == touchedIndex;
-      final double currentStrokeWidth = isTouched 
-          ? strokeWidth + 10 
+      final double currentStrokeWidth = isTouched
+          ? strokeWidth + 10
           : strokeWidth;
-      
-      // Calcular el ángulo de barrido basado en el espacio disponible (sin gaps)
+
       final double sectionProportion = section.value / total;
       final double fullSweepAngle = sectionProportion * availableSpace;
-      
-      // Calcular el progreso para esta sección específica
+
       final double sectionStart = cumulativeProgress;
       final double sectionEnd = sectionStart + sectionProportion;
       cumulativeProgress = sectionEnd;
-      
-      // Animación secuencial: cada sección comienza cuando termina la anterior
+
       double sectionProgress = 0;
       if (animation.value > sectionStart) {
         if (animation.value >= sectionEnd) {
           sectionProgress = 1.0;
         } else {
-          sectionProgress = (animation.value - sectionStart) / sectionProportion;
+          sectionProgress =
+              (animation.value - sectionStart) / sectionProportion;
         }
       }
-      
+
       final double animatedSweepAngle = fullSweepAngle * sectionProgress;
-      
+
       if (animatedSweepAngle > 0) {
         final Paint paint = Paint()
           ..color = section.color
           ..style = PaintingStyle.stroke
           ..strokeWidth = currentStrokeWidth
           ..strokeCap = StrokeCap.round;
-        
+
         final Rect rect = Rect.fromCircle(
           center: center,
           radius: radius - currentStrokeWidth / 2,
         );
-        
-        canvas.drawArc(
-          rect,
-          startAngle,
-          animatedSweepAngle,
-          false,
-          paint,
-        );
+
+        canvas.drawArc(rect, startAngle, animatedSweepAngle, false, paint);
       }
-      
+
       // Avanzar el ángulo: sección completa + gap uniforme
       startAngle += fullSweepAngle + gapRadians;
     }
@@ -315,6 +320,7 @@ class _PieChartPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_PieChartPainter oldDelegate) {
-    return oldDelegate.animation.value != animation.value || oldDelegate.touchedIndex != touchedIndex;
+    return oldDelegate.animation.value != animation.value ||
+        oldDelegate.touchedIndex != touchedIndex;
   }
 }

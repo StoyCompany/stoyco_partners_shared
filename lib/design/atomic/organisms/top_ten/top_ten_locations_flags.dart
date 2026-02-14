@@ -73,14 +73,12 @@ class _TopTenLocationsFlagsState extends State<TopTenLocationsFlags>
       );
     }
 
-    // Filtrar categorías que tienen al menos un valor > 0 en todo el dataset
     final List<Color> visibleCategoryColors = <Color>[];
     if (widget.data.first.values.isNotEmpty) {
       for (int i = 0; i < widget.data.first.values.length; i++) {
         final Color categoryColor = widget.data.first.values[i].colorValue;
         bool hasNonZeroValue = false;
-        
-        // Buscar si esta categoría (por color) tiene algún valor > 0 en algún país
+
         for (final TopTenLocationsData item in widget.data) {
           for (final TopTenLocationsValue value in item.values) {
             if (value.colorValue == categoryColor && value.value > 0) {
@@ -88,9 +86,11 @@ class _TopTenLocationsFlagsState extends State<TopTenLocationsFlags>
               break;
             }
           }
-          if (hasNonZeroValue) break;
+          if (hasNonZeroValue) {
+            break;
+          }
         }
-        
+
         if (hasNonZeroValue && !visibleCategoryColors.contains(categoryColor)) {
           visibleCategoryColors.add(categoryColor);
         }
@@ -99,44 +99,50 @@ class _TopTenLocationsFlagsState extends State<TopTenLocationsFlags>
 
     final bool hasMultipleValues = visibleCategoryColors.length > 1;
 
+    final double screenWidth = StoycoScreenSize.screenWidth(context);
+    final double contentWidth = hasMultipleValues
+        ? screenWidth * (0.80 + (visibleCategoryColors.length * 0.08))
+        : screenWidth;
+
+    final Widget content = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        if (hasMultipleValues)
+          _ColorHeader(
+            allValues: widget.data.first.values,
+            visibleColors: visibleCategoryColors,
+            contentWidth: contentWidth,
+          ),
+
+        ...List<Widget>.generate(widget.data.length, (int index) {
+          final double delay = index * 0.1;
+          return _TopTenLocationItem(
+            data: widget.data[index],
+            position: index + 1,
+            visibleColors: visibleCategoryColors,
+            contentWidth: contentWidth,
+            animation: CurvedAnimation(
+              parent: _controller,
+              curve: Interval(
+                delay,
+                (delay + 0.3).clamp(0.0, 1.0),
+                curve: Curves.easeOutCubic,
+              ),
+            ),
+          );
+        }),
+      ],
+    );
+
+    if (!hasMultipleValues) {
+      return content;
+    }
+
     return SingleChildScrollView(
       controller: _scrollController,
       scrollDirection: Axis.horizontal,
       physics: const ClampingScrollPhysics(),
-      child: ConstrainedBox(
-        constraints: BoxConstraints(
-          minWidth: StoycoScreenSize.screenWidth(context),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            // Header con círculos de colores (solo si hay múltiples valores)
-            if (hasMultipleValues) 
-              _ColorHeader(
-                allValues: widget.data.first.values,
-                visibleColors: visibleCategoryColors,
-              ),
-
-            // Lista de items
-            ...List<Widget>.generate(widget.data.length, (int index) {
-              final double delay = index * 0.1;
-              return _TopTenLocationItem(
-                data: widget.data[index],
-                position: index + 1,
-                visibleColors: visibleCategoryColors,
-                animation: CurvedAnimation(
-                  parent: _controller,
-                  curve: Interval(
-                    delay,
-                    (delay + 0.3).clamp(0.0, 1.0),
-                    curve: Curves.easeOutCubic,
-                  ),
-                ),
-              );
-            }),
-          ],
-        ),
-      ),
+      child: SizedBox(width: contentWidth, child: content),
     );
   }
 }
@@ -145,34 +151,29 @@ class _ColorHeader extends StatelessWidget {
   const _ColorHeader({
     required this.allValues,
     required this.visibleColors,
+    required this.contentWidth,
   });
 
   final List<TopTenLocationsValue> allValues;
   final List<Color> visibleColors;
+  final double contentWidth;
 
   @override
   Widget build(BuildContext context) {
-    // Calcular ancho dinámico según cantidad de valores visibles
-    final double widthMultiplier = 0.75 + (visibleColors.length * 0.1);
-    
-    // Filtrar valores por colores visibles
     final List<TopTenLocationsValue> visibleValues = allValues
         .where((TopTenLocationsValue v) => visibleColors.contains(v.colorValue))
         .toList();
-    
+
     return Padding(
       padding: EdgeInsets.only(bottom: StoycoScreenSize.height(context, 8)),
       child: SizedBox(
-        width: StoycoScreenSize.screenWidth(context) * widthMultiplier,
+        width: contentWidth,
         child: Row(
           children: <Widget>[
-            // Columna izquierda vacía (espacio para número + bandera + nombre)
             const Expanded(child: SizedBox()),
-            
-            // Espacio entre columnas
+
             Gap(StoycoScreenSize.width(context, 16)),
-            
-            // Columna derecha: Círculos de colores
+
             Row(
               children: visibleValues.asMap().entries.map((
                 MapEntry<int, TopTenLocationsValue> entry,
@@ -182,7 +183,9 @@ class _ColorHeader extends StatelessWidget {
 
                 return Padding(
                   padding: EdgeInsets.only(
-                    left: displayIndex > 0 ? StoycoScreenSize.width(context, 8) : 0,
+                    left: displayIndex > 0
+                        ? StoycoScreenSize.width(context, 8)
+                        : 0,
                   ),
                   child: SizedBox(
                     width: StoycoScreenSize.width(context, 50),
@@ -217,19 +220,18 @@ class _TopTenLocationItem extends StatelessWidget {
     required this.position,
     required this.animation,
     required this.visibleColors,
+    required this.contentWidth,
   });
 
   final TopTenLocationsData data;
   final int position;
   final Animation<double> animation;
   final List<Color> visibleColors;
+  final double contentWidth;
 
   @override
   Widget build(BuildContext context) {
     final bool hasMultipleValues = visibleColors.length > 1;
-    
-    // Calcular ancho dinámico según cantidad de valores visibles
-    final double widthMultiplier = 0.75 + (visibleColors.length * 0.1);
 
     return AnimatedBuilder(
       animation: animation,
@@ -243,53 +245,49 @@ class _TopTenLocationItem extends StatelessWidget {
                 bottom: StoycoScreenSize.height(context, 12),
               ),
               child: SizedBox(
-                width: StoycoScreenSize.screenWidth(context) * widthMultiplier,
+                width: hasMultipleValues ? contentWidth : null,
                 child: Row(
                   children: <Widget>[
-                    // COLUMNA IZQUIERDA: Número + Bandera + Nombre
-                    Expanded(
-                      child: Row(
-                        children: <Widget>[
-                          // Position number
-                          Text(
-                            '$position.',
-                            style: TextStyle(
-                              fontSize: StoycoScreenSize.width(context, 14),
-                              color: ColorFoundation.text.white,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: StoycoFontFamilyToken.gilroy,
-                            ),
-                          ),
-                          Gap(StoycoScreenSize.width(context, 8)),
-                          // Flag
-                          ConuntryFlag(
-                            conuntryCode: data.codeFlag,
-                            width: StoycoScreenSize.width(context, 24),
-                            height: StoycoScreenSize.height(context, 16),
-                            borderRadius: 2,
-                          ),
-                          Gap(StoycoScreenSize.width(context, 8)),
-                          // Location name with ellipsis - expandible
-                          Expanded(
-                            child: Text(
-                              data.nameLocation,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: StoycoScreenSize.width(context, 14),
-                                color: ColorFoundation.text.white,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: StoycoFontFamilyToken.gilroy,
-                              ),
-                            ),
-                          ),
-                        ],
+                    SizedBox(
+                      width: StoycoScreenSize.width(context, 20),
+                      child: Text(
+                        '$position.',
+                        textAlign: TextAlign.right,
+                        style: TextStyle(
+                          fontSize: StoycoScreenSize.width(context, 14),
+                          color: ColorFoundation.text.white,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: StoycoFontFamilyToken.gilroy,
+                        ),
                       ),
                     ),
-                    
+                    Gap(StoycoScreenSize.width(context, 8)),
+                    // Flag con tamaño fijo
+                    ConuntryFlag(
+                      conuntryCode: data.codeFlag,
+                      width: StoycoScreenSize.width(context, 24),
+                      height: StoycoScreenSize.height(context, 16),
+                      borderRadius: 2,
+                    ),
+                    Gap(StoycoScreenSize.width(context, 8)),
+                    // Location name with ellipsis - expandible
+                    Expanded(
+                      child: Text(
+                        data.nameLocation,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: StoycoScreenSize.width(context, 14),
+                          color: ColorFoundation.text.white,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: StoycoFontFamilyToken.gilroy,
+                        ),
+                      ),
+                    ),
+
                     // Espacio entre columnas
                     Gap(StoycoScreenSize.width(context, 16)),
-                    
+
                     // COLUMNA DERECHA: Valores
                     if (hasMultipleValues)
                       _MultipleValuesSection(
@@ -298,10 +296,13 @@ class _TopTenLocationItem extends StatelessWidget {
                       )
                     else if (visibleColors.isNotEmpty)
                       _SingleValueSection(
-                        value: data.values.firstWhere(
-                          (TopTenLocationsValue v) => v.colorValue == visibleColors.first,
-                          orElse: () => data.values.first,
-                        ).value,
+                        value: data.values
+                            .firstWhere(
+                              (TopTenLocationsValue v) =>
+                                  v.colorValue == visibleColors.first,
+                              orElse: () => data.values.first,
+                            )
+                            .value,
                       ),
                   ],
                 ),
@@ -346,16 +347,19 @@ class _MultipleValuesSection extends StatelessWidget {
   Widget build(BuildContext context) {
     // Filtrar y ordenar valores según los colores visibles
     // Si un color no existe en allValues, mostrar 0
-    final List<MapEntry<Color, double>> visibleValues = <MapEntry<Color, double>>[];
+    final List<MapEntry<Color, double>> visibleValues =
+        <MapEntry<Color, double>>[];
     for (final Color color in visibleColors) {
-      final TopTenLocationsValue? value = allValues.cast<TopTenLocationsValue?>().firstWhere(
-        (TopTenLocationsValue? v) => v?.colorValue == color,
-        orElse: () => null,
-      );
+      final TopTenLocationsValue? value = allValues
+          .cast<TopTenLocationsValue?>()
+          .firstWhere(
+            (TopTenLocationsValue? v) => v?.colorValue == color,
+            orElse: () => null,
+          );
       // Añadir el valor encontrado o 0 si no existe
       visibleValues.add(MapEntry<Color, double>(color, value?.value ?? 0));
     }
-    
+
     return Row(
       children: visibleValues.asMap().entries.map((
         MapEntry<int, MapEntry<Color, double>> entry,
