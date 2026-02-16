@@ -15,11 +15,13 @@ class PhoneValidatorInput extends StatefulWidget {
     this.onTimerExpired,
     this.onChanged,
     this.onCompleted,
+    this.durationInSeconds = 300,
   });
 
   final VoidCallback? onTimerExpired;
   final ValueChanged<String>? onChanged;
   final ValueChanged<String>? onCompleted;
+  final int durationInSeconds;
 
   @override
   State<PhoneValidatorInput> createState() => PhoneValidatorInputState();
@@ -38,6 +40,7 @@ class PhoneValidatorInputState extends State<PhoneValidatorInput> {
   @override
   void initState() {
     super.initState();
+    _remainingSeconds = widget.durationInSeconds;
     _pinController = TextEditingController();
     focusNode = FocusNode();
     _startTimer();
@@ -53,7 +56,7 @@ class PhoneValidatorInputState extends State<PhoneValidatorInput> {
 
   void _startTimer() {
     _isTimerActive = true;
-    _remainingSeconds = 300;
+    _remainingSeconds = widget.durationInSeconds;
 
     _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
