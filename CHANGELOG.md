@@ -1,3 +1,9 @@
+## 2.0.1
+
+### Features
+
+- Allow customizable timer duration in PhoneValidatorInput; initialize remaining seconds based on provided duration
+
 ## 2.0.0
 
 ### Features
