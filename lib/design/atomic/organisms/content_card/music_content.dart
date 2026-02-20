@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:stoyco_partners_shared/design/atomic/atoms/content_stat/content_stat.dart';
+import 'package:stoyco_partners_shared/design/atomic/atoms/chips/content_chip.dart';
 import 'package:stoyco_partners_shared/design/atomic/atoms/images/image_stoyco_cache.dart';
-import 'package:stoyco_partners_shared/design/atomic/molecules/tooltip/content_stat_tootip.dart';
+import 'package:stoyco_partners_shared/design/atomic/molecules/tooltip/content_tooltip_stat.dart';
+import 'package:stoyco_partners_shared/design/atomic/molecules/tooltip/custom_tooltip.dart';
 import 'package:stoyco_partners_shared/design/models/content_cards/music_content_model.dart';
 import 'package:stoyco_partners_shared/design/responsive/gutter.dart';
 import 'package:stoyco_partners_shared/design/responsive/screen_size/stoyco_screen_size.dart';
@@ -60,58 +61,21 @@ class MusicContent extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          ContentStatWithTooltip(
-                            contentStat: ContentStat(
-                              icon: StoycoAssetsToken.lib.assets.icons.share
-                                  .svg(
-                                    package: 'stoyco_partners_shared',
-                                    width: StoycoScreenSize.width(context, 14),
-                                    height: StoycoScreenSize.height(
-                                      context,
-                                      14,
-                                    ),
-                                  ),
-                              stat: NumbersFormat.formatCompact(
-                                data.shares.toDouble(),
-                              ),
-                            ),
-                            tooltipMessage:
-                                'Total de compartidos generados por esta radio',
+                          ContentTooltipStat(
+                            stat: data.shares,
+                            icon: StoycoAssetsToken.lib.assets.icons.share,
+                            tooltipMessage: 'Total de compartidos generados por esta radio',
                           ),
-                          ContentStatWithTooltip(
-                            contentStat: ContentStat(
-                              icon: StoycoAssetsToken.lib.assets.icons.message
-                                  .svg(
-                                    package: 'stoyco_partners_shared',
-                                    width: StoycoScreenSize.width(context, 14),
-                                    height: StoycoScreenSize.height(
-                                      context,
-                                      14,
-                                    ),
-                                  ),
-                              stat: NumbersFormat.formatCompact(
-                                data.comments.toDouble(),
-                              ),
-                            ),
-                            tooltipMessage:
-                                'Total de comentarios generados en esta radio',
+                          ContentTooltipStat(
+                            stat: data.comments,
+                            icon: StoycoAssetsToken.lib.assets.icons.message,
+                            tooltipMessage: 'Total de comentarios generados en esta radio',
                           ),
-                          ContentStatWithTooltip(
-                            contentStat: ContentStat(
-                              icon: StoycoAssetsToken.lib.assets.icons.stoycoCoins.svg(
-                                    package: 'stoyco_partners_shared',
-                                    width: StoycoScreenSize.width(context, 14),
-                                    height: StoycoScreenSize.height(
-                                      context,
-                                      14,
-                                    ),
-                                  ),
-                              stat: NumbersFormat.formatCompact(
-                                data.totalDonatedStoyCoins.toDouble(),
-                              ),
-                            ),
-                            tooltipMessage:
-                                'Total de stoycoins recolectados por esta radio',
+                          ContentTooltipStat(
+                            position: TooltipPosition.left,
+                            stat: data.totalDonatedStoyCoins,
+                            icon: StoycoAssetsToken.lib.assets.icons.stoycoCoins,
+                            tooltipMessage: 'Total de stoycoins recolectados por esta radio',
                           ),
                         ],
                       ),
@@ -128,18 +92,16 @@ class MusicContent extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Expanded(
-              child: _chipMessagge(
-                context,
-                '# Canciones ${data.tracksCount}',
-                'Total de canciones configuradas en esta radio',
+              child: ContentChip(
+                message: '# Canciones ${data.tracksCount}',
+                tooltipMessage: 'Total de canciones configuradas en esta radio',
               ),
             ),
             Gutter(StoycoScreenSize.width(context, 10)),
             Expanded(
-              child: _chipMessagge(
-                context,
-                'Total plays ${NumbersFormat.formatCompact(data.views.toDouble())}',
-                'Total histórico de reproducciones acumuladas de esta radio',
+              child: ContentChip(
+                message: 'Total plays ${NumbersFormat.formatCompact(data.views.toDouble())}',
+                tooltipMessage: 'Total histórico de reproducciones acumuladas de esta radio',
               ),
             ),
           ],
@@ -166,29 +128,5 @@ class MusicContent extends StatelessWidget {
         ),
       ],
     );
-  }
-
-  Widget _chipMessagge(
-    BuildContext context, 
-    String message,
-    String tooltipMessage,
-  ) {
-    return Container(
-          padding: StoycoScreenSize.symmetric(context, vertical: 2),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(100),
-            color: ColorFoundation.background.saHighlights,
-          ),
-          child: Text(
-            message,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: StoycoScreenSize.fontSize(context, 12),
-              color: ColorFoundation.text.saDark,
-              fontWeight: FontWeight.w500,
-              fontFamily: StoycoFontFamilyToken.gilroy,
-            ),
-          ),
-        );
   }
 }

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:stoyco_partners_shared/design/atomic/atoms/content_stat/content_stat.dart';
-import 'package:stoyco_partners_shared/design/atomic/molecules/tooltip/content_stat_tootip.dart';
+import 'package:stoyco_partners_shared/design/atomic/molecules/tooltip/content_tooltip_stat.dart';
+import 'package:stoyco_partners_shared/design/atomic/molecules/tooltip/custom_tooltip.dart';
 import 'package:stoyco_partners_shared/design/responsive/gutter.dart';
 import 'package:stoyco_partners_shared/design/responsive/screen_size/stoyco_screen_size.dart';
-import 'package:stoyco_partners_shared/design/utils/formats/numbers.dart';
-import 'package:stoyco_partners_shared/design/utils/foundations/color_foundation.dart';
 import 'package:stoyco_partners_shared/design/utils/tokens/gen/assets.gen.dart';
 
 class ContentStatsLegend extends StatelessWidget {
@@ -37,49 +35,29 @@ class ContentStatsLegend extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: Gutter.separateChildren(
         children: <Widget>[
-          ContentStatWithTooltip(
-            contentStat: ContentStat(
-              icon: StoycoAssetsToken.lib.assets.icons.like.svg(
-                package: 'stoyco_partners_shared',
-                width: StoycoScreenSize.width(context, 14),
-                height: StoycoScreenSize.height(context, 14),
-              ),
-              stat: NumbersFormat.formatCompact(likes.toDouble()),
-            ),
+          ContentTooltipStat(
+            stat: likes,
+            icon: StoycoAssetsToken.lib.assets.icons.like,
             tooltipMessage: likesTooltip,
+            position: TooltipPosition.left,
           ),
-          ContentStatWithTooltip(
-            contentStat: ContentStat(
-              icon: StoycoAssetsToken.lib.assets.icons.share.svg(
-                package: 'stoyco_partners_shared',
-                width: StoycoScreenSize.width(context, 14),
-                height: StoycoScreenSize.height(context, 14),
-              ),
-              stat: NumbersFormat.formatCompact(shares.toDouble()),
-            ),
+          ContentTooltipStat(
+            stat: shares,
+            icon: StoycoAssetsToken.lib.assets.icons.share,
             tooltipMessage: sharesTooltip,
+            position: TooltipPosition.left,
           ),
-          ContentStatWithTooltip(
-            contentStat: ContentStat(
-              icon: StoycoAssetsToken.lib.assets.icons.message.svg(
-                package: 'stoyco_partners_shared',
-                width: StoycoScreenSize.width(context, 14),
-                height: StoycoScreenSize.height(context, 14),
-              ),
-              stat: NumbersFormat.formatCompact(comments.toDouble()),
-            ),
+          ContentTooltipStat(
+            stat: comments,
+            icon: StoycoAssetsToken.lib.assets.icons.message,
             tooltipMessage: commentsTooltip,
+            position: TooltipPosition.left,
           ),
-          ContentStatWithTooltip(
-            contentStat: ContentStat(
-              icon: Icon(
-                Icons.remove_red_eye_outlined,
-                color: ColorFoundation.text.saLight,
-                size: StoycoScreenSize.height(context, 14),
-              ),
-              stat: NumbersFormat.formatCompact(views.toDouble()),
-            ),
+          ContentTooltipStat(
+            stat: views,
+            icon: StoycoAssetsToken.lib.assets.icons.eye,
             tooltipMessage: viewsTooltip,
+            position: TooltipPosition.left,
           ),
         ],
         extent: StoycoScreenSize.height(context, 5),

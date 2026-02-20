@@ -1,3 +1,17 @@
+## 3.0.0
+
+### Features
+
+feat: Add content card models and descriptions for various content types
+
+- Implemented DynamicsContentDescription for displaying dynamic content details.
+- Created MerchContentDescription for merchandise content representation.
+- Developed ProjectsToFundContentDescription to showcase projects needing funding.
+- Introduced ContentStatsLegend to display statistics for content interactions.
+- Added CulturalAssetsContent and MusicContent for cultural and music content cards.
+- Defined models for cultural assets, dynamics, merchandise, and music content with JSON serialization.
+- Implemented utility classes for text formatting and logging.
+
 ## 2.0.2
 
 ### Features

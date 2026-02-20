@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:stoyco_partners_shared/design/atomic/molecules/content_stats_legend/content_stats_legend.dart';
+import 'package:stoyco_partners_shared/design/atomic/molecules/tooltip/messaged_description_tooltip.dart';
 import 'package:stoyco_partners_shared/design/models/content_cards/announcements_content_model.dart';
 import 'package:stoyco_partners_shared/design/responsive/gutter.dart';
 import 'package:stoyco_partners_shared/design/responsive/screen_size/stoyco_screen_size.dart';
 import 'package:stoyco_partners_shared/design/utils/formats/dates.dart';
-import 'package:stoyco_partners_shared/design/utils/formats/numbers.dart';
 import 'package:stoyco_partners_shared/design/utils/foundations/color_foundation.dart';
 import 'package:stoyco_partners_shared/design/utils/tokens/gen/fonts.gen.dart';
 
@@ -48,20 +48,20 @@ class AnnouncementsContentDescription extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      _messagedDescription(
-                        context,
+                      MessagedDescriptionTooltip(
                         message: 'Videos Aprobados:',
                         data: data.participants,
+                        tooltipMessage: 'Total de videos aprobados',
                       ),
-                      _messagedDescription(
-                        context,
+                      MessagedDescriptionTooltip(
                         message: 'Participantes Unicos:',
                         data: data.participants,
+                        tooltipMessage: 'Total de participantes únicos',
                       ),
-                      _messagedDescription(
-                        context,
+                      MessagedDescriptionTooltip(
                         message: 'Contenido x user:',
                         data: data.participants,
+                        tooltipMessage: 'Contenido por usuario',
                       ),
                       Gutter(StoycoScreenSize.height(context, 5)),
                       Text(
@@ -94,31 +94,6 @@ class AnnouncementsContentDescription extends StatelessWidget {
           ],
           extent: StoycoScreenSize.width(context, 18),
         ),
-      ),
-    );
-  }
-
-  Widget _messagedDescription(BuildContext context, {String message = 'Participantes: ', required int data}) {
-    return RichText(
-      text: TextSpan(
-        text: message,
-        style: TextStyle(
-          fontFamily: StoycoFontFamilyToken.gilroy,
-          fontSize: StoycoScreenSize.fontSize(context, 12),
-          fontWeight: FontWeight.w500,
-          color: ColorFoundation.text.saHighlights,
-        ),
-        children: <InlineSpan>[
-          TextSpan(
-            text: ' ${NumbersFormat.formatCompact(data.toDouble())}',
-            style: TextStyle(
-              fontFamily: StoycoFontFamilyToken.gilroy,
-              fontSize: StoycoScreenSize.fontSize(context, 12),
-              fontWeight: FontWeight.w500,
-              color: ColorFoundation.text.saLight,
-            ),
-          ),
-        ],
       ),
     );
   }
