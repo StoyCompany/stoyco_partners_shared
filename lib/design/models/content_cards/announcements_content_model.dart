@@ -9,7 +9,6 @@ class AnnouncementsContentModel extends ContentCardModel {
     required super.id,
     required super.contentImageUrl,
     required this.title,
-    required this.description,
     required this.status,
     required this.closeDate,
     required this.participants,
@@ -22,9 +21,8 @@ class AnnouncementsContentModel extends ContentCardModel {
       _$AnnouncementsContentModelFromJson(json);
 
   final String title;
-  final String description;
   final AnnouncementStatus status;
-  final String closeDate;
+  final DateTime closeDate;
   final int participants;
   final int likes;
   final int shares;
@@ -37,7 +35,6 @@ class AnnouncementsContentModel extends ContentCardModel {
   List<Object?> get props => <Object?>[
     ...super.props,
     title,
-    description,
     status,
     closeDate,
     participants,

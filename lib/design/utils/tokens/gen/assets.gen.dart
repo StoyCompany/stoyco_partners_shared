@@ -53,11 +53,18 @@ class $LibAssetsIconsGen {
   /// Directory path: lib/assets/icons/common
   $LibAssetsIconsCommonGen get common => const $LibAssetsIconsCommonGen();
 
+  /// File path: lib/assets/icons/donation.svg
+  SvgGenImage get donation =>
+      const SvgGenImage('lib/assets/icons/donation.svg');
+
   /// File path: lib/assets/icons/error.svg
   SvgGenImage get error => const SvgGenImage('lib/assets/icons/error.svg');
 
   /// File path: lib/assets/icons/error_x.svg
   SvgGenImage get errorX => const SvgGenImage('lib/assets/icons/error_x.svg');
+
+  /// File path: lib/assets/icons/eye.svg
+  SvgGenImage get eye => const SvgGenImage('lib/assets/icons/eye.svg');
 
   /// File path: lib/assets/icons/flag_stoyco.svg
   SvgGenImage get flagStoyco =>
@@ -79,20 +86,27 @@ class $LibAssetsIconsGen {
   /// File path: lib/assets/icons/share.svg
   SvgGenImage get share => const SvgGenImage('lib/assets/icons/share.svg');
 
+  /// File path: lib/assets/icons/stoyco_coins.svg
+  SvgGenImage get stoycoCoins =>
+      const SvgGenImage('lib/assets/icons/stoyco_coins.svg');
+
   /// File path: lib/assets/icons/x_icon.svg
   SvgGenImage get xIcon => const SvgGenImage('lib/assets/icons/x_icon.svg');
 
   /// List of all assets
   List<SvgGenImage> get values => [
     alert,
+    donation,
     error,
     errorX,
+    eye,
     flagStoyco,
     leftArrow,
     like,
     mailBox,
     message,
     share,
+    stoycoCoins,
     xIcon,
   ];
 }

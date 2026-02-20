@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:stoyco_partners_shared/design/atomic/templates/content_card_description.dart';
 import 'package:stoyco_partners_shared/design/models/content_cards/experiences_content_model.dart';
 import 'package:stoyco_partners_shared/design/responsive/gutter.dart';
 import 'package:stoyco_partners_shared/design/responsive/screen_size/stoyco_screen_size.dart';
 import 'package:stoyco_partners_shared/design/utils/foundations/color_foundation.dart';
 import 'package:stoyco_partners_shared/design/utils/tokens/gen/fonts.gen.dart';
 
-class ExperiencesContentDescription extends ContentCardDescription {
+class ExperiencesContentDescription extends StatelessWidget {
   const ExperiencesContentDescription({super.key, required this.data});
 
   final ExperiencesContentModel data;
@@ -20,103 +19,98 @@ class ExperiencesContentDescription extends ContentCardDescription {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: Gutter.separateChildren(
           children: <Widget>[
-            Container(
-              constraints: BoxConstraints(
-                maxWidth: StoycoScreenSize.width(context, 146),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: Gutter.separateChildren(
-                  children: <Widget>[
-                    Text(
-                      data.name,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: Gutter.separateChildren(
+                children: <Widget>[
+                  Text(
+                    data.name,
+                    style: TextStyle(
+                      fontFamily: StoycoFontFamilyToken.gilroy,
+                      fontSize: StoycoScreenSize.fontSize(context, 12),
+                      color: ColorFoundation.text.saLight,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  RichText(
+                    text: TextSpan(
+                      text: 'Aforo: ',
                       style: TextStyle(
                         fontFamily: StoycoFontFamilyToken.gilroy,
                         fontSize: StoycoScreenSize.fontSize(context, 12),
-                        color: ColorFoundation.text.saLight,
                         fontWeight: FontWeight.w500,
+                        color: ColorFoundation.text.saHighlights,
                       ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    RichText(
-                      text: TextSpan(
-                        text: 'Aforo: ',
-                        style: TextStyle(
-                          fontFamily: StoycoFontFamilyToken.gilroy,
-                          fontSize: StoycoScreenSize.fontSize(context, 12),
-                          fontWeight: FontWeight.w500,
-                          color: ColorFoundation.text.saHighlights,
-                        ),
-                        children: <InlineSpan>[
-                          TextSpan(
-                            text: ' ${data.capacity}',
-                            style: TextStyle(
-                              fontFamily: StoycoFontFamilyToken.gilroy,
-                              fontSize: StoycoScreenSize.fontSize(context, 12),
-                              fontWeight: FontWeight.w500,
-                              color: ColorFoundation.text.saLight,
-                            ),
+                      children: <InlineSpan>[
+                        TextSpan(
+                          text: ' ${data.capacity}',
+                          style: TextStyle(
+                            fontFamily: StoycoFontFamilyToken.gilroy,
+                            fontSize: StoycoScreenSize.fontSize(context, 12),
+                            fontWeight: FontWeight.w500,
+                            color: ColorFoundation.text.saLight,
                           ),
-                        ],
-                      ),
-                    ),
-                    RichText(
-                      text: TextSpan(
-                        text: 'Boletos cortesía: ',
-                        style: TextStyle(
-                          fontFamily: StoycoFontFamilyToken.gilroy,
-                          fontSize: StoycoScreenSize.fontSize(context, 12),
-                          fontWeight: FontWeight.w500,
-                          color: ColorFoundation.text.saHighlights,
                         ),
-                        children: <InlineSpan>[
-                          TextSpan(
-                            text: ' ${data.courtesyTickets}',
-                            style: TextStyle(
-                              fontFamily: StoycoFontFamilyToken.gilroy,
-                              fontSize: StoycoScreenSize.fontSize(context, 12),
-                              fontWeight: FontWeight.w500,
-                              color: ColorFoundation.text.saLight,
-                            ),
-                          ),
-                        ],
-                      ),
+                      ],
                     ),
-                    RichText(
-                      text: TextSpan(
-                        text: 'Boletos Disponibles: ',
-                        style: TextStyle(
-                          fontFamily: StoycoFontFamilyToken.gilroy,
-                          fontSize: StoycoScreenSize.fontSize(context, 12),
-                          fontWeight: FontWeight.w500,
-                          color: ColorFoundation.text.saHighlights,
-                        ),
-                        children: <InlineSpan>[
-                          TextSpan(
-                            text: ' ${data.availableTickets}',
-                            style: TextStyle(
-                              fontFamily: StoycoFontFamilyToken.gilroy,
-                              fontSize: StoycoScreenSize.fontSize(context, 12),
-                              fontWeight: FontWeight.w500,
-                              color: ColorFoundation.text.saLight,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Text(
-                      data.eventDate,
+                  ),
+                  RichText(
+                    text: TextSpan(
+                      text: 'Boletos cortesía: ',
                       style: TextStyle(
                         fontFamily: StoycoFontFamilyToken.gilroy,
-                        fontSize: StoycoScreenSize.fontSize(context, 8),
-                        color: ColorFoundation.text.saLight,
-                        fontWeight: FontWeight.w700,
+                        fontSize: StoycoScreenSize.fontSize(context, 12),
+                        fontWeight: FontWeight.w500,
+                        color: ColorFoundation.text.saHighlights,
                       ),
+                      children: <InlineSpan>[
+                        TextSpan(
+                          text: ' ${data.courtesyTickets}',
+                          style: TextStyle(
+                            fontFamily: StoycoFontFamilyToken.gilroy,
+                            fontSize: StoycoScreenSize.fontSize(context, 12),
+                            fontWeight: FontWeight.w500,
+                            color: ColorFoundation.text.saLight,
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                  extent: StoycoScreenSize.height(context, 5),
-                ),
+                  ),
+                  RichText(
+                    text: TextSpan(
+                      text: 'Boletos Disponibles: ',
+                      style: TextStyle(
+                        fontFamily: StoycoFontFamilyToken.gilroy,
+                        fontSize: StoycoScreenSize.fontSize(context, 12),
+                        fontWeight: FontWeight.w500,
+                        color: ColorFoundation.text.saHighlights,
+                      ),
+                      children: <InlineSpan>[
+                        TextSpan(
+                          text: ' ${data.availableTickets}',
+                          style: TextStyle(
+                            fontFamily: StoycoFontFamilyToken.gilroy,
+                            fontSize: StoycoScreenSize.fontSize(context, 12),
+                            fontWeight: FontWeight.w500,
+                            color: ColorFoundation.text.saLight,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Text(
+                    data.eventDate,
+                    style: TextStyle(
+                      fontFamily: StoycoFontFamilyToken.gilroy,
+                      fontSize: StoycoScreenSize.fontSize(context, 8),
+                      color: ColorFoundation.text.saLight,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ],
+                extent: StoycoScreenSize.height(context, 5),
               ),
             ),
             Column(

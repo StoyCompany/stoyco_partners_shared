@@ -95,7 +95,7 @@ class _ContentStatWithTooltipState extends State<ContentStatWithTooltip> {
                           child: Text(
                             widget.tooltipMessage,
                             textAlign: TextAlign.start,
-                            maxLines: 2,
+                            maxLines: 4,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               fontFamily: StoycoFontFamilyToken.gilroy,

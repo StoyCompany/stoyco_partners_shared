@@ -1,42 +1,43 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'announcements_content_model.dart';
+part of 'projects_to_fund_content_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-AnnouncementsContentModel _$AnnouncementsContentModelFromJson(
+ProjectsToFundContentModel _$ProjectsToFundContentModelFromJson(
   Map<String, dynamic> json,
-) => AnnouncementsContentModel(
+) => ProjectsToFundContentModel(
   id: json['id'] as String,
   contentImageUrl: json['contentImageUrl'] as String,
   title: json['title'] as String,
-  status: $enumDecode(_$AnnouncementStatusEnumMap, json['status']),
+  description: json['description'] as String,
+  publishDate: DateTime.parse(json['publishDate'] as String),
   closeDate: DateTime.parse(json['closeDate'] as String),
-  participants: (json['participants'] as num).toInt(),
+  isActive: json['isActive'] as bool,
+  stoycoCoins: (json['stoycoCoins'] as num).toInt(),
+  donation: (json['donation'] as num).toInt(),
   likes: (json['likes'] as num).toInt(),
   shares: (json['shares'] as num).toInt(),
   comments: (json['comments'] as num).toInt(),
   views: (json['views'] as num).toInt(),
 );
 
-Map<String, dynamic> _$AnnouncementsContentModelToJson(
-  AnnouncementsContentModel instance,
+Map<String, dynamic> _$ProjectsToFundContentModelToJson(
+  ProjectsToFundContentModel instance,
 ) => <String, dynamic>{
   'id': instance.id,
   'contentImageUrl': instance.contentImageUrl,
   'title': instance.title,
-  'status': _$AnnouncementStatusEnumMap[instance.status]!,
+  'description': instance.description,
+  'publishDate': instance.publishDate.toIso8601String(),
   'closeDate': instance.closeDate.toIso8601String(),
-  'participants': instance.participants,
+  'isActive': instance.isActive,
+  'stoycoCoins': instance.stoycoCoins,
+  'donation': instance.donation,
   'likes': instance.likes,
   'shares': instance.shares,
   'comments': instance.comments,
   'views': instance.views,
-};
-
-const _$AnnouncementStatusEnumMap = {
-  AnnouncementStatus.open: 'open',
-  AnnouncementStatus.closed: 'closed',
 };

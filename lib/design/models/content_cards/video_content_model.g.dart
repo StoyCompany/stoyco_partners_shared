@@ -16,7 +16,7 @@ VideoContentModel _$VideoContentModelFromJson(Map<String, dynamic> json) =>
       likes: (json['likes'] as num).toInt(),
       shares: (json['shares'] as num).toInt(),
       comments: (json['comments'] as num).toInt(),
-      publishDate: json['publishDate'] as String,
+      publishDate: DateTime.parse(json['publishDate'] as String),
     );
 
 Map<String, dynamic> _$VideoContentModelToJson(VideoContentModel instance) =>
@@ -29,5 +29,5 @@ Map<String, dynamic> _$VideoContentModelToJson(VideoContentModel instance) =>
       'likes': instance.likes,
       'shares': instance.shares,
       'comments': instance.comments,
-      'publishDate': instance.publishDate,
+      'publishDate': instance.publishDate.toIso8601String(),
     };

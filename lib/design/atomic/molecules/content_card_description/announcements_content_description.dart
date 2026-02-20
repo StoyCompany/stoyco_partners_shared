@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:stoyco_partners_shared/design/atomic/atoms/content_stat/content_stat.dart';
-import 'package:stoyco_partners_shared/design/atomic/templates/content_card_description.dart';
+import 'package:stoyco_partners_shared/design/atomic/molecules/content_stats_legend/content_stats_legend.dart';
 import 'package:stoyco_partners_shared/design/models/content_cards/announcements_content_model.dart';
 import 'package:stoyco_partners_shared/design/responsive/gutter.dart';
 import 'package:stoyco_partners_shared/design/responsive/screen_size/stoyco_screen_size.dart';
+import 'package:stoyco_partners_shared/design/utils/formats/dates.dart';
+import 'package:stoyco_partners_shared/design/utils/formats/numbers.dart';
 import 'package:stoyco_partners_shared/design/utils/foundations/color_foundation.dart';
-import 'package:stoyco_partners_shared/design/utils/tokens/gen/assets.gen.dart';
 import 'package:stoyco_partners_shared/design/utils/tokens/gen/fonts.gen.dart';
 
-class AnnouncementsContentDescription extends ContentCardDescription {
+class AnnouncementsContentDescription extends StatelessWidget {
   const AnnouncementsContentDescription({super.key, required this.data});
 
   final AnnouncementsContentModel data;
@@ -22,129 +22,103 @@ class AnnouncementsContentDescription extends ContentCardDescription {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: Gutter.separateChildren(
           children: <Widget>[
-            Container(
-              constraints: BoxConstraints(
-                maxWidth: StoycoScreenSize.width(context, 146),
-              ),
+            Flexible(
+              flex: 3,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: Gutter.separateChildren(
-                  children: <Widget>[
-                    Column(
-                      children: <Widget>[
-                        Text(
-                          data.title,
-                          style: TextStyle(
-                            fontFamily: StoycoFontFamilyToken.gilroy,
-                            fontSize: StoycoScreenSize.fontSize(context, 12),
-                            color: ColorFoundation.text.saLight,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        Gutter(StoycoScreenSize.height(context, 5)),
-                        Text(
-                          data.description,
-                          style: TextStyle(
-                            fontFamily: StoycoFontFamilyToken.gilroy,
-                            fontSize: StoycoScreenSize.fontSize(context, 12),
-                            color: ColorFoundation.text.saLight,
-                            fontWeight: FontWeight.w300,
-                          ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: <Widget>[
-                        RichText(
-                          text: TextSpan(
-                            text: 'Participantes: ',
-                            style: TextStyle(
-                              fontFamily: StoycoFontFamilyToken.gilroy,
-                              fontSize: StoycoScreenSize.fontSize(context, 12),
-                              fontWeight: FontWeight.w500,
-                              color: ColorFoundation.text.saHighlights,
-                            ),
-                            children: <InlineSpan>[
-                              TextSpan(
-                                text: ' ${data.participants}',
-                                style: TextStyle(
-                                  fontFamily: StoycoFontFamilyToken.gilroy,
-                                  fontSize: StoycoScreenSize.fontSize(
-                                    context,
-                                    12,
-                                  ),
-                                  fontWeight: FontWeight.w500,
-                                  color: ColorFoundation.text.saLight,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Gutter(StoycoScreenSize.height(context, 5)),
-                        Text(
-                          'Finalizado ${data.closeDate}',
-                          style: TextStyle(
-                            fontFamily: StoycoFontFamilyToken.gilroy,
-                            fontSize: StoycoScreenSize.fontSize(context, 8),
-                            color: ColorFoundation.text.saLight,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: Gutter.separateChildren(
                 children: <Widget>[
-                  ContentStat(
-                    icon: StoycoAssetsToken.lib.assets.icons.like.svg(
-                      package: 'stoyco_partners_shared',
-                      width: StoycoScreenSize.width(context, 14),
-                      height: StoycoScreenSize.height(context, 14),
-                    ),
-                    stat: data.likes.toString(),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        data.title,
+                        style: TextStyle(
+                          fontFamily: StoycoFontFamilyToken.gilroy,
+                          fontSize: StoycoScreenSize.fontSize(context, 12),
+                          color: ColorFoundation.text.saLight,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
                   ),
-                  ContentStat(
-                    icon: StoycoAssetsToken.lib.assets.icons.share.svg(
-                      package: 'stoyco_partners_shared',
-                      width: StoycoScreenSize.width(context, 14),
-                      height: StoycoScreenSize.height(context, 14),
-                    ),
-                    stat: data.shares.toString(),
-                  ),
-                  ContentStat(
-                    icon: StoycoAssetsToken.lib.assets.icons.message.svg(
-                      package: 'stoyco_partners_shared',
-                      width: StoycoScreenSize.width(context, 14),
-                      height: StoycoScreenSize.height(context, 14),
-                    ),
-                    stat: data.comments.toString(),
-                  ),
-                  ContentStat(
-                    icon: Icon(
-                      Icons.remove_red_eye_outlined,
-                      color: ColorFoundation.text.saLight,
-                      size: StoycoScreenSize.height(context, 14),
-                    ),
-                    stat: data.views.toString(),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      _messagedDescription(
+                        context,
+                        message: 'Videos Aprobados:',
+                        data: data.participants,
+                      ),
+                      _messagedDescription(
+                        context,
+                        message: 'Participantes Unicos:',
+                        data: data.participants,
+                      ),
+                      _messagedDescription(
+                        context,
+                        message: 'Contenido x user:',
+                        data: data.participants,
+                      ),
+                      Gutter(StoycoScreenSize.height(context, 5)),
+                      Text(
+                        'Finalizado ${DatesFormats.formatDateDDMMYYYYWithDashes(data.closeDate)}',
+                        style: TextStyle(
+                          fontFamily: StoycoFontFamilyToken.gilroy,
+                          fontSize: StoycoScreenSize.fontSize(context, 8),
+                          color: ColorFoundation.text.saLight,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
-                extent: StoycoScreenSize.height(context, 5),
+              ),
+            ),
+            ),
+            Flexible(
+              child: ContentStatsLegend(
+                likes: data.likes,
+                shares: data.shares,
+                comments: data.comments,
+                views: data.views,
+                likesTooltip: 'Total de likes de la convocatoria',
+                sharesTooltip: 'Total de veces que se compartió la convocatoria',
+                commentsTooltip: 'Total de comentarios de la convocatoria',
+                viewsTooltip: 'Total de visualizaciones de la convocatoria',
               ),
             ),
           ],
           extent: StoycoScreenSize.width(context, 18),
         ),
+      ),
+    );
+  }
+
+  Widget _messagedDescription(BuildContext context, {String message = 'Participantes: ', required int data}) {
+    return RichText(
+      text: TextSpan(
+        text: message,
+        style: TextStyle(
+          fontFamily: StoycoFontFamilyToken.gilroy,
+          fontSize: StoycoScreenSize.fontSize(context, 12),
+          fontWeight: FontWeight.w500,
+          color: ColorFoundation.text.saHighlights,
+        ),
+        children: <InlineSpan>[
+          TextSpan(
+            text: ' ${NumbersFormat.formatCompact(data.toDouble())}',
+            style: TextStyle(
+              fontFamily: StoycoFontFamilyToken.gilroy,
+              fontSize: StoycoScreenSize.fontSize(context, 12),
+              fontWeight: FontWeight.w500,
+              color: ColorFoundation.text.saLight,
+            ),
+          ),
+        ],
       ),
     );
   }

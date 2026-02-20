@@ -25,7 +25,7 @@ class VideoContentModel extends ContentCardModel {
   final int likes;
   final int shares;
   final int comments;
-  final String publishDate;
+  final DateTime publishDate;
 
   Map<String, dynamic> toJson() => _$VideoContentModelToJson(this);
 

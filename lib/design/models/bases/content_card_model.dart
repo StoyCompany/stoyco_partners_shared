@@ -15,4 +15,14 @@ abstract class ContentCardModel extends Equatable {
   List<Object?> get props => <Object?>[id, contentImageUrl, contentType];
 }
 
-enum ContentType { video, news, announcements, experiences }
+enum ContentType {
+  video,
+  news,
+  announcements,
+  experiences,
+  dynamics,
+  music,
+  projectsToFund,
+  merch,
+  culturalAssets
+}
