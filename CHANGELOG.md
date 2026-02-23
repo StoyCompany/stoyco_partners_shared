@@ -11,6 +11,7 @@ feat: Add content card models and descriptions for various content types
 - Added CulturalAssetsContent and MusicContent for cultural and music content cards.
 - Defined models for cultural assets, dynamics, merchandise, and music content with JSON serialization.
 - Implemented utility classes for text formatting and logging.
+- feat: Enhance content card descriptions and tooltips, add new properties for dynamic content display
 
 ## 2.0.2
 
