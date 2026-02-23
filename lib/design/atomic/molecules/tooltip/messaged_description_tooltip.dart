@@ -10,11 +10,13 @@ class MessagedDescriptionTooltip extends StatelessWidget {
   const MessagedDescriptionTooltip({
     super.key,
     required this.message,
-    required this.data,
+    this.dataText = '',
+    this.data = 0,
     required this.tooltipMessage,
   });
   
   final String message;
+  final String dataText;
   final int data;
   final String tooltipMessage;
 
@@ -33,7 +35,7 @@ class MessagedDescriptionTooltip extends StatelessWidget {
           ),
           children: <InlineSpan>[
             TextSpan(
-              text: ' ${NumbersFormat.formatCompact(data.toDouble())}',
+              text: dataText.isNotEmpty ? ' $dataText' : ' ${NumbersFormat.formatCompact(data.toDouble())}',
               style: TextStyle(
                 fontFamily: StoycoFontFamilyToken.gilroy,
                 fontSize: StoycoScreenSize.fontSize(context, 12),

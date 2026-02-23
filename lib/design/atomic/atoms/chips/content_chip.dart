@@ -8,18 +8,25 @@ class ContentChip extends StatelessWidget {
   const ContentChip({
     required this.message,
     required this.tooltipMessage,
+    this.position = TooltipPosition.top,
+    this.messageStyle,
+    this.padding,
     super.key,
   });
 
   final String message;
+  final TextStyle? messageStyle;
+  final TooltipPosition position;
   final String tooltipMessage;
+  final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context) {
     return CustomTooltip(
       message: tooltipMessage,
+      position: position,
       child: Container(
-        padding: StoycoScreenSize.symmetric(context, vertical: 2),
+        padding: padding ?? StoycoScreenSize.symmetric(context, vertical: 2),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(100),
           color: ColorFoundation.background.saHighlights,
@@ -27,7 +34,7 @@ class ContentChip extends StatelessWidget {
         child: Text(
           message,
           textAlign: TextAlign.center,
-          style: TextStyle(
+          style: messageStyle ?? TextStyle(
             fontSize: StoycoScreenSize.fontSize(context, 12),
             color: ColorFoundation.text.saDark,
             fontWeight: FontWeight.w500,

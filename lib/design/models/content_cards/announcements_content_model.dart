@@ -12,6 +12,8 @@ class AnnouncementsContentModel extends ContentCardModel {
     required this.status,
     required this.closeDate,
     required this.participants,
+    required this.approvedVideos,
+    required this.contentPerUser,
     required this.likes,
     required this.shares,
     required this.comments,
@@ -24,6 +26,8 @@ class AnnouncementsContentModel extends ContentCardModel {
   final AnnouncementStatus status;
   final DateTime closeDate;
   final int participants;
+  final int approvedVideos;
+  final int contentPerUser;
   final int likes;
   final int shares;
   final int comments;
@@ -37,6 +41,8 @@ class AnnouncementsContentModel extends ContentCardModel {
     title,
     status,
     closeDate,
+    approvedVideos,
+    contentPerUser,
     participants,
     likes,
     shares,

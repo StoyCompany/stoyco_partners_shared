@@ -50,18 +50,18 @@ class AnnouncementsContentDescription extends StatelessWidget {
                     children: <Widget>[
                       MessagedDescriptionTooltip(
                         message: 'Videos Aprobados:',
-                        data: data.participants,
-                        tooltipMessage: 'Total de videos aprobados',
+                        data: data.approvedVideos,
+                        tooltipMessage: 'Total de videos aprobados en la convocatoria',
                       ),
                       MessagedDescriptionTooltip(
                         message: 'Participantes Unicos:',
                         data: data.participants,
-                        tooltipMessage: 'Total de participantes únicos',
+                        tooltipMessage: 'Total de participantes únicos que participaron en la convocatoria',
                       ),
                       MessagedDescriptionTooltip(
                         message: 'Contenido x user:',
-                        data: data.participants,
-                        tooltipMessage: 'Contenido por usuario',
+                        data: data.contentPerUser,
+                        tooltipMessage: 'Promedio de videos subidos por cada participante',
                       ),
                       Gutter(StoycoScreenSize.height(context, 5)),
                       Text(

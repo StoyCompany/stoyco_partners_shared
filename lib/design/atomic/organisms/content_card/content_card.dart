@@ -9,13 +9,15 @@ class ContentCard extends StatelessWidget {
   const ContentCard({
     super.key, 
     required this.imageUrl, 
-    this.isActive = false,
     required this.content,
+    this.isActive = false,
+    this.borderRadiusImage,
   });
 
   final String imageUrl;
   final bool isActive;
   final Widget content;
+  final BorderRadius? borderRadiusImage;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +33,8 @@ class ContentCard extends StatelessWidget {
                   imageUrl: imageUrl,
                   height: 115,
                   width: 115,
+                  backgroundColor: ColorFoundation.background.chartBlack,
+                  borderRadius: borderRadiusImage,
                 ),
                 Visibility(
                   visible: isActive,

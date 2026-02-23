@@ -57,6 +57,11 @@ final class NumbersFormat {
     return formatWithCommas(number.toDouble(), decimals: 0);
   }
 
+  static String formatCurrency(double number, {String currency = 'MXN', int decimals = 0}) {
+    final String formattedNumber = formatWithCommas(number, decimals: decimals);
+    return '\$$formattedNumber $currency';
+  }
+
   static String _formatValue(double value, String suffix, int decimals) {
     if (value % 1 == 0) {
       return '${value.toStringAsFixed(0)}$suffix';

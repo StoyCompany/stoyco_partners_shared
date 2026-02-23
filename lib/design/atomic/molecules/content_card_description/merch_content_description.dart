@@ -1,47 +1,142 @@
 import 'package:flutter/material.dart';
+import 'package:stoyco_partners_shared/design/atomic/atoms/chips/content_chip.dart';
+import 'package:stoyco_partners_shared/design/atomic/molecules/tooltip/custom_tooltip.dart';
+import 'package:stoyco_partners_shared/design/atomic/molecules/tooltip/messaged_description_tooltip.dart';
 import 'package:stoyco_partners_shared/design/models/content_cards/merch_content_model.dart';
+import 'package:stoyco_partners_shared/design/responsive/gutter.dart';
+import 'package:stoyco_partners_shared/design/responsive/screen_size/stoyco_screen_size.dart';
+import 'package:stoyco_partners_shared/design/utils/formats/numbers.dart';
+import 'package:stoyco_partners_shared/design/utils/foundations/color_foundation.dart';
+import 'package:stoyco_partners_shared/design/utils/tokens/gen/fonts.gen.dart';
 
 class MerchContentDescription extends StatelessWidget {
-  const MerchContentDescription({
-    required this.data,
-    super.key,
-  });
+  const MerchContentDescription({required this.data, super.key});
 
   final MerchContentModel data;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          data.title,
-          style: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Text(data.description),
-        const SizedBox(height: 8),
-        Text(
-          'Published: ${data.publishDate}',
-          style: const TextStyle(
-            fontSize: 12,
-            color: Colors.grey,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Row(
+    return SizedBox(
+      height: StoycoScreenSize.height(context, 115),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: Gutter.separateChildren(
           children: <Widget>[
-            Text('👍 ${data.likes}'),
-            const SizedBox(width: 16),
-            Text('💬 ${data.comments}'),
-            const SizedBox(width: 16),
-            Text('📤 ${data.shares}'),
-            const SizedBox(width: 16),
-            Text('👁 ${data.views}'),
+            Flexible(
+              flex: 3,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: Gutter.separateChildren(
+                  children: <Widget>[
+                    Text(
+                      data.title,
+                      style: TextStyle(
+                        fontFamily: StoycoFontFamilyToken.gilroy,
+                        fontSize: StoycoScreenSize.fontSize(context, 12),
+                        color: ColorFoundation.text.white,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    MessagedDescriptionTooltip(
+                      message: 'Precio: ',
+                      dataText: NumbersFormat.formatCurrency(
+                        data.price,
+                        currency: data.currency,
+                      ),
+                      tooltipMessage: 'Precio del producto',
+                    ),
+                    MessagedDescriptionTooltip(
+                      message: 'Costo: ',
+                      dataText: NumbersFormat.formatCurrency(
+                        data.cost,
+                        currency: data.currency,
+                      ),
+                      tooltipMessage: 'Costo del producto',
+                    ),
+                    _InfoRowWithChip(
+                      message: 'UDS Vendidas: ',
+                      dataText: NumbersFormat.formatWithCommasInt(
+                        data.unitsSold,
+                      ),
+                      chipMessage: NumbersFormat.formatCurrency(
+                        data.generatedRevenue,
+                        currency: data.currency,
+                      ),
+                      tooltipMessage: 'Total de unidades vendidas',
+                    ),
+                    _InfoRowWithChip(
+                      message: 'UDS Disponibles: ',
+                      dataText: NumbersFormat.formatWithCommasInt(
+                        data.unitsAvailable,
+                      ),
+                      chipMessage: NumbersFormat.formatCurrency(
+                        data.availableInventoryValue,
+                        currency: data.currency,
+                      ),
+                      tooltipMessage: 'Total de unidades disponibles',
+                    ),
+                    _InfoRowWithChip(
+                      message: 'UDS Totales: ',
+                      dataText: NumbersFormat.formatWithCommasInt(
+                        data.totalUnits,
+                      ),
+                      chipMessage: NumbersFormat.formatCurrency(
+                        data.totalInitialInventoryValue,
+                        currency: data.currency,
+                      ),
+                      tooltipMessage: 'Total de unidades',
+                    ),
+                  ],
+                  extent: StoycoScreenSize.height(context, 5),
+                ),
+              ),
+            ),
           ],
+          extent: StoycoScreenSize.width(context, 18),
+        ),
+      ),
+    );
+  }
+}
+
+class _InfoRowWithChip extends StatelessWidget {
+  const _InfoRowWithChip({
+    required this.message,
+    required this.dataText,
+    required this.chipMessage,
+    required this.tooltipMessage,
+  });
+
+  final String message;
+  final String dataText;
+  final String chipMessage;
+  final String tooltipMessage;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        MessagedDescriptionTooltip(
+          message: message,
+          dataText: dataText,
+          tooltipMessage: tooltipMessage,
+        ),
+        ContentChip(
+          message: chipMessage,
+          position: TooltipPosition.left,
+          messageStyle: TextStyle(
+            fontSize: StoycoScreenSize.fontSize(context, 10),
+            color: ColorFoundation.text.saDark,
+            fontWeight: FontWeight.w500,
+            fontFamily: StoycoFontFamilyToken.gilroy,
+          ),
+          tooltipMessage: tooltipMessage,
+          padding: StoycoScreenSize.symmetric(context, horizontal: 8),
         ),
       ],
     );

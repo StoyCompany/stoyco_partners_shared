@@ -69,9 +69,7 @@ class ChartLegend extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final int itemCount = items.length;
-    final bool needsScroll = itemCount > 4;
-    final double itemWidth = StoycoScreenSize.screenWidth(context) / 
-        (needsScroll ? 4 : itemCount);
+    final double itemWidth = StoycoScreenSize.screenWidth(context) / 4;
 
     final Widget content = Row(
       children: List<Widget>.generate(
@@ -83,14 +81,10 @@ class ChartLegend extends StatelessWidget {
       ),
     );
 
-    if (needsScroll) {
-      return SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: content,
-      );
-    }
-
-    return content;
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: content,
+    );
   }
 }
 

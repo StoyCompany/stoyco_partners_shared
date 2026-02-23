@@ -55,7 +55,7 @@ class DynamicsContentDescription extends StatelessWidget {
                             color: ColorFoundation.text.fandom,
                             fontWeight: FontWeight.w500,
                           ),
-                          maxLines: 4,
+                          maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ],

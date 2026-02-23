@@ -9,24 +9,32 @@ class MerchContentModel extends ContentCardModel {
     required super.id,
     required super.contentImageUrl,
     required this.title,
-    required this.description,
-    required this.publishDate,
-    required this.likes,
-    required this.shares,
-    required this.comments,
-    required this.views,
+    required this.price,
+    required this.cost,
+    required this.currency,
+    required this.unitsSold,
+    required this.unitsAvailable,
+    required this.totalUnits,
+    required this.generatedRevenue,
+    required this.availableInventoryValue,
+    required this.totalInitialInventoryValue,
+    required this.isActive,
   }) : super(contentType: ContentType.merch);
 
   factory MerchContentModel.fromJson(Map<String, dynamic> json) =>
       _$MerchContentModelFromJson(json);
 
   final String title;
-  final String description;
-  final String publishDate;
-  final int likes;
-  final int shares;
-  final int comments;
-  final int views;
+  final double price;
+  final double cost;
+  final String currency;
+  final int unitsSold;
+  final int unitsAvailable;
+  final int totalUnits;
+  final double generatedRevenue;
+  final double availableInventoryValue;
+  final double totalInitialInventoryValue;
+  final bool isActive;
 
   Map<String, dynamic> toJson() => _$MerchContentModelToJson(this);
 
@@ -34,11 +42,15 @@ class MerchContentModel extends ContentCardModel {
   List<Object?> get props => <Object?>[
         ...super.props,
         title,
-        description,
-        publishDate,
-        likes,
-        shares,
-        comments,
-        views,
+        price,
+        cost,
+        currency,
+        unitsSold,
+        unitsAvailable,
+        totalUnits,
+        generatedRevenue,
+        availableInventoryValue,
+        totalInitialInventoryValue,
+        isActive,
       ];
 }

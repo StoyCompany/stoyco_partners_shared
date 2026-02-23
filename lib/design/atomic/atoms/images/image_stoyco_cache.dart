@@ -16,6 +16,7 @@ class ImageStoycoCache extends StatelessWidget {
     this.placeholder,
     this.errorWidget,
     this.useOldImageOnUrlChange = true,
+    this.backgroundColor,
   });
 
   final String imageUrl;
@@ -25,7 +26,8 @@ class ImageStoycoCache extends StatelessWidget {
   final BoxFit fit;
   final Widget? placeholder;
   final Widget? errorWidget;
-  final bool useOldImageOnUrlChange; 
+  final bool useOldImageOnUrlChange;
+  final Color? backgroundColor; 
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +38,7 @@ class ImageStoycoCache extends StatelessWidget {
     final double? adaptiveWidth = width != null ? StoycoScreenSize.width(context, width!) : null;
     final String normalizedUrl = _normalizeUrl(imageUrl);
 
-    return ClipRRect(
+    final Widget imageWidget = ClipRRect(
       borderRadius: adaptiveBorderRadius,
       child: CachedNetworkImage(
         imageUrl: normalizedUrl,
@@ -62,6 +64,24 @@ class ImageStoycoCache extends StatelessWidget {
         },
       ),
     );
+
+    if (backgroundColor != null) {
+      return Stack(
+        children: <Widget>[
+          Container(
+            height: adaptiveHeight,
+            width: adaptiveWidth ?? double.infinity,
+            decoration: BoxDecoration(
+              color: backgroundColor,
+              borderRadius: adaptiveBorderRadius,
+            ),
+          ),
+          imageWidget,
+        ],
+      );
+    }
+
+    return imageWidget;
   }
 
   String _normalizeUrl(String url) {

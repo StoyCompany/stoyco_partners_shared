@@ -171,15 +171,18 @@ class _PieChartState extends State<PieChart> with TickerProviderStateMixin {
     }
 
     // Recalculate total with filtered sections for accurate percentages
-    final double filteredTotal = filteredSections.fold<double>(
+    filteredSections.fold<double>(
       0,
       (double sum, PieChartSectionData s) => sum + s.value,
     );
 
-    final List<ChartLegendItemModel> legendItems = filteredSections.map((
+    // Create legend items from ALL sections (including 0 values)
+    final List<ChartLegendItemModel> legendItems = widget.sections.map((
       PieChartSectionData section,
     ) {
-      final double percentage = (section.value / filteredTotal) * 100;
+      final double percentage = section.value == 0 
+          ? 0 
+          : (section.value / total) * 100;
       return ChartLegendItemModel(
         color: section.color,
         label: section.label ?? '',
