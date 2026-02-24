@@ -46,7 +46,7 @@ class ExperienceDetailTable extends StatelessWidget {
                   border: Border.symmetric(
                     horizontal: BorderSide(
                       color: ColorFoundation.background.saDark,
-                      width: 1,
+                      width: 0.5,
                     ),
                   ),
                 ),
@@ -110,81 +110,94 @@ class ExperienceDetailTable extends StatelessWidget {
           final ExperienceDetailRow row = entry.value;
           final bool isLast = index == rows.length - 1;
 
-          return Container(
-            padding: StoycoScreenSize.symmetric(
-              context,
-              vertical: 12,
-              horizontal: 16,
-            ),
-            decoration: BoxDecoration(
-              color: index.isEven
-                  ? ColorFoundation.background.saLight
-                  : ColorFoundation.background.saHighlights.withOpacity(0.3),
-              borderRadius: isLast
-                  ? BorderRadius.only(
-                      bottomLeft: Radius.circular(
-                        StoycoScreenSize.radius(context, 8),
+          return Padding(
+            padding: EdgeInsets.only(top: 5, bottom: isLast ? 0 : 0),
+            child: Container(
+              padding: StoycoScreenSize.symmetric(
+                context,
+                vertical: 5,
+                horizontal: 5,
+              ),
+              decoration: BoxDecoration(
+                color: ColorFoundation.background.saLight,
+                borderRadius: isLast
+                    ? BorderRadius.only(
+                        bottomLeft: Radius.circular(
+                          StoycoScreenSize.radius(context, 8),
+                        ),
+                        bottomRight: Radius.circular(
+                          StoycoScreenSize.radius(context, 8),
+                        ),
+                      )
+                    : null,
+              ),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    flex: 3,
+                    child: Text(
+                      '${row.locality}:',
+                      style: TextStyle(
+                        fontFamily: StoycoFontFamilyToken.gilroy,
+                        fontSize: StoycoScreenSize.fontSize(context, 10),
+                        fontWeight: FontWeight.w500,
+                        color: ColorFoundation.text.saHighlights,
                       ),
-                      bottomRight: Radius.circular(
-                        StoycoScreenSize.radius(context, 8),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: Text(
+                      '\$${NumbersFormat.formatWithCommas(row.pricePerUnit)} ${row.currency}',
+                      style: TextStyle(
+                        fontFamily: StoycoFontFamilyToken.apercu,
+                        fontSize: StoycoScreenSize.fontSize(context, 10),
+                        fontWeight: FontWeight.w500,
+                        color: ColorFoundation.text.saDark,
                       ),
-                    )
-                  : null,
-            ),
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  flex: 3,
-                  child: Text(
-                    row.locality,
-                    style: TextStyle(
-                      fontFamily: StoycoFontFamilyToken.gilroy,
-                      fontSize: StoycoScreenSize.fontSize(context, 10),
-                      fontWeight: FontWeight.w500,
-                      color: ColorFoundation.text.saDark,
                     ),
                   ),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Text(
-                    '\$${NumbersFormat.formatWithCommas(row.pricePerUnit)}',
-                    style: TextStyle(
-                      fontFamily: StoycoFontFamilyToken.apercu,
-                      fontSize: StoycoScreenSize.fontSize(context, 10),
-                      fontWeight: FontWeight.w400,
-                      color: ColorFoundation.text.saDark,
+                  Expanded(
+                    flex: 2,
+                    child: Text(
+                      '${row.totalUnits} UDS',
+                      style: TextStyle(
+                        fontFamily: StoycoFontFamilyToken.apercu,
+                        fontSize: StoycoScreenSize.fontSize(context, 10),
+                        fontWeight: FontWeight.w500,
+                        color: ColorFoundation.text.saDark,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                    textAlign: TextAlign.center,
                   ),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Text(
-                    NumbersFormat.formatWithCommas(row.totalUnits.toDouble()),
-                    style: TextStyle(
-                      fontFamily: StoycoFontFamilyToken.apercu,
-                      fontSize: StoycoScreenSize.fontSize(context, 10),
-                      fontWeight: FontWeight.w400,
-                      color: ColorFoundation.text.saDark,
+                  Expanded(
+                    flex: 2,
+                    child: Container(
+                      padding: StoycoScreenSize.symmetric(
+                        context,
+                        vertical: 3,
+                        horizontal: 10,
+                      ),
+                      decoration: BoxDecoration(
+                        color: ColorFoundation.background.saDisabled2,
+                        borderRadius: BorderRadius.circular(
+                          StoycoScreenSize.radius(context, 100),
+                        ),
+                      ),
+                      child: Text(
+                        '\$${NumbersFormat.formatWithCommas(row.totalValue)} ${row.currency}',
+                        style: TextStyle(
+                          fontFamily: StoycoFontFamilyToken.apercu,
+                          fontSize: StoycoScreenSize.fontSize(context, 10),
+                          fontWeight: FontWeight.w500,
+                          color: ColorFoundation.text.saDark,
+                        ),
+                        textAlign: TextAlign.right,
+                      ),
                     ),
-                    textAlign: TextAlign.center,
                   ),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Text(
-                    '\$${NumbersFormat.formatWithCommas(row.totalValue)} ${row.currency}',
-                    style: TextStyle(
-                      fontFamily: StoycoFontFamilyToken.apercu,
-                      fontSize: StoycoScreenSize.fontSize(context, 10),
-                      fontWeight: FontWeight.w500,
-                      color: ColorFoundation.text.saDark,
-                    ),
-                    textAlign: TextAlign.right,
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         }),

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:stoyco_partners_shared/design/atomic/molecules/table/experience_detail_table.dart';
 import 'package:stoyco_partners_shared/design/layout_all_imports.dart';
+import 'package:stoyco_partners_shared/design/models/experience_detail_dto.dart';
 import 'package:stoyco_partners_shared/design/responsive/screen_size/stoyco_screen_size.dart';
 import 'package:stoyco_partners_shared/design/utils/formats/dates.dart';
 import 'package:stoyco_partners_shared/design/utils/foundations/color_foundation.dart';
-import 'package:stoyco_partners_shared/design/utils/foundations/font_foundation.dart';
 import 'package:stoyco_partners_shared/design/utils/tokens/gen/fonts.gen.dart';
 
 /// A modal dialog widget that displays experience details in a table format.
@@ -14,38 +15,31 @@ import 'package:stoyco_partners_shared/design/utils/tokens/gen/fonts.gen.dart';
 ///
 /// Example usage:
 /// ```dart
-/// showDialog(
-///   context: context,
-///   builder: (context) => ExperienceDetailModal(
-///     title: 'Detalles de la Experiencia',
-///     table: YourTableWidget(),
-///     closeActionLabel: 'CERRAR',
-///     closeAction: () => Navigator.pop(context),
+/// Get.dialog<void>(ExperienceDetailModal(
+///   data: ExperienceDetailDto(
+///     eventName: 'Concert',
+///     eventDate: DateTime(2024, 12, 31),
+///     soldRows: [...],
+///     availableRows: [...],
+///     soldUnits: 50,
+///     soldValue: 7500000,
+///     currency: 'COP',
 ///   ),
-/// );
+///   closeAction: () => Navigator.pop(context),
+/// ));
 /// ```
 class ExperienceDetailModal extends StatelessWidget {
   /// Creates an experience detail modal dialog.
-  ///
-  /// The [title] and [table] are required.
-  /// The [table] widget should contain the structured information to display.
   const ExperienceDetailModal({
     super.key,
-    required this.eventName,
-    required this.eventDate,
-    required this.table,
+    required this.data,
     this.closeActionLabel,
     this.closeAction,
     this.icon,
   });
 
-  /// The title text displayed at the top of the modal.
-  final String eventName;
-
-  final DateTime eventDate;
-
-  /// The table widget containing the experience details.
-  final Widget table;
+  /// The data transfer object containing all experience detail information
+  final ExperienceDetailDto data;
 
   /// The label for the close button.
   ///
@@ -60,81 +54,258 @@ class ExperienceDetailModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double verticalPadding = context.layout.value(xs: 32, md: 36, lg: 42);
+    final double verticalPadding = context.layout.value(xs: 18, md: 20, lg: 22);
     final double horizontalPadding = context.layout.value(
-      xs: 28,
-      md: 32,
-      lg: 34,
+      xs: 18,
+      md: 20,
+      lg: 22,
     );
 
-    return Center(
-      child: Padding(
-        padding: StoycoScreenSize.all(context, 20),
-        child: Container(
-          decoration: BoxDecoration(
-            color: ColorFoundation.background.saLight,
-            borderRadius: BorderRadius.circular(25),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  vertical: verticalPadding,
-                  horizontal: horizontalPadding,
-                ),
-                child: Column(
-                  children: Gutter.separateChildren(
-                    children: <Widget>[
-                      if (icon != null) icon!,
-                      Text(
-                        'Detalle de evento',
-                        style: TextStyle(
-                          fontFamily: StoycoFontFamilyToken.gilroy,
-                          fontSize: StoycoScreenSize.fontSize(context, 25),
-                          fontWeight: FontWeight.w700,
-                          color: ColorFoundation.text.saDark,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      Text(
-                        '$eventName \n ${DatesFormats.formatDateDDMMYYYY(eventDate)}',
-                        style: TextStyle(
-                          fontFamily: StoycoFontFamilyToken.gilroy,
-                          fontSize: StoycoScreenSize.fontSize(context, 16),
-                          fontWeight: FontWeight.w500,
-                          color: ColorFoundation.text.saDark,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      table,
-                    ],
-                    extent: 12,
+    return Material(
+      type: MaterialType.transparency,
+      child: Center(
+        child: Padding(
+          padding: StoycoScreenSize.all(context, 18),
+          child: Container(
+            decoration: BoxDecoration(
+              color: ColorFoundation.background.saLight,
+              borderRadius: BorderRadius.circular(25),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: verticalPadding,
+                    horizontal: horizontalPadding,
                   ),
-                ),
-              ),
-              Container(
-                height: 65,
-                decoration: BoxDecoration(
-                  border: Border(
-                    top: BorderSide(
-                      color: ColorFoundation.border.saDark,
-                      width: 1,
+                  child: Column(
+                    children: Gutter.separateChildren(
+                      children: <Widget>[
+                        if (icon != null) icon!,
+                        Text(
+                          'Detalle de evento',
+                          style: TextStyle(
+                            fontFamily: StoycoFontFamilyToken.gilroy,
+                            fontSize: StoycoScreenSize.fontSize(context, 25),
+                            fontWeight: FontWeight.w700,
+                            color: ColorFoundation.text.saDark,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        Text(
+                          '${data.eventName} \n ${DatesFormats.formatDateDDMMYYYY(data.eventDate)}',
+                          style: TextStyle(
+                            fontFamily: StoycoFontFamilyToken.gilroy,
+                            fontSize: StoycoScreenSize.fontSize(context, 16),
+                            fontWeight: FontWeight.w500,
+                            color: ColorFoundation.text.saDark,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        ExperienceDetailTable(rows: data.soldRows),
+                        Container(
+                          padding: StoycoScreenSize.symmetric(
+                            context,
+                            vertical: 5,
+                            horizontal: 10,
+                          ),
+                          decoration: BoxDecoration(
+                            color: ColorFoundation.background.saDark,
+                            borderRadius: BorderRadius.circular(
+                              StoycoScreenSize.radius(context, 100),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
+                                'Vendidas ${data.soldUnits} UDS',
+                                style: TextStyle(
+                                  fontFamily: StoycoFontFamilyToken.gilroy,
+                                  fontSize: StoycoScreenSize.fontSize(
+                                    context,
+                                    12,
+                                  ),
+                                  fontWeight: FontWeight.w500,
+                                  color: ColorFoundation.text.saLight,
+                                ),
+                              ),
+                              Container(
+                                padding: StoycoScreenSize.symmetric(
+                                  context,
+                                  vertical: 3,
+                                  horizontal: 7,
+                                ),
+                                decoration: BoxDecoration(
+                                  color:
+                                      ColorFoundation.background.saHighlights,
+                                  borderRadius: BorderRadius.circular(
+                                    StoycoScreenSize.radius(context, 100),
+                                  ),
+                                ),
+                                child: Text(
+                                  '\$${data.soldValue ?? '0'} ${data.currency}',
+                                  style: TextStyle(
+                                    fontFamily: StoycoFontFamilyToken.gilroy,
+                                    fontSize: StoycoScreenSize.fontSize(
+                                      context,
+                                      8,
+                                    ),
+                                    fontWeight: FontWeight.w500,
+                                    color: ColorFoundation.text.saDark,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        ExperienceDetailTable(rows: data.availableRows),
+                        Container(
+                          padding: StoycoScreenSize.symmetric(
+                            context,
+                            vertical: 5,
+                            horizontal: 10,
+                          ),
+                          decoration: BoxDecoration(
+                            color: ColorFoundation.background.saDark,
+                            borderRadius: BorderRadius.circular(
+                              StoycoScreenSize.radius(context, 100),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
+                                'Disponibles ${data.availableUnits} UDS',
+                                style: TextStyle(
+                                  fontFamily: StoycoFontFamilyToken.gilroy,
+                                  fontSize: StoycoScreenSize.fontSize(
+                                    context,
+                                    12,
+                                  ),
+                                  fontWeight: FontWeight.w500,
+                                  color: ColorFoundation.text.saLight,
+                                ),
+                              ),
+                              Container(
+                                padding: StoycoScreenSize.symmetric(
+                                  context,
+                                  vertical: 3,
+                                  horizontal: 7,
+                                ),
+                                decoration: BoxDecoration(
+                                  color:
+                                      ColorFoundation.background.saHighlights,
+                                  borderRadius: BorderRadius.circular(
+                                    StoycoScreenSize.radius(context, 100),
+                                  ),
+                                ),
+                                child: Text(
+                                  '\$${data.availableValue ?? '0'} ${data.currency}',
+                                  style: TextStyle(
+                                    fontFamily: StoycoFontFamilyToken.gilroy,
+                                    fontSize: StoycoScreenSize.fontSize(
+                                      context,
+                                      8,
+                                    ),
+                                    fontWeight: FontWeight.w500,
+                                    color: ColorFoundation.text.saDark,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          padding: StoycoScreenSize.symmetric(
+                            context,
+                            vertical: 5,
+                            horizontal: 10,
+                          ),
+                          decoration: BoxDecoration(
+                            color: ColorFoundation.background.saDark,
+                            borderRadius: BorderRadius.circular(
+                              StoycoScreenSize.radius(context, 100),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
+                                'Total ${data.totalUnits} UDS',
+                                style: TextStyle(
+                                  fontFamily: StoycoFontFamilyToken.gilroy,
+                                  fontSize: StoycoScreenSize.fontSize(
+                                    context,
+                                    12,
+                                  ),
+                                  fontWeight: FontWeight.w500,
+                                  color: ColorFoundation.text.saLight,
+                                ),
+                              ),
+                              Container(
+                                padding: StoycoScreenSize.symmetric(
+                                  context,
+                                  vertical: 3,
+                                  horizontal: 7,
+                                ),
+                                decoration: BoxDecoration(
+                                  color:
+                                      ColorFoundation.background.saHighlights,
+                                  borderRadius: BorderRadius.circular(
+                                    StoycoScreenSize.radius(context, 100),
+                                  ),
+                                ),
+                                child: Text(
+                                  '\$${data.totalValue ?? '0'} ${data.currency}',
+                                  style: TextStyle(
+                                    fontFamily: StoycoFontFamilyToken.gilroy,
+                                    fontSize: StoycoScreenSize.fontSize(
+                                      context,
+                                      8,
+                                    ),
+                                    fontWeight: FontWeight.w500,
+                                    color: ColorFoundation.text.saDark,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                      extent: 12,
                     ),
                   ),
                 ),
-                child: GestureDetector(
-                  onTap: closeAction,
-                  behavior: HitTestBehavior.opaque,
-                  child: Center(
-                    child: Text(
-                      closeActionLabel ?? 'CERRAR',
-                      style: FontFoundation.label.semiBold15saDark,
+                Container(
+                  height: 65,
+                  decoration: BoxDecoration(
+                    border: Border(
+                      top: BorderSide(
+                        color: ColorFoundation.border.saDark,
+                        width: 1,
+                      ),
+                    ),
+                  ),
+                  child: GestureDetector(
+                    onTap: closeAction,
+                    behavior: HitTestBehavior.opaque,
+                    child: Center(
+                      child: Text(
+                        closeActionLabel ?? 'CERRAR',
+                        style: TextStyle(
+                          fontFamily: StoycoFontFamilyToken.gilroy,
+                          fontSize: StoycoScreenSize.fontSize(context, 15),
+                          fontWeight: FontWeight.w600,
+                          color: ColorFoundation.text.saError,
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

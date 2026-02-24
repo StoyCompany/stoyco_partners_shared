@@ -142,6 +142,8 @@ class _Background {
   final Color warningAler = StoycoColorsToken.itemMenuYellow;
 
   final Color saSkeleton = StoycoColorsToken.saSkeleton;
+
+  final Color saDisabled2 = StoycoColorsToken.saDisabled2;
 }
 
 class _Border {
