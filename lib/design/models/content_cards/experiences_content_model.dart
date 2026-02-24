@@ -9,13 +9,16 @@ class ExperiencesContentModel extends ContentCardModel {
     required super.id,
     required super.contentImageUrl,
     required this.name,
-    required this.capacity,
     required this.totalTickets,
-    required this.courtesyTickets,
     required this.availableTickets,
+    required this.soldTickets,
     required this.ticketPrice,
+    required this.totalRevenue,
+    required this.availableRevenue,
+    required this.soldRevenue,
     required this.eventDate,
-    required this.isFinished,
+    required this.isActive,
+    required this.currency,
     this.finishDate,
   }) : super(contentType: ContentType.experiences);
 
@@ -23,14 +26,17 @@ class ExperiencesContentModel extends ContentCardModel {
       _$ExperiencesContentModelFromJson(json);
 
   final String name;
-  final int capacity;
   final int totalTickets;
-  final int courtesyTickets;
   final int availableTickets;
+  final int soldTickets;
   final double ticketPrice;
+  final double totalRevenue;
+  final double availableRevenue;
+  final double soldRevenue;
   final String eventDate;
-  final bool isFinished;
+  final bool isActive;
   final String? finishDate;
+  final String currency;
 
   Map<String, dynamic> toJson() => _$ExperiencesContentModelToJson(this);
 
@@ -38,13 +44,16 @@ class ExperiencesContentModel extends ContentCardModel {
   List<Object?> get props => <Object?>[
     ...super.props,
     name,
-    capacity,
     totalTickets,
-    courtesyTickets,
     availableTickets,
+    soldTickets,
     ticketPrice,
+    totalRevenue,
+    availableRevenue,
+    soldRevenue,
     eventDate,
-    isFinished,
+    isActive,
     finishDate,
+    currency,
   ];
 }

@@ -22,7 +22,7 @@ class ContentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: StoycoScreenSize.height(context, 115),
+      height: StoycoScreenSize.height(context, 125),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: Gutter.separateChildren(
