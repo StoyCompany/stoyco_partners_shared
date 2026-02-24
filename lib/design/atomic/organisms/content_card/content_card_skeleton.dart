@@ -29,19 +29,8 @@ class ContentCardSkeleton extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Bone.text(
-                      words: 2,
-                      fontSize: StoycoScreenSize.fontSize(context, 16),
-                    ),
-                    Gutter(StoycoScreenSize.height(context, 10)),
-                    // Description
-                    Bone.text(
-                      words: 2,
-                      fontSize: StoycoScreenSize.fontSize(context, 16),
-                    ),
-                    Gutter(StoycoScreenSize.height(context, 10)),
-                    Bone.text(
-                      words: 1,
+                    Bone.multiText(
+                      lines: 3,
                       fontSize: StoycoScreenSize.fontSize(context, 16),
                     ),
                   ],
@@ -49,24 +38,27 @@ class ContentCardSkeleton extends StatelessWidget {
               ),
               Gutter(StoycoScreenSize.width(context, 18)),
               // Stats section (3 text items)
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Bone.text(
-                    words: 1,
-                    fontSize: StoycoScreenSize.fontSize(context, 16),
-                  ),
-                  Gutter(StoycoScreenSize.height(context, 5)),
-                  Bone.text(
-                    words: 1,
-                    fontSize: StoycoScreenSize.fontSize(context, 16),
-                  ),
-                  Gutter(StoycoScreenSize.height(context, 5)),
-                  Bone.text(
-                    words: 1,
-                    fontSize: StoycoScreenSize.fontSize(context, 16),
-                  ),
-                ],
+              SizedBox(
+                width: StoycoScreenSize.width(context, 60),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Bone.text(
+                      words: 1,
+                      fontSize: StoycoScreenSize.fontSize(context, 16),
+                    ),
+                    Gutter(StoycoScreenSize.height(context, 5)),
+                    Bone.text(
+                      words: 1,
+                      fontSize: StoycoScreenSize.fontSize(context, 16),
+                    ),
+                    Gutter(StoycoScreenSize.height(context, 5)),
+                    Bone.text(
+                      words: 1,
+                      fontSize: StoycoScreenSize.fontSize(context, 16),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
