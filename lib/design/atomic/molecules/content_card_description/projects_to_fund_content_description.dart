@@ -25,8 +25,7 @@ class ProjectsToFundContentDescription extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: Gutter.separateChildren(
           children: <Widget>[
-            Flexible(
-              flex: 3,
+            Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,7 +95,8 @@ class ProjectsToFundContentDescription extends StatelessWidget {
                 ),
               ),
             ),
-            Flexible(
+            SizedBox(
+              width: StoycoScreenSize.width(context, 55),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
