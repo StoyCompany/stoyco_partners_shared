@@ -5,8 +5,10 @@ import 'package:stoyco_partners_shared/design/atomic/atoms/chips/chip_monotone_n
 import 'package:stoyco_partners_shared/design/atomic/organisms/graphics/linear_chart/linear_chart_data.dart';
 import 'package:stoyco_partners_shared/design/models/chart_legend_item_model.dart';
 import 'package:stoyco_partners_shared/design/responsive/screen_size/stoyco_screen_size.dart';
+import 'package:stoyco_partners_shared/design/utils/formats/dates.dart';
 import 'package:stoyco_partners_shared/design/utils/formats/numbers.dart';
 import 'package:stoyco_partners_shared/design/utils/foundations/color_foundation.dart';
+import 'package:stoyco_partners_shared/design/utils/tokens/gen/assets.gen.dart';
 import 'package:stoyco_partners_shared/design/utils/tokens/gen/fonts.gen.dart';
 
 class LinearChart extends StatefulWidget {
@@ -29,10 +31,10 @@ class LinearChart extends StatefulWidget {
 
 class _LinearChartState extends State<LinearChart>
     with SingleTickerProviderStateMixin {
-  int? _touchedSpotIndex;
-  String? _touchedLineKey;
   late AnimationController _animationController;
   late Animation<double> _animation;
+  int? _touchedSpotIndex;
+  String? _touchedLineKey;
 
   @override
   void initState() {
@@ -88,7 +90,7 @@ class _LinearChartState extends State<LinearChart>
       final List<LinearChartPoint> points = _getPointsForLine(config.key);
       for (final LinearChartPoint point in points) {
         if (point.total > maxValue) {
-          maxValue = point.total;
+          maxValue = point.total.toDouble();
         }
       }
     }
@@ -96,64 +98,61 @@ class _LinearChartState extends State<LinearChart>
   }
 
   Widget _buildTooltipContent(LinearChartPoint point) {
-    final List<Widget> items = <Widget>[];
-
-    items.add(
-      Text(
-        point.label,
-        style: TextStyle(
-          fontSize: StoycoScreenSize.width(context, 16),
-          color: ColorFoundation.text.white,
-          fontWeight: FontWeight.bold,
-          fontFamily: StoycoFontFamilyToken.gilroy,
+    return ChipMonotoneNoise(
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: StoycoScreenSize.width(context, 12),
+          vertical: StoycoScreenSize.height(context, 8),
         ),
-      ),
-    );
-
-    items.add(Gap(StoycoScreenSize.height(context, 8)));
-
-    final Map<String, double> values = <String, double>{
-      'Male': point.male,
-      'Female': point.female,
-      'Non-Binary': point.nonBinary,
-      'Other': point.other,
-      'No Data': point.noData,
-    };
-
-    values.forEach((String key, double value) {
-      if (value > 0) {
-        items.add(
-          Text(
-            '$key: ${NumbersFormat.formatWithCommas(value)}',
-            style: TextStyle(
-              fontSize: StoycoScreenSize.width(context, 14),
-              color: ColorFoundation.text.white,
-              fontWeight: FontWeight.w400,
-              fontFamily: StoycoFontFamilyToken.gilroy,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text(
+              DatesFormats.formatDateDDMMYYYY(point.date),
+              style: TextStyle(
+                fontSize: StoycoScreenSize.width(context, 16),
+                color: ColorFoundation.text.white,
+                fontWeight: FontWeight.bold,
+                fontFamily: StoycoFontFamilyToken.gilroy,
+              ),
             ),
-          ),
-        );
-      }
-    });
-
-    items.add(Gap(StoycoScreenSize.height(context, 8)));
-
-    items.add(
-      Text(
-        'Total: ${NumbersFormat.formatWithCommas(point.total)}',
-        style: TextStyle(
-          fontSize: StoycoScreenSize.width(context, 14),
-          color: ColorFoundation.text.white,
-          fontWeight: FontWeight.bold,
-          fontFamily: StoycoFontFamilyToken.gilroy,
+            Gap(StoycoScreenSize.height(context, 8)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Visibility(
+                  visible: point.trend == TrendType.up || point.trend == TrendType.down,
+                  child: Transform.rotate(
+                    angle: point.trend == TrendType.down ? 3.14159 : 0,
+                    child: StoycoAssetsToken.lib.assets.icons.arrowUp.svg(
+                      package: 'stoyco_partners_shared',
+                      width: StoycoScreenSize.width(context, 16),
+                      height: StoycoScreenSize.height(context, 16),
+                      colorFilter: ColorFilter.mode(
+                        ColorFoundation.text.white,
+                        BlendMode.srcIn,
+                      ),
+                    ),
+                  ),
+                ),
+                Gap(StoycoScreenSize.width(context, 4)),
+                Text(
+                  NumbersFormat.formatWithCommas(point.total.toDouble()),
+                  style: TextStyle(
+                    fontSize: StoycoScreenSize.width(context, 14),
+                    color: ColorFoundation.text.white,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: StoycoFontFamilyToken.gilroy,
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
-    );
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: items,
     );
   }
 
@@ -217,9 +216,7 @@ class _LinearChartState extends State<LinearChart>
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: SizedBox(
-                width:
-                    widget.data!.rangeX.length *
-                    StoycoScreenSize.width(context, 100),
+                width: widget.data!.rangeX.length * StoycoScreenSize.width(context, 100),
                 child: Padding(
                   padding: EdgeInsets.only(
                     left: StoycoScreenSize.width(context, 16),
@@ -234,11 +231,11 @@ class _LinearChartState extends State<LinearChart>
                         builder: (BuildContext context, Widget? child) {
                           return LineChart(
                             LineChartData(
-                              minY: minY,
-                              maxY: maxY,
-                              minX: 0,
-                              maxX: (widget.data!.rangeX.length - 1).toDouble(),
-                              gridData: FlGridData(
+                          minY: minY,
+                          maxY: maxY,
+                          minX: 0,
+                          maxX: (widget.data!.rangeX.length - 1).toDouble(),
+                          gridData: FlGridData(
                                 show: true,
                                 drawVerticalLine: false,
                                 checkToShowHorizontalLine: (double value) {
@@ -371,7 +368,7 @@ class _LinearChartState extends State<LinearChart>
                                     pointsToShow,
                                     (int index) => FlSpot(
                                       index.toDouble(),
-                                      points[index].total,
+                                      points[index].total.toDouble(),
                                     ),
                                   ),
                                   isCurved: true,
@@ -410,17 +407,19 @@ class _LinearChartState extends State<LinearChart>
                               lineTouchData: LineTouchData(
                                 enabled: true,
                                 touchSpotThreshold: 15,
+                                getTouchLineStart: (_, __) => -double.infinity,
+                                getTouchLineEnd: (_, __) => double.infinity,
                                 getTouchedSpotIndicator:
                                     (
                                       LineChartBarData barData,
                                       List<int> spotIndexes,
                                     ) {
                                       return spotIndexes.map((int index) {
-                                        return const TouchedSpotIndicatorData(
+                                        return TouchedSpotIndicatorData(
                                           FlLine(
-                                            color: Color(0xFFA397BE),
-                                            strokeWidth: 1,
-                                            dashArray: <int>[2, 2],
+                                            color: ColorFoundation.background.divider,
+                                            strokeWidth: 1.5,
+                                            dashArray: <int>[8, 4],
                                           ),
                                           FlDotData(show: false),
                                         );
@@ -474,33 +473,32 @@ class _LinearChartState extends State<LinearChart>
                           );
                         },
                       ),
-                      if (_touchedSpotIndex != null && _touchedLineKey != null)
-                        Builder(
-                          builder: (BuildContext context) {
-                            final List<LinearChartPoint> points =
-                                _getPointsForLine(_touchedLineKey!);
-                            if (_touchedSpotIndex! >= points.length) {
-                              return const SizedBox();
-                            }
-
-                            final LinearChartPoint point =
-                                points[_touchedSpotIndex!];
-
-                            return Positioned.fill(
-                              child: Align(
-                                alignment: Alignment.topCenter,
-                                child: Padding(
-                                  padding: EdgeInsets.only(
-                                    top: StoycoScreenSize.height(context, 20),
-                                  ),
-                                  child: ChipMonotoneNoise(
-                                    child: _buildTooltipContent(point),
-                                  ),
+                        // Tooltip overlay
+                        if (_touchedSpotIndex != null && _touchedLineKey != null)
+                          Builder(
+                            builder: (BuildContext context) {
+                              final List<LinearChartPoint> points =
+                                  _getPointsForLine(_touchedLineKey!);
+                              if (_touchedSpotIndex! >= points.length) {
+                                return const SizedBox.shrink();
+                              }
+                              final LinearChartPoint point =
+                                  points[_touchedSpotIndex!];
+                              
+                              final double chartWidth = widget.data!.rangeX.length * 100;
+                              final double xPercent = _touchedSpotIndex! / (widget.data!.rangeX.length - 1);
+                              final double xPosition = chartWidth * xPercent;
+                              
+                              return Positioned(
+                                left: xPosition,
+                                top: 0,
+                                child: Transform.translate(
+                                  offset: const Offset(-75, 0), // Center the tooltip
+                                  child: _buildTooltipContent(point),
                                 ),
-                              ),
-                            );
-                          },
-                        ),
+                              );
+                            },
+                          ),
                     ],
                   ),
                 ),

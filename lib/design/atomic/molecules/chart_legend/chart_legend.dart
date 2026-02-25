@@ -100,48 +100,51 @@ class _ChartLegendItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: width,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Container(
-                width: StoycoScreenSize.width(context, 12),
-                height: StoycoScreenSize.height(context, 8),
-                decoration: BoxDecoration(
-                  color: item.color,
-                  borderRadius: BorderRadius.circular(
-                    StoycoScreenSize.radius(context, 100),
+      child: Padding(
+        padding: StoycoScreenSize.fromLTRB(context, right: 16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Container(
+                  width: StoycoScreenSize.width(context, 12),
+                  height: StoycoScreenSize.height(context, 8),
+                  decoration: BoxDecoration(
+                    color: item.color,
+                    borderRadius: BorderRadius.circular(
+                      StoycoScreenSize.radius(context, 100),
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(width: StoycoScreenSize.width(context, 8)),
-              Flexible(
-                child: Text(
-                  item.label,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontFamily: StoycoFontFamilyToken.gilroy,
-                    fontWeight: FontWeight.w300,
-                    fontSize: StoycoScreenSize.fontSize(context, 14),
-                    height: 1.0,
-                    color: Colors.white,
+                SizedBox(width: StoycoScreenSize.width(context, 8)),
+                Flexible(
+                  child: Text(
+                    item.label,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontFamily: StoycoFontFamilyToken.gilroy,
+                      fontWeight: FontWeight.w300,
+                      fontSize: StoycoScreenSize.fontSize(context, 14),
+                      height: 1.0,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
+              ],
+            ),
+            if (item.value.isNotEmpty)...<Widget>[
+              SizedBox(height: StoycoScreenSize.height(context, 8)),
+              ChipMonotoneNoise(
+                message: item.value,
+                padding: StoycoScreenSize.symmetric(  context, horizontal: 20),
               ),
             ],
-          ),
-          if (item.value.isNotEmpty)...<Widget>[
-            SizedBox(height: StoycoScreenSize.height(context, 8)),
-            ChipMonotoneNoise(
-              message: item.value,
-              padding: StoycoScreenSize.symmetric(  context, horizontal: 20),
-            ),
           ],
-        ],
+        ),
       ),
     );
   }

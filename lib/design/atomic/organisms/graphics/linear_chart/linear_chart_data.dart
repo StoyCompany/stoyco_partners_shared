@@ -1,5 +1,24 @@
 import 'package:flutter/material.dart';
 
+enum TrendType {
+  neutral,
+  down,
+  up;
+
+  static TrendType fromString(String value) {
+    switch (value.toLowerCase()) {
+      case 'neutral':
+        return TrendType.neutral;
+      case 'down':
+        return TrendType.down;
+      case 'up':
+        return TrendType.up;
+      default:
+        return TrendType.neutral;
+    }
+  }
+}
+
 class LinearChartData {
   const LinearChartData({
     required this.dateStart,
@@ -57,33 +76,22 @@ class LinearChartData {
 
 class LinearChartPoint {
   const LinearChartPoint({
-    required this.label,
-    required this.male,
-    required this.female,
-    required this.nonBinary,
-    required this.other,
-    required this.noData,
+    required this.total,
+    required this.trend,
+    required this.date,
   });
 
   factory LinearChartPoint.fromJson(Map<String, dynamic> json) {
     return LinearChartPoint(
-      label: json['label'] as String,
-      male: (json['male'] as num).toDouble(),
-      female: (json['female'] as num).toDouble(),
-      nonBinary: (json['nonBinary'] as num).toDouble(),
-      other: (json['other'] as num).toDouble(),
-      noData: (json['noData'] as num).toDouble(),
+      total: json['total'] as int,
+      trend: TrendType.fromString(json['trend'] as String),
+      date: DateTime.parse(json['date'] as String),
     );
   }
 
-  final String label;
-  final double male;
-  final double female;
-  final double nonBinary;
-  final double other;
-  final double noData;
-
-  double get total => male + female + nonBinary + other + noData;
+  final int total;
+  final TrendType trend;
+  final DateTime date;
 }
 
 class LinearChartLineConfig {

@@ -50,6 +50,9 @@ class $LibAssetsIconsGen {
   /// File path: lib/assets/icons/alert.svg
   SvgGenImage get alert => const SvgGenImage('lib/assets/icons/alert.svg');
 
+  /// File path: lib/assets/icons/arrow-up.svg
+  SvgGenImage get arrowUp => const SvgGenImage('lib/assets/icons/arrow-up.svg');
+
   /// Directory path: lib/assets/icons/common
   $LibAssetsIconsCommonGen get common => const $LibAssetsIconsCommonGen();
 
@@ -96,6 +99,7 @@ class $LibAssetsIconsGen {
   /// List of all assets
   List<SvgGenImage> get values => [
     alert,
+    arrowUp,
     donation,
     error,
     errorX,

@@ -163,10 +163,11 @@ class _BarHorizontalChartState extends State<BarHorizontalChart>
   Widget _buildTooltipContent(BarHorizontalGroupData group) {
     final double total = _calculateGroupTotal(group);
     final List<Widget> items = <Widget>[];
+    final bool isNE = group.range.contains('N/E');
 
     items.add(
       Text(
-        group.range.contains('N/E') ? 'No Especificado' : group.range,
+        isNE ? 'No especificado' : group.range,
         style: TextStyle(
           fontSize: StoycoScreenSize.width(context, 16),
           color: ColorFoundation.text.white,
@@ -178,20 +179,22 @@ class _BarHorizontalChartState extends State<BarHorizontalChart>
 
     items.add(Gap(StoycoScreenSize.height(context, 4)));
 
-    for (final BarHorizontalCategoryConfig config in widget.categoryConfigs) {
-      final double value = group.categories[config.key] ?? 0;
-      if (value > 0) {
-        items.add(
-          Text(
-            '${config.displayLabel}: ${NumbersFormat.formatWithCommas(value)}',
-            style: TextStyle(
-              fontSize: StoycoScreenSize.width(context, 14),
-              color: ColorFoundation.text.white,
-              fontWeight: FontWeight.w400,
-              fontFamily: StoycoFontFamilyToken.gilroy,
+    if (!isNE) {
+      for (final BarHorizontalCategoryConfig config in widget.categoryConfigs) {
+        final double value = group.categories[config.key] ?? 0;
+        if (value > 0) {
+          items.add(
+            Text(
+              '${config.displayLabel}: ${NumbersFormat.formatWithCommas(value)}',
+              style: TextStyle(
+                fontSize: StoycoScreenSize.width(context, 14),
+                color: ColorFoundation.text.white,
+                fontWeight: FontWeight.w400,
+                fontFamily: StoycoFontFamilyToken.gilroy,
+              ),
             ),
-          ),
-        );
+          );
+        }
       }
     }
 
@@ -653,6 +656,8 @@ class _BarHorizontalPainter extends CustomPainter {
       final double verticalOffset = (groupHeight - calculatedGroupHeight) / 2;
       double barY = currentY + verticalOffset;
 
+      final bool isNE = group.range.contains('N/E');
+
       for (
         int categoryIndex = 0;
         categoryIndex < categoryConfigs.length;
@@ -667,7 +672,7 @@ class _BarHorizontalPainter extends CustomPainter {
               (value / maxValue) * size.width * animation.value;
 
           final Paint barPaint = Paint()
-            ..color = config.color
+            ..color = isNE ? ColorFoundation.text.grey4 : config.color
             ..style = PaintingStyle.fill;
 
           final RRect barRect = RRect.fromRectAndRadius(
