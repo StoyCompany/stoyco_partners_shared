@@ -37,6 +37,7 @@ class RevenueStat extends StatelessWidget {
         child: Text(
           '\$${NumbersFormat.formatWithCommas(value)} $currency',
           style: TextStyle(
+            package: 'stoyco_partners_shared',
             fontFamily: StoycoFontFamilyToken.apercu,  
             fontWeight: FontWeight.w500,
             fontSize: StoycoScreenSize.fontSize(context, 10),

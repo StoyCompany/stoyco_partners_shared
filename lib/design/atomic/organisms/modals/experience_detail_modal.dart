@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stoyco_partners_shared/design/atomic/atoms/tables/experience_table_value_container.dart';
 import 'package:stoyco_partners_shared/design/atomic/molecules/table/experience_detail_table.dart';
 import 'package:stoyco_partners_shared/design/layout_all_imports.dart';
 import 'package:stoyco_partners_shared/design/models/experience_detail_dto.dart';
@@ -104,174 +105,27 @@ class ExperienceDetailModal extends StatelessWidget {
                           textAlign: TextAlign.center,
                         ),
                         ExperienceDetailTable(rows: data.soldRows),
-                        Container(
-                          padding: StoycoScreenSize.symmetric(
-                            context,
-                            vertical: 5,
-                            horizontal: 10,
-                          ),
-                          decoration: BoxDecoration(
-                            color: ColorFoundation.background.saDark,
-                            borderRadius: BorderRadius.circular(
-                              StoycoScreenSize.radius(context, 100),
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                'Vendidas ${data.soldUnits} UDS',
-                                style: TextStyle(
-                                  fontFamily: StoycoFontFamilyToken.gilroy,
-                                  fontSize: StoycoScreenSize.fontSize(
-                                    context,
-                                    12,
-                                  ),
-                                  fontWeight: FontWeight.w500,
-                                  color: ColorFoundation.text.saLight,
-                                ),
-                              ),
-                              Container(
-                                padding: StoycoScreenSize.symmetric(
-                                  context,
-                                  vertical: 3,
-                                  horizontal: 7,
-                                ),
-                                decoration: BoxDecoration(
-                                  color:
-                                      ColorFoundation.background.saHighlights,
-                                  borderRadius: BorderRadius.circular(
-                                    StoycoScreenSize.radius(context, 100),
-                                  ),
-                                ),
-                                child: Text(
-                                  '\$${data.soldValue ?? '0'} ${data.currency}',
-                                  style: TextStyle(
-                                    fontFamily: StoycoFontFamilyToken.gilroy,
-                                    fontSize: StoycoScreenSize.fontSize(
-                                      context,
-                                      8,
-                                    ),
-                                    fontWeight: FontWeight.w500,
-                                    color: ColorFoundation.text.saDark,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                        ExperienceTableValueContainer(
+                          text: 'Vendidas ',
+                          units: data.soldUnits ?? 0,
+                          value: data.soldValue ?? 0.0,
+                          currency: data.currency,
                         ),
-                        ExperienceDetailTable(rows: data.availableRows),
-                        Container(
-                          padding: StoycoScreenSize.symmetric(
-                            context,
-                            vertical: 5,
-                            horizontal: 10,
-                          ),
-                          decoration: BoxDecoration(
-                            color: ColorFoundation.background.saDark,
-                            borderRadius: BorderRadius.circular(
-                              StoycoScreenSize.radius(context, 100),
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                'Disponibles ${data.availableUnits} UDS',
-                                style: TextStyle(
-                                  fontFamily: StoycoFontFamilyToken.gilroy,
-                                  fontSize: StoycoScreenSize.fontSize(
-                                    context,
-                                    12,
-                                  ),
-                                  fontWeight: FontWeight.w500,
-                                  color: ColorFoundation.text.saLight,
-                                ),
-                              ),
-                              Container(
-                                padding: StoycoScreenSize.symmetric(
-                                  context,
-                                  vertical: 3,
-                                  horizontal: 7,
-                                ),
-                                decoration: BoxDecoration(
-                                  color:
-                                      ColorFoundation.background.saHighlights,
-                                  borderRadius: BorderRadius.circular(
-                                    StoycoScreenSize.radius(context, 100),
-                                  ),
-                                ),
-                                child: Text(
-                                  '\$${data.availableValue ?? '0'} ${data.currency}',
-                                  style: TextStyle(
-                                    fontFamily: StoycoFontFamilyToken.gilroy,
-                                    fontSize: StoycoScreenSize.fontSize(
-                                      context,
-                                      8,
-                                    ),
-                                    fontWeight: FontWeight.w500,
-                                    color: ColorFoundation.text.saDark,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                        ExperienceDetailTable(
+                          rows: data.availableRows,
+                          showHeaders: false,
                         ),
-                        Container(
-                          padding: StoycoScreenSize.symmetric(
-                            context,
-                            vertical: 5,
-                            horizontal: 10,
-                          ),
-                          decoration: BoxDecoration(
-                            color: ColorFoundation.background.saDark,
-                            borderRadius: BorderRadius.circular(
-                              StoycoScreenSize.radius(context, 100),
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                'Total ${data.totalUnits} UDS',
-                                style: TextStyle(
-                                  fontFamily: StoycoFontFamilyToken.gilroy,
-                                  fontSize: StoycoScreenSize.fontSize(
-                                    context,
-                                    12,
-                                  ),
-                                  fontWeight: FontWeight.w500,
-                                  color: ColorFoundation.text.saLight,
-                                ),
-                              ),
-                              Container(
-                                padding: StoycoScreenSize.symmetric(
-                                  context,
-                                  vertical: 3,
-                                  horizontal: 7,
-                                ),
-                                decoration: BoxDecoration(
-                                  color:
-                                      ColorFoundation.background.saHighlights,
-                                  borderRadius: BorderRadius.circular(
-                                    StoycoScreenSize.radius(context, 100),
-                                  ),
-                                ),
-                                child: Text(
-                                  '\$${data.totalValue ?? '0'} ${data.currency}',
-                                  style: TextStyle(
-                                    fontFamily: StoycoFontFamilyToken.gilroy,
-                                    fontSize: StoycoScreenSize.fontSize(
-                                      context,
-                                      8,
-                                    ),
-                                    fontWeight: FontWeight.w500,
-                                    color: ColorFoundation.text.saDark,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                        ExperienceTableValueContainer(
+                          text: 'Disponibles ',
+                          units: data.availableUnits ?? 0,
+                          value: data.availableValue ?? 0.0,
+                          currency: data.currency,
+                        ),
+                        ExperienceTableValueContainer(
+                          text: 'Total ',
+                          units: data.totalUnits ?? 0,
+                          value: data.totalValue ?? 0.0,
+                          currency: data.currency,
                         ),
                       ],
                       extent: 12,

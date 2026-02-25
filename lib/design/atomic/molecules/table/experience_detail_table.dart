@@ -36,172 +36,221 @@ class ExperienceDetailTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        // Header
-        showHeaders
-            ? Container(
-                padding: StoycoScreenSize.symmetric(context, vertical: 5),
-                decoration: BoxDecoration(
-                  border: Border.symmetric(
-                    horizontal: BorderSide(
-                      color: ColorFoundation.background.saDark,
-                      width: 0.5,
-                    ),
-                  ),
-                ),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      flex: 3,
-                      child: Text(
-                        'LOCALIDAD',
-                        style: TextStyle(
-                          fontFamily: StoycoFontFamilyToken.gilroy,
-                          fontSize: StoycoScreenSize.fontSize(context, 9),
-                          fontWeight: FontWeight.w500,
-                          color: ColorFoundation.text.saDark,
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: Text(
-                        'Precio UDS',
-                        style: TextStyle(
-                          fontFamily: StoycoFontFamilyToken.gilroy,
-                          fontSize: StoycoScreenSize.fontSize(context, 9),
-                          fontWeight: FontWeight.w500,
-                          color: ColorFoundation.text.saDark,
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: Text(
-                        'Total UDS',
-                        style: TextStyle(
-                          fontFamily: StoycoFontFamilyToken.gilroy,
-                          fontSize: StoycoScreenSize.fontSize(context, 9),
-                          fontWeight: FontWeight.w500,
-                          color: ColorFoundation.text.saDark,
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: Text(
-                        'Valor Total',
-                        style: TextStyle(
-                          fontFamily: StoycoFontFamilyToken.gilroy,
-                          fontSize: StoycoScreenSize.fontSize(context, 9),
-                          fontWeight: FontWeight.w500,
-                          color: ColorFoundation.text.saDark,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            : const SizedBox.shrink(),
-        // Rows
-        ...rows.asMap().entries.map((MapEntry<int, ExperienceDetailRow> entry) {
-          final int index = entry.key;
-          final ExperienceDetailRow row = entry.value;
-          final bool isLast = index == rows.length - 1;
+    final ScrollController scrollController = ScrollController();
 
-          return Padding(
-            padding: EdgeInsets.only(top: 5, bottom: isLast ? 0 : 0),
-            child: Container(
-              padding: StoycoScreenSize.symmetric(
-                context,
-                vertical: 5,
-                horizontal: 5,
-              ),
-              decoration: BoxDecoration(
-                color: ColorFoundation.background.saLight,
-                borderRadius: isLast
-                    ? BorderRadius.only(
-                        bottomLeft: Radius.circular(
-                          StoycoScreenSize.radius(context, 8),
+    return Theme(
+      data: Theme.of(context).copyWith(
+        scrollbarTheme: ScrollbarThemeData(
+          thumbColor: WidgetStateProperty.all(
+            ColorFoundation.background.saDark,
+          ),
+          radius: Radius.circular(StoycoScreenSize.radius(context, 8)),
+          thickness: WidgetStateProperty.all(2.0),
+          thumbVisibility: WidgetStateProperty.all(true),
+          trackVisibility: WidgetStateProperty.all(true),
+        ),
+      ),
+      child: Scrollbar(
+        controller: scrollController,
+        thumbVisibility: true,
+        child: SingleChildScrollView(
+          controller: scrollController,
+          scrollDirection: Axis.horizontal,
+          child: IntrinsicWidth(
+            child: Column(
+              children: <Widget>[
+                // Header
+                showHeaders
+                    ? Container(
+                        padding: StoycoScreenSize.symmetric(
+                          context,
+                          vertical: 5,
                         ),
-                        bottomRight: Radius.circular(
-                          StoycoScreenSize.radius(context, 8),
+                        decoration: BoxDecoration(
+                          border: Border.symmetric(
+                            horizontal: BorderSide(
+                              color: ColorFoundation.background.saDark,
+                              width: 0.5,
+                            ),
+                          ),
+                        ),
+                        child: Row(
+                          children: <Widget>[
+                            SizedBox(
+                              width: StoycoScreenSize.width(context, 120),
+                              child: Text(
+                                'LOCALIDAD',
+                                style: TextStyle(
+                                  fontFamily: StoycoFontFamilyToken.gilroy,
+                                  fontSize: StoycoScreenSize.fontSize(
+                                    context,
+                                    9,
+                                  ),
+                                  fontWeight: FontWeight.w500,
+                                  color: ColorFoundation.text.saDark,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: StoycoScreenSize.width(context, 100),
+                              child: Text(
+                                'Precio UDS',
+                                style: TextStyle(
+                                  fontFamily: StoycoFontFamilyToken.gilroy,
+                                  fontSize: StoycoScreenSize.fontSize(
+                                    context,
+                                    9,
+                                  ),
+                                  fontWeight: FontWeight.w500,
+                                  color: ColorFoundation.text.saDark,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: StoycoScreenSize.width(context, 80),
+                              child: Text(
+                                'Total UDS',
+                                style: TextStyle(
+                                  fontFamily: StoycoFontFamilyToken.gilroy,
+                                  fontSize: StoycoScreenSize.fontSize(
+                                    context,
+                                    9,
+                                  ),
+                                  fontWeight: FontWeight.w500,
+                                  color: ColorFoundation.text.saDark,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: StoycoScreenSize.width(context, 120),
+                              child: Text(
+                                'Valor Total',
+                                style: TextStyle(
+                                  fontFamily: StoycoFontFamilyToken.gilroy,
+                                  fontSize: StoycoScreenSize.fontSize(
+                                    context,
+                                    9,
+                                  ),
+                                  fontWeight: FontWeight.w500,
+                                  color: ColorFoundation.text.saDark,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       )
-                    : null,
-              ),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 3,
-                    child: Text(
-                      '${row.locality}:',
-                      style: TextStyle(
-                        fontFamily: StoycoFontFamilyToken.gilroy,
-                        fontSize: StoycoScreenSize.fontSize(context, 10),
-                        fontWeight: FontWeight.w500,
-                        color: ColorFoundation.text.saHighlights,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: Text(
-                      '\$${NumbersFormat.formatWithCommas(row.pricePerUnit)} ${row.currency}',
-                      style: TextStyle(
-                        fontFamily: StoycoFontFamilyToken.apercu,
-                        fontSize: StoycoScreenSize.fontSize(context, 10),
-                        fontWeight: FontWeight.w500,
-                        color: ColorFoundation.text.saDark,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: Text(
-                      '${row.totalUnits} UDS',
-                      style: TextStyle(
-                        fontFamily: StoycoFontFamilyToken.apercu,
-                        fontSize: StoycoScreenSize.fontSize(context, 10),
-                        fontWeight: FontWeight.w500,
-                        color: ColorFoundation.text.saDark,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  Expanded(
-                    flex: 2,
+                    : const SizedBox.shrink(),
+                // Rows
+                ...rows.asMap().entries.map((
+                  MapEntry<int, ExperienceDetailRow> entry,
+                ) {
+                  final int index = entry.key;
+                  final ExperienceDetailRow row = entry.value;
+                  final bool isLast = index == rows.length - 1;
+
+                  return Padding(
+                    padding: EdgeInsets.only(top: 5, bottom: isLast ? 0 : 0),
                     child: Container(
                       padding: StoycoScreenSize.symmetric(
                         context,
-                        vertical: 3,
-                        horizontal: 10,
+                        vertical: 5,
+                        horizontal: 5,
                       ),
                       decoration: BoxDecoration(
-                        color: ColorFoundation.background.saDisabled2,
-                        borderRadius: BorderRadius.circular(
-                          StoycoScreenSize.radius(context, 100),
-                        ),
+                        color: ColorFoundation.background.saLight,
+                        borderRadius: isLast
+                            ? BorderRadius.only(
+                                bottomLeft: Radius.circular(
+                                  StoycoScreenSize.radius(context, 8),
+                                ),
+                                bottomRight: Radius.circular(
+                                  StoycoScreenSize.radius(context, 8),
+                                ),
+                              )
+                            : null,
                       ),
-                      child: Text(
-                        '\$${NumbersFormat.formatWithCommas(row.totalValue)} ${row.currency}',
-                        style: TextStyle(
-                          fontFamily: StoycoFontFamilyToken.apercu,
-                          fontSize: StoycoScreenSize.fontSize(context, 10),
-                          fontWeight: FontWeight.w500,
-                          color: ColorFoundation.text.saDark,
-                        ),
-                        textAlign: TextAlign.right,
+                      child: Row(
+                        children: <Widget>[
+                          SizedBox(
+                            width: StoycoScreenSize.width(context, 120),
+                            child: Text(
+                              '${row.locality}:',
+                              style: TextStyle(
+                                fontFamily: StoycoFontFamilyToken.gilroy,
+                                fontSize: StoycoScreenSize.fontSize(
+                                  context,
+                                  10,
+                                ),
+                                fontWeight: FontWeight.w500,
+                                color: ColorFoundation.text.saHighlights,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: StoycoScreenSize.width(context, 100),
+                            child: Text(
+                              '\$${NumbersFormat.formatWithCommas(row.pricePerUnit)} ${row.currency}',
+                              style: TextStyle(
+                                fontFamily: StoycoFontFamilyToken.apercu,
+                                fontSize: StoycoScreenSize.fontSize(
+                                  context,
+                                  10,
+                                ),
+                                fontWeight: FontWeight.w500,
+                                color: ColorFoundation.text.saDark,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: StoycoScreenSize.width(context, 80),
+                            child: Text(
+                              '${row.totalUnits} UDS',
+                              style: TextStyle(
+                                fontFamily: StoycoFontFamilyToken.apercu,
+                                fontSize: StoycoScreenSize.fontSize(
+                                  context,
+                                  10,
+                                ),
+                                fontWeight: FontWeight.w500,
+                                color: ColorFoundation.text.saDark,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            padding: StoycoScreenSize.symmetric(
+                              context,
+                              vertical: 3,
+                              horizontal: 10,
+                            ),
+                            decoration: BoxDecoration(
+                              color: ColorFoundation.background.saDisabled2,
+                              borderRadius: BorderRadius.circular(
+                                StoycoScreenSize.radius(context, 100),
+                              ),
+                            ),
+                            child: Text(
+                              '\$${NumbersFormat.formatWithCommas(row.totalValue)} ${row.currency}',
+                              style: TextStyle(
+                                fontFamily: StoycoFontFamilyToken.apercu,
+                                fontSize: StoycoScreenSize.fontSize(
+                                  context,
+                                  10,
+                                ),
+                                fontWeight: FontWeight.w500,
+                                color: ColorFoundation.text.saDark,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                ],
-              ),
+                  );
+                }),
+              ],
             ),
-          );
-        }),
-      ],
+          ),
+        ),
+      ),
     );
   }
 }
