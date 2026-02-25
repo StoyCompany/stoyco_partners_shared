@@ -166,7 +166,7 @@ class _BarHorizontalChartState extends State<BarHorizontalChart>
 
     items.add(
       Text(
-        group.range.contains('N/E') ? 'No encontrado' : group.range,
+        group.range.contains('N/E') ? 'No Especificado' : group.range,
         style: TextStyle(
           fontSize: StoycoScreenSize.width(context, 16),
           color: ColorFoundation.text.white,

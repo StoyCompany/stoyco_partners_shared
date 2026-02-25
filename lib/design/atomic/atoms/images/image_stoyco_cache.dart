@@ -12,7 +12,7 @@ class ImageStoycoCache extends StatelessWidget {
     this.height = 115,
     this.width,
     this.borderRadius,
-    this.fit = BoxFit.cover,
+    this.fit = BoxFit.fill,
     this.placeholder,
     this.errorWidget,
     this.useOldImageOnUrlChange = true,

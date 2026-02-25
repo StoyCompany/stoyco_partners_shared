@@ -26,7 +26,6 @@ class CulturalAssetsContent extends StatelessWidget {
             ImageStoycoCache(
               height: 141,
               imageUrl: data.contentImageUrl,
-              fit: BoxFit.cover,
               borderRadius: BorderRadius.vertical(
                 top: Radius.circular(StoycoScreenSize.radius(context, 10)),
               ),

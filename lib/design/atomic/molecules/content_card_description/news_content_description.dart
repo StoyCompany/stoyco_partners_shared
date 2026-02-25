@@ -20,8 +20,7 @@ class NewsContentDescription extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: Gutter.separateChildren(
           children: <Widget>[
-            Flexible(
-              flex: 3,
+            Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,7 +62,8 @@ class NewsContentDescription extends StatelessWidget {
                 ),
               ),
             ),
-            Flexible(
+            SizedBox(
+              width: StoycoScreenSize.width(context, 55),
               child: ContentStatsLegend(
                 likes: data.likes,
                 shares: data.shares,
