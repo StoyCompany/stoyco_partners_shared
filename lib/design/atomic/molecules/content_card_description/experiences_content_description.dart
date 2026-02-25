@@ -120,7 +120,7 @@ class ExperiencesContentDescription extends StatelessWidget {
             Text(
               data.isActive
                   ? 'Fecha de evento ${data.eventDate}'
-                  : 'Finalizados ${data.eventDate}',
+                  : 'Finalizado ${data.eventDate}',
               style: TextStyle(
                 fontFamily: StoycoFontFamilyToken.gilroy,
                 fontSize: StoycoScreenSize.fontSize(context, 8),
