@@ -1,3 +1,14 @@
+## 3.0.1
+
+### Features
+
+feat: Add content card models and descriptions for various content types
+
+-  Add ExperienceDetailDto and enhance ExperienceDetailModal with new data structure and UI updates
+-  Update event date display logic in ExperiencesContentDescription for better clarity on event status
+-  Add Apercu font family and implement RevenueStat component in experiences content
+-  Introduce ExperienceTableValueContainer for improved display of experience values and refactor ExperienceDetailModal to utilize new component
+
 ## 3.0.0
 
 ### Features
