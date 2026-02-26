@@ -17,7 +17,6 @@ class MerchContentDescription extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: StoycoScreenSize.height(context, 115),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,

@@ -18,7 +18,6 @@ class ProjectsToFundContentDescription extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: StoycoScreenSize.height(context, 130),
       width: StoycoScreenSize.screenWidth(context),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

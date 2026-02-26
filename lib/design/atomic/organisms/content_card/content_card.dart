@@ -7,22 +7,28 @@ import 'package:stoyco_partners_shared/design/utils/tokens/gen/fonts.gen.dart';
 
 class ContentCard extends StatelessWidget {
   const ContentCard({
-    super.key, 
-    required this.imageUrl, 
+    super.key,
+    required this.imageUrl,
     required this.content,
     this.isActive = false,
     this.borderRadiusImage,
+    this.heightCard = 115,
+    this.widthImage = 115,
+    this.heightImage = 115,
   });
 
   final String imageUrl;
   final bool isActive;
   final Widget content;
   final BorderRadius? borderRadiusImage;
+  final double widthImage;
+  final double heightImage;
+  final double heightCard;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: StoycoScreenSize.height(context, 125),
+      height: StoycoScreenSize.height(context, heightCard),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: Gutter.separateChildren(
@@ -31,8 +37,8 @@ class ContentCard extends StatelessWidget {
               children: <Widget>[
                 ImageStoycoCache(
                   imageUrl: imageUrl,
-                  height: 115,
-                  width: 115,
+                  height: heightCard,
+                  width: widthImage,
                   backgroundColor: ColorFoundation.background.chartBlack,
                   borderRadius: borderRadiusImage,
                 ),
@@ -66,12 +72,10 @@ class ContentCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                )
+                ),
               ],
             ),
-            Expanded(
-              child: content,
-            ),
+            Expanded(child: content),
           ],
           extent: StoycoScreenSize.width(context, 16),
         ),

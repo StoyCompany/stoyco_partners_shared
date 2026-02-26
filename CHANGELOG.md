@@ -1,3 +1,11 @@
+## 3.0.2
+
+### Features
+
+feat: Add content card models and descriptions for various content types
+
+-  Refactor content description components for improved layout and introduce ExperienceContentStat for better statistics display
+
 ## 3.0.1
 
 ### Features

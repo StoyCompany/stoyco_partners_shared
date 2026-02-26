@@ -6,7 +6,6 @@ import 'package:stoyco_partners_shared/design/utils/foundations/color_foundation
 import 'package:stoyco_partners_shared/design/utils/tokens/gen/fonts.gen.dart';
 
 class MessagedDescriptionTooltip extends StatelessWidget {
-
   const MessagedDescriptionTooltip({
     super.key,
     required this.message,
@@ -14,7 +13,7 @@ class MessagedDescriptionTooltip extends StatelessWidget {
     this.data = 0,
     required this.tooltipMessage,
   });
-  
+
   final String message;
   final String dataText;
   final int data;
@@ -35,11 +34,14 @@ class MessagedDescriptionTooltip extends StatelessWidget {
           ),
           children: <InlineSpan>[
             TextSpan(
-              text: dataText.isNotEmpty ? ' $dataText' : ' ${NumbersFormat.formatCompact(data.toDouble())}',
+              text: dataText.isNotEmpty
+                  ? ' $dataText'
+                  : ' ${NumbersFormat.formatCompact(data.toDouble())}',
               style: TextStyle(
-                fontFamily: StoycoFontFamilyToken.gilroy,
+                package: 'stoyco_partners_shared',
+                fontFamily: StoycoFontFamilyToken.apercu,
                 fontSize: StoycoScreenSize.fontSize(context, 12),
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w300,
                 color: ColorFoundation.text.saLight,
               ),
             ),
