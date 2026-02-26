@@ -19,7 +19,8 @@ class ContentStat extends StatelessWidget {
           Text(
             stat,
             style: TextStyle(
-              fontFamily: StoycoFontFamilyToken.akkurat,
+              package: 'stoyco_partners_shared',
+              fontFamily: StoycoFontFamilyToken.apercu,
               fontSize: StoycoScreenSize.fontSize(context, 12),
               fontWeight: FontWeight.w400,
               color: ColorFoundation.text.saLight,

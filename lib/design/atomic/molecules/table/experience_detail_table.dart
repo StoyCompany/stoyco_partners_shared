@@ -191,6 +191,7 @@ class ExperienceDetailTable extends StatelessWidget {
                             child: Text(
                               '\$${NumbersFormat.formatWithCommas(row.pricePerUnit)} ${row.currency}',
                               style: TextStyle(
+                                package: 'stoyco_partners_shared',
                                 fontFamily: StoycoFontFamilyToken.apercu,
                                 fontSize: StoycoScreenSize.fontSize(
                                   context,
@@ -204,8 +205,9 @@ class ExperienceDetailTable extends StatelessWidget {
                           SizedBox(
                             width: StoycoScreenSize.width(context, 80),
                             child: Text(
-                              '${row.totalUnits} UDS',
+                              '${NumbersFormat.formatWithCommasInt(row.totalUnits)} UDS',
                               style: TextStyle(
+                                package: 'stoyco_partners_shared',
                                 fontFamily: StoycoFontFamilyToken.apercu,
                                 fontSize: StoycoScreenSize.fontSize(
                                   context,
@@ -231,6 +233,7 @@ class ExperienceDetailTable extends StatelessWidget {
                             child: Text(
                               '\$${NumbersFormat.formatWithCommas(row.totalValue)} ${row.currency}',
                               style: TextStyle(
+                                package: 'stoyco_partners_shared',
                                 fontFamily: StoycoFontFamilyToken.apercu,
                                 fontSize: StoycoScreenSize.fontSize(
                                   context,

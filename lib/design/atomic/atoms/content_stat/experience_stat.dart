@@ -3,6 +3,7 @@ import 'package:stoyco_partners_shared/design/atomic/atoms/content_stat/revenue_
 import 'package:stoyco_partners_shared/design/atomic/molecules/tooltip/custom_tooltip.dart';
 import 'package:stoyco_partners_shared/design/responsive/gutter.dart';
 import 'package:stoyco_partners_shared/design/responsive/screen_size/stoyco_screen_size.dart';
+import 'package:stoyco_partners_shared/design/utils/formats/numbers.dart';
 import 'package:stoyco_partners_shared/design/utils/foundations/color_foundation.dart';
 import 'package:stoyco_partners_shared/design/utils/tokens/gen/fonts.gen.dart';
 
@@ -47,7 +48,7 @@ class ExperienceContentStat extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text(
-                statValue.toString(),
+                NumbersFormat.formatWithCommasInt(statValue),
                 style: TextStyle(
                   package: 'stoyco_partners_shared',
                   fontFamily: StoycoFontFamilyToken.apercu,

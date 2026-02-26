@@ -169,6 +169,7 @@ class _BarHorizontalChartState extends State<BarHorizontalChart>
       Text(
         isNE ? 'No especificado' : group.range,
         style: TextStyle(
+          package: 'stoyco_partners_shared',
           fontSize: StoycoScreenSize.width(context, 16),
           color: ColorFoundation.text.white,
           fontWeight: FontWeight.bold,
@@ -187,10 +188,11 @@ class _BarHorizontalChartState extends State<BarHorizontalChart>
             Text(
               '${config.displayLabel}: ${NumbersFormat.formatWithCommas(value)}',
               style: TextStyle(
+                package: 'stoyco_partners_shared',
                 fontSize: StoycoScreenSize.width(context, 14),
                 color: ColorFoundation.text.white,
                 fontWeight: FontWeight.w400,
-                fontFamily: StoycoFontFamilyToken.gilroy,
+                fontFamily: StoycoFontFamilyToken.apercu,
               ),
             ),
           );
@@ -204,10 +206,11 @@ class _BarHorizontalChartState extends State<BarHorizontalChart>
       Text(
         'Total: ${NumbersFormat.formatWithCommas(total)}',
         style: TextStyle(
+          package: 'stoyco_partners_shared',
           fontSize: StoycoScreenSize.width(context, 14),
           color: ColorFoundation.text.white,
           fontWeight: FontWeight.bold,
-          fontFamily: StoycoFontFamilyToken.gilroy,
+          fontFamily: StoycoFontFamilyToken.apercu,
         ),
       ),
     );
@@ -228,10 +231,11 @@ class _BarHorizontalChartState extends State<BarHorizontalChart>
           child: Text(
             'Sin datos disponibles',
             style: TextStyle(
+              package: 'stoyco_partners_shared',
               fontSize: StoycoScreenSize.width(context, 16),
               color: ColorFoundation.text.fandom,
               fontWeight: FontWeight.w400,
-              fontFamily: StoycoFontFamilyToken.gilroy,
+              fontFamily: StoycoFontFamilyToken.apercu,
             ),
           ),
         ),
@@ -254,6 +258,7 @@ class _BarHorizontalChartState extends State<BarHorizontalChart>
           child: Text(
             'Datos no encontrados en el rango suministrado',
             style: TextStyle(
+              package: 'stoyco_partners_shared',
               fontSize: StoycoScreenSize.width(context, 16),
               color: ColorFoundation.text.fandom,
               fontWeight: FontWeight.w400,
@@ -354,6 +359,7 @@ class _BarHorizontalChartState extends State<BarHorizontalChart>
                                           child: Text(
                                             group.range,
                                             style: TextStyle(
+                                              package: 'stoyco_partners_shared',
                                               fontSize: StoycoScreenSize.width(
                                                 context,
                                                 14,
@@ -363,7 +369,7 @@ class _BarHorizontalChartState extends State<BarHorizontalChart>
                                                   .white,
                                               fontWeight: FontWeight.bold,
                                               fontFamily:
-                                                  StoycoFontFamilyToken.gilroy,
+                                                  StoycoFontFamilyToken.apercu,
                                             ),
                                           ),
                                         ),
@@ -497,6 +503,7 @@ class _BarHorizontalChartState extends State<BarHorizontalChart>
                                       child: Text(
                                         NumbersFormat.formatCompact(value),
                                         style: TextStyle(
+                                          package: 'stoyco_partners_shared',
                                           fontSize: StoycoScreenSize.width(
                                             context,
                                             15,
@@ -505,7 +512,7 @@ class _BarHorizontalChartState extends State<BarHorizontalChart>
                                               ColorFoundation.background.fandom,
                                           fontWeight: FontWeight.w400,
                                           fontFamily:
-                                              StoycoFontFamilyToken.gilroy,
+                                              StoycoFontFamilyToken.apercu,
                                         ),
                                       ),
                                     );

@@ -249,15 +249,16 @@ class _TopTenLocationItem extends StatelessWidget {
                 child: Row(
                   children: <Widget>[
                     SizedBox(
-                      width: StoycoScreenSize.width(context, 20),
+                      width: StoycoScreenSize.width(context, 27),
                       child: Text(
                         '$position.',
                         textAlign: TextAlign.right,
                         style: TextStyle(
+                          package: 'stoyco_partners_shared',
                           fontSize: StoycoScreenSize.width(context, 14),
                           color: ColorFoundation.text.white,
                           fontWeight: FontWeight.bold,
-                          fontFamily: StoycoFontFamilyToken.gilroy,
+                          fontFamily: StoycoFontFamilyToken.apercu,
                         ),
                       ),
                     ),
@@ -325,10 +326,11 @@ class _SingleValueSection extends StatelessWidget {
     return Text(
       NumbersFormat.formatWithCommas(value),
       style: TextStyle(
+        package: 'stoyco_partners_shared',
         fontSize: StoycoScreenSize.width(context, 14),
         color: ColorFoundation.text.white,
         fontWeight: FontWeight.bold,
-        fontFamily: StoycoFontFamilyToken.gilroy,
+        fontFamily: StoycoFontFamilyToken.apercu,
       ),
     );
   }
@@ -377,10 +379,11 @@ class _MultipleValuesSection extends StatelessWidget {
               child: Text(
                 NumbersFormat.formatCompact(value),
                 style: TextStyle(
+                  package: 'stoyco_partners_shared',
                   fontSize: StoycoScreenSize.width(context, 14),
                   color: ColorFoundation.text.white,
                   fontWeight: FontWeight.bold,
-                  fontFamily: StoycoFontFamilyToken.gilroy,
+                  fontFamily: StoycoFontFamilyToken.apercu,
                 ),
               ),
             ),

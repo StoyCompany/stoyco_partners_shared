@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stoyco_partners_shared/design/atomic/atoms/chips/chip_monotone_noise.dart';
 import 'package:stoyco_partners_shared/design/models/chart_legend_item_model.dart';
 import 'package:stoyco_partners_shared/design/responsive/screen_size/stoyco_screen_size.dart';
+import 'package:stoyco_partners_shared/design/utils/foundations/color_foundation.dart';
 import 'package:stoyco_partners_shared/design/utils/tokens/gen/fonts.gen.dart';
 
 /// {@template chart_legend}
@@ -141,6 +142,13 @@ class _ChartLegendItem extends StatelessWidget {
               ChipMonotoneNoise(
                 message: item.value,
                 padding: StoycoScreenSize.symmetric(  context, horizontal: 20),
+                messageStyle: TextStyle(
+                  package: 'stoyco_partners_shared',
+                  fontFamily: StoycoFontFamilyToken.apercu,
+                  fontWeight: FontWeight.w700,
+                  fontSize: StoycoScreenSize.fontSize(context, 12),
+                  color: ColorFoundation.text.fandom,
+                ),
               ),
             ],
           ],

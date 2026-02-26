@@ -58,9 +58,7 @@ class MerchContentDescription extends StatelessWidget {
                     ),
                     _InfoRowWithChip(
                       message: 'UDS Vendidas: ',
-                      dataText: NumbersFormat.formatWithCommasInt(
-                        data.unitsSold,
-                      ),
+                      data: data.unitsSold,
                       chipMessage: NumbersFormat.formatCurrency(
                         data.generatedRevenue,
                         currency: data.currency,
@@ -69,9 +67,7 @@ class MerchContentDescription extends StatelessWidget {
                     ),
                     _InfoRowWithChip(
                       message: 'UDS Disponibles: ',
-                      dataText: NumbersFormat.formatWithCommasInt(
-                        data.unitsAvailable,
-                      ),
+                      data: data.unitsAvailable,
                       chipMessage: NumbersFormat.formatCurrency(
                         data.availableInventoryValue,
                         currency: data.currency,
@@ -80,9 +76,7 @@ class MerchContentDescription extends StatelessWidget {
                     ),
                     _InfoRowWithChip(
                       message: 'UDS Totales: ',
-                      dataText: NumbersFormat.formatWithCommasInt(
-                        data.totalUnits,
-                      ),
+                      data: data.totalUnits,
                       chipMessage: NumbersFormat.formatCurrency(
                         data.totalInitialInventoryValue,
                         currency: data.currency,
@@ -105,13 +99,13 @@ class MerchContentDescription extends StatelessWidget {
 class _InfoRowWithChip extends StatelessWidget {
   const _InfoRowWithChip({
     required this.message,
-    required this.dataText,
+    required this.data,
     required this.chipMessage,
     required this.tooltipMessage,
   });
 
   final String message;
-  final String dataText;
+  final int data;
   final String chipMessage;
   final String tooltipMessage;
 
@@ -122,17 +116,18 @@ class _InfoRowWithChip extends StatelessWidget {
       children: <Widget>[
         MessagedDescriptionTooltip(
           message: message,
-          dataText: dataText,
+          data: data,
           tooltipMessage: tooltipMessage,
         ),
         ContentChip(
           message: chipMessage,
           position: TooltipPosition.left,
           messageStyle: TextStyle(
+            package: 'stoyco_partners_shared',
             fontSize: StoycoScreenSize.fontSize(context, 10),
             color: ColorFoundation.text.saDark,
             fontWeight: FontWeight.w500,
-            fontFamily: StoycoFontFamilyToken.gilroy,
+            fontFamily: StoycoFontFamilyToken.apercu,
           ),
           tooltipMessage: tooltipMessage,
           padding: StoycoScreenSize.symmetric(context, horizontal: 8),

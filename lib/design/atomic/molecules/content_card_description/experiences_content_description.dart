@@ -29,16 +29,14 @@ class ExperiencesContentDescription extends StatelessWidget {
               children: Gutter.separateChildren(
                 children: <Widget>[
                   Text(
-                    data.name.length > 42
-                        ? '${data.name.substring(0, 42)}…'
-                        : data.name,
+                    data.name,
                     style: TextStyle(
                       fontFamily: StoycoFontFamilyToken.gilroy,
                       fontSize: StoycoScreenSize.fontSize(context, 12),
                       color: ColorFoundation.text.saLight,
                       fontWeight: FontWeight.w500,
                     ),
-                    maxLines: 2,
+                    maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                   ExperienceContentStat(

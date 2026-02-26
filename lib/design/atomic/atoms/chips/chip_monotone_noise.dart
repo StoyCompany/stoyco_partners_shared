@@ -10,11 +10,13 @@ class ChipMonotoneNoise extends StatelessWidget {
     super.key,
     this.message = '',
     this.padding,
-    this.child,
+    this.child, 
+    this.messageStyle,
   });
 
   final Widget? child;
   final String message;
+  final TextStyle? messageStyle;
   final EdgeInsetsGeometry? padding;
 
   @override
@@ -55,7 +57,8 @@ class ChipMonotoneNoise extends StatelessWidget {
                         message,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
+                        style: messageStyle ?? TextStyle(
+                          package: 'stoyco_partners_shared',
                           fontFamily: StoycoFontFamilyToken.gilroy,
                           fontWeight: FontWeight.w700,
                           fontSize: StoycoScreenSize.fontSize(context, 12),

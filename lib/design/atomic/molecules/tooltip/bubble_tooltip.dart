@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stoyco_partners_shared/design/atomic/atoms/chips/chip_monotone_noise.dart';
 import 'package:stoyco_partners_shared/design/responsive/screen_size/stoyco_screen_size.dart';
 import 'package:stoyco_partners_shared/design/utils/foundations/color_foundation.dart';
+import 'package:stoyco_partners_shared/design/utils/tokens/gen/fonts.gen.dart';
 
 /// {@template bubble_tooltip}
 /// A glassmorphic bubble tooltip widget with a connecting line indicator.
@@ -119,7 +120,16 @@ class BubbleTooltip extends StatelessWidget {
             top: lineEndOffset.dy,
             child: Transform.translate(
               offset: Offset(0, -StoycoScreenSize.height(context, 11)),
-              child: ChipMonotoneNoise(message: value),
+              child: ChipMonotoneNoise(
+                message: value,
+                messageStyle: TextStyle(
+                  package: 'stoyco_partners_shared',
+                  fontFamily: StoycoFontFamilyToken.apercu,
+                  fontWeight: FontWeight.w700,
+                  fontSize: StoycoScreenSize.fontSize(context, 12),
+                  color: ColorFoundation.text.fandom,
+                ),
+              ),
             ),
           ),
         ],

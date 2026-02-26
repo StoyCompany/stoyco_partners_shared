@@ -48,7 +48,7 @@ class ExperienceTableValueContainer extends StatelessWidget {
                   ),
                 ),
                 TextSpan(
-                  text: '$units',
+                  text: NumbersFormat.formatWithCommasInt(units),
                   style: TextStyle(
                     package: 'stoyco_partners_shared',
                     fontFamily: StoycoFontFamilyToken.apercu,

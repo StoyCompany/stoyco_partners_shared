@@ -28,9 +28,29 @@ final class NumbersFormat {
     final bool isNegative = number < 0;
     final double absNumber = number.abs();
     
-    final List<String> parts = absNumber.toStringAsFixed(decimals).split('.');
-    final String integerPart = parts[0];
-    final String decimalPart = parts.length > 1 ? parts[1] : '';
+    // Usar toString() y parsearlo manualmente para evitar problemas de localización
+    final String numberStr = absNumber.toString();
+    
+    // Separar parte entera y decimal
+    final List<String> parts = numberStr.split('.');
+    String integerPart = parts[0];
+    String decimalPart = parts.length > 1 ? parts[1] : '';
+    
+    // Si necesitamos decimales, ajustar la parte decimal
+    if (decimals > 0) {
+      if (decimalPart.length < decimals) {
+        decimalPart = decimalPart.padRight(decimals, '0');
+      } else if (decimalPart.length > decimals) {
+        // Redondear manualmente
+        final double rounded = double.parse('0.$decimalPart');
+        final double roundedValue = double.parse((rounded * (decimals == 0 ? 1 : 10)).toStringAsFixed(decimals));
+        decimalPart = roundedValue.toString().split('.').last.padRight(decimals, '0');
+      }
+    } else {
+      // Sin decimales, redondear la parte entera si es necesario
+      integerPart = absNumber.round().toString();
+      decimalPart = '';
+    }
     
     final StringBuffer buffer = StringBuffer();
     int count = 0;

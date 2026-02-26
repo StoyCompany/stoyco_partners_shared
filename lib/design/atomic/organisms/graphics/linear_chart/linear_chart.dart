@@ -1,14 +1,11 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
-import 'package:stoyco_partners_shared/design/atomic/atoms/chips/chip_monotone_noise.dart';
 import 'package:stoyco_partners_shared/design/atomic/organisms/graphics/linear_chart/linear_chart_data.dart';
 import 'package:stoyco_partners_shared/design/models/chart_legend_item_model.dart';
 import 'package:stoyco_partners_shared/design/responsive/screen_size/stoyco_screen_size.dart';
 import 'package:stoyco_partners_shared/design/utils/formats/dates.dart';
 import 'package:stoyco_partners_shared/design/utils/formats/numbers.dart';
 import 'package:stoyco_partners_shared/design/utils/foundations/color_foundation.dart';
-import 'package:stoyco_partners_shared/design/utils/tokens/gen/assets.gen.dart';
 import 'package:stoyco_partners_shared/design/utils/tokens/gen/fonts.gen.dart';
 
 class LinearChart extends StatefulWidget {
@@ -33,8 +30,6 @@ class _LinearChartState extends State<LinearChart>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _animation;
-  int? _touchedSpotIndex;
-  String? _touchedLineKey;
 
   @override
   void initState() {
@@ -97,65 +92,6 @@ class _LinearChartState extends State<LinearChart>
     return maxValue;
   }
 
-  Widget _buildTooltipContent(LinearChartPoint point) {
-    return ChipMonotoneNoise(
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: StoycoScreenSize.width(context, 12),
-          vertical: StoycoScreenSize.height(context, 8),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Text(
-              DatesFormats.formatDateDDMMYYYY(point.date),
-              style: TextStyle(
-                fontSize: StoycoScreenSize.width(context, 16),
-                color: ColorFoundation.text.white,
-                fontWeight: FontWeight.bold,
-                fontFamily: StoycoFontFamilyToken.gilroy,
-              ),
-            ),
-            Gap(StoycoScreenSize.height(context, 8)),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Visibility(
-                  visible: point.trend == TrendType.up || point.trend == TrendType.down,
-                  child: Transform.rotate(
-                    angle: point.trend == TrendType.down ? 3.14159 : 0,
-                    child: StoycoAssetsToken.lib.assets.icons.arrowUp.svg(
-                      package: 'stoyco_partners_shared',
-                      width: StoycoScreenSize.width(context, 16),
-                      height: StoycoScreenSize.height(context, 16),
-                      colorFilter: ColorFilter.mode(
-                        ColorFoundation.text.white,
-                        BlendMode.srcIn,
-                      ),
-                    ),
-                  ),
-                ),
-                Gap(StoycoScreenSize.width(context, 4)),
-                Text(
-                  NumbersFormat.formatWithCommas(point.total.toDouble()),
-                  style: TextStyle(
-                    fontSize: StoycoScreenSize.width(context, 14),
-                    color: ColorFoundation.text.white,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: StoycoFontFamilyToken.gilroy,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     if (widget.data == null || widget.data!.rangeX.isEmpty) {
@@ -165,6 +101,7 @@ class _LinearChartState extends State<LinearChart>
           child: Text(
             'Sin datos disponibles',
             style: TextStyle(
+              package: 'stoyco_partners_shared',
               fontSize: StoycoScreenSize.width(context, 16),
               color: ColorFoundation.text.fandom,
               fontWeight: FontWeight.w400,
@@ -192,6 +129,7 @@ class _LinearChartState extends State<LinearChart>
           child: Text(
             'Sin datos disponibles',
             style: TextStyle(
+              package: 'stoyco_partners_shared',
               fontSize: StoycoScreenSize.width(context, 16),
               color: ColorFoundation.text.fandom,
               fontWeight: FontWeight.w400,
@@ -224,13 +162,11 @@ class _LinearChartState extends State<LinearChart>
                     top: StoycoScreenSize.height(context, 20),
                     bottom: StoycoScreenSize.height(context, 10),
                   ),
-                  child: Stack(
-                    children: <Widget>[
-                      AnimatedBuilder(
-                        animation: _animation,
-                        builder: (BuildContext context, Widget? child) {
-                          return LineChart(
-                            LineChartData(
+                  child: AnimatedBuilder(
+                    animation: _animation,
+                    builder: (BuildContext context, Widget? child) {
+                      return LineChart(
+                        LineChartData(
                           minY: minY,
                           maxY: maxY,
                           minX: 0,
@@ -287,18 +223,14 @@ class _LinearChartState extends State<LinearChart>
                                               child: Text(
                                                 label,
                                                 style: TextStyle(
-                                                  fontSize:
-                                                      StoycoScreenSize.width(
-                                                        context,
-                                                        15,
-                                                      ),
-                                                  color: ColorFoundation
-                                                      .text
-                                                      .white,
+                                                  package: 'stoyco_partners_shared',
+                                                  fontSize: StoycoScreenSize.width(
+                                                    context,
+                                                    15,
+                                                  ),
+                                                  color: ColorFoundation.text.white,
                                                   fontWeight: FontWeight.w500,
-                                                  fontFamily:
-                                                      StoycoFontFamilyToken
-                                                          .gilroy,
+                                                  fontFamily: StoycoFontFamilyToken.gilroy,
                                                 ),
                                                 textAlign: TextAlign.center,
                                                 maxLines: 2,
@@ -329,17 +261,14 @@ class _LinearChartState extends State<LinearChart>
                                                 value,
                                               ),
                                               style: TextStyle(
-                                                fontSize:
-                                                    StoycoScreenSize.width(
-                                                      context,
-                                                      15,
-                                                    ),
-                                                color:
-                                                    ColorFoundation.text.white,
+                                                package: 'stoyco_partners_shared',
+                                                fontSize: StoycoScreenSize.width(
+                                                  context,
+                                                  15,
+                                                ),
+                                                color: ColorFoundation.text.white,
                                                 fontWeight: FontWeight.w500,
-                                                fontFamily:
-                                                    StoycoFontFamilyToken
-                                                        .gilroy,
+                                                fontFamily: StoycoFontFamilyToken.apercu,
                                               ),
                                               textAlign: TextAlign.right,
                                             ),
@@ -352,8 +281,7 @@ class _LinearChartState extends State<LinearChart>
                               lineBarsData: widget.lineConfigs.map((
                                 LinearChartLineConfig config,
                               ) {
-                                final List<LinearChartPoint> points =
-                                    _getPointsForLine(config.key);
+                                final List<LinearChartPoint> points = _getPointsForLine(config.key);
 
                                 if (points.isEmpty) {
                                   return LineChartBarData(spots: <FlSpot>[]);
@@ -386,13 +314,8 @@ class _LinearChartState extends State<LinearChart>
                                           LineChartBarData barData,
                                           int index,
                                         ) {
-                                          final bool isTouched =
-                                              _touchedLineKey == config.key &&
-                                              _touchedSpotIndex == index;
                                           return FlDotCirclePainter(
-                                            radius: isTouched
-                                                ? config.dotSize * 1.8
-                                                : config.dotSize,
+                                            radius: config.dotSize,
                                             color: ColorFoundation
                                                 .background
                                                 .white,
@@ -427,15 +350,53 @@ class _LinearChartState extends State<LinearChart>
                                     },
                                 touchTooltipData: LineTouchTooltipData(
                                   getTooltipColor: (LineBarSpot spot) =>
-                                      Colors.transparent,
+                                      ColorFoundation.background.chartBlack,
+                                  fitInsideHorizontally: true,
+                                  fitInsideVertically: true,
+                                  tooltipBorder: BorderSide(
+                                    color: ColorFoundation.background.white.withOpacity(0.2),
+                                    width: 1,
+                                  ),
+                                  tooltipPadding: EdgeInsets.symmetric(
+                                    horizontal: StoycoScreenSize.width(context, 12),
+                                    vertical: StoycoScreenSize.height(context, 8),
+                                  ),
                                   getTooltipItems:
                                       (List<LineBarSpot> touchedSpots) {
                                         return touchedSpots.map((
                                           LineBarSpot spot,
                                         ) {
-                                          return const LineTooltipItem(
-                                            '',
-                                            TextStyle(),
+                                          final List<LinearChartPoint> points =
+                                              _getPointsForLine(
+                                                widget.lineConfigs[spot.barIndex].key,
+                                              );
+                                          if (spot.spotIndex >= points.length) {
+                                            return const LineTooltipItem('', TextStyle());
+                                          }
+                                          final LinearChartPoint point =
+                                              points[spot.spotIndex];
+                                          
+                                          return LineTooltipItem(
+                                            DatesFormats.formatDateDDMMYYYY(point.date),
+                                            TextStyle(
+                                              package: 'stoyco_partners_shared',
+                                              fontSize: StoycoScreenSize.width(context, 14),
+                                              color: ColorFoundation.text.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: StoycoFontFamilyToken.apercu,
+                                            ),
+                                            children: <TextSpan>[
+                                              TextSpan(
+                                                text: '\n${NumbersFormat.formatWithCommas(point.total.toDouble())}',
+                                                style: TextStyle(
+                                                  package: 'stoyco_partners_shared',
+                                                  fontSize: StoycoScreenSize.width(context, 16),
+                                                  color: ColorFoundation.text.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontFamily: StoycoFontFamilyToken.apercu,
+                                                ),
+                                              ),
+                                            ],
                                           );
                                         }).toList();
                                       },
@@ -445,67 +406,18 @@ class _LinearChartState extends State<LinearChart>
                                       FlTouchEvent event,
                                       LineTouchResponse? touchResponse,
                                     ) {
-                                      if (event is FlTapUpEvent &&
-                                          touchResponse?.lineBarSpots != null) {
-                                        final LineBarSpot spot =
-                                            touchResponse!.lineBarSpots!.first;
-                                        setState(() {
-                                          if (_touchedSpotIndex ==
-                                                  spot.spotIndex &&
-                                              _touchedLineKey ==
-                                                  widget
-                                                      .lineConfigs[spot
-                                                          .barIndex]
-                                                      .key) {
-                                            _touchedSpotIndex = null;
-                                            _touchedLineKey = null;
-                                          } else {
-                                            _touchedSpotIndex = spot.spotIndex;
-                                            _touchedLineKey = widget
-                                                .lineConfigs[spot.barIndex]
-                                                .key;
-                                          }
-                                        });
-                                      }
+                                      // Touch handled by fl_chart
                                     },
                               ),
                             ),
                           );
-                        },
-                      ),
-                        // Tooltip overlay
-                        if (_touchedSpotIndex != null && _touchedLineKey != null)
-                          Builder(
-                            builder: (BuildContext context) {
-                              final List<LinearChartPoint> points =
-                                  _getPointsForLine(_touchedLineKey!);
-                              if (_touchedSpotIndex! >= points.length) {
-                                return const SizedBox.shrink();
-                              }
-                              final LinearChartPoint point =
-                                  points[_touchedSpotIndex!];
-                              
-                              final double chartWidth = widget.data!.rangeX.length * StoycoScreenSize.width(context, 100);
-                              final double xPercent = _touchedSpotIndex! / (widget.data!.rangeX.length - 1);
-                              final double xPosition = chartWidth * xPercent;
-                              
-                              return Positioned(
-                                left: xPosition,
-                                top: 0,
-                                child: Transform.translate(
-                                  offset: const Offset(-75, 0), // Center the tooltip
-                                  child: _buildTooltipContent(point),
-                                ),
-                              );
-                            },
-                          ),
-                    ],
+                      },
+                    ),
                   ),
                 ),
               ),
             ),
           ),
-        ),
       ],
     );
   }
