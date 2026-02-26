@@ -46,7 +46,8 @@ class MerchContentDescription extends StatelessWidget {
                         data.price,
                         currency: data.currency,
                       ),
-                      tooltipMessage: 'Precio del producto',
+                      tooltipMessage:
+                          'Corresponde al precio de venta publicado.',
                     ),
                     MessagedDescriptionTooltip(
                       message: 'Costo: ',
@@ -54,7 +55,7 @@ class MerchContentDescription extends StatelessWidget {
                         data.cost,
                         currency: data.currency,
                       ),
-                      tooltipMessage: 'Costo del producto',
+                      tooltipMessage: 'Corresponde al costo unitario registrado.',
                     ),
                     _InfoRowWithChip(
                       message: 'UDS Vendidas: ',
@@ -63,7 +64,7 @@ class MerchContentDescription extends StatelessWidget {
                         data.generatedRevenue,
                         currency: data.currency,
                       ),
-                      tooltipMessage: 'Total de unidades vendidas',
+                      tooltipMessage: 'Ingresos generados = Precio de venta x unidades vendidas.',
                     ),
                     _InfoRowWithChip(
                       message: 'UDS Disponibles: ',
@@ -72,7 +73,7 @@ class MerchContentDescription extends StatelessWidget {
                         data.availableInventoryValue,
                         currency: data.currency,
                       ),
-                      tooltipMessage: 'Total de unidades disponibles',
+                      tooltipMessage: 'Valor del inventario disponible = Costo x unidades disponibles.',
                     ),
                     _InfoRowWithChip(
                       message: 'UDS Totales: ',
@@ -81,7 +82,7 @@ class MerchContentDescription extends StatelessWidget {
                         data.totalInitialInventoryValue,
                         currency: data.currency,
                       ),
-                      tooltipMessage: 'Total de unidades',
+                      tooltipMessage: 'Valor total del inventario inicial = Costo x unidades totales.',
                     ),
                   ],
                   extent: StoycoScreenSize.height(context, 5),

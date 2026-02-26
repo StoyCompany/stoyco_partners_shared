@@ -1,3 +1,9 @@
+### 3.0.4
+
+### Features
+
+- Updated the merch content tooltip copy texts
+
 ## 3.0.3
 
 ### Features
