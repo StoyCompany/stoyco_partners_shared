@@ -72,7 +72,8 @@ class CustomModal extends StatelessWidget {
   const CustomModal({
     super.key,
     required this.title,
-    required this.description,
+    this.description,
+    this.customDescription,
     this.cancelActionLabel,
     this.cancelAction,
     this.confirmActionLabel,
@@ -84,7 +85,10 @@ class CustomModal extends StatelessWidget {
   final String title;
 
   /// The description text displayed below the title.
-  final String description;
+  final String? description;
+
+  /// Use this field to provide a custom widget for the description area, replacing the default text description.
+  final Widget? customDescription;
 
   /// The label for the cancel button.
   ///
@@ -143,11 +147,12 @@ class CustomModal extends StatelessWidget {
                         style: FontFoundation.title.bold25saDark,
                         textAlign: TextAlign.center,
                       ),
-                      Text(
-                        description,
-                        textAlign: TextAlign.center,
-                        style: FontFoundation.paragraph.medium16saDark,
-                      ),
+                      customDescription ??
+                          Text(
+                            description ?? '',
+                            textAlign: TextAlign.center,
+                            style: FontFoundation.paragraph.medium16saDark,
+                          ),
                     ],
                     extent: 20,
                   ),
