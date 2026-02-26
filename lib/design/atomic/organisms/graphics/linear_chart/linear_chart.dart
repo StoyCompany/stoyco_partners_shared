@@ -344,7 +344,7 @@ class _LinearChartState extends State<LinearChart>
                                             strokeWidth: 1.5,
                                             dashArray: <int>[8, 4],
                                           ),
-                                          FlDotData(show: false),
+                                          const FlDotData(show: false),
                                         );
                                       }).toList();
                                     },
