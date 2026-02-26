@@ -1,3 +1,16 @@
+## 3.0.3
+
+### Features
+
+feat: Enhance linear chart with custom tooltip implementation
+
+- Implement custom ChipMonotoneNoise tooltip for linear charts with glassmorphic design
+- Add support for displaying multiple line values in a single tooltip with color indicators
+- Include trend indicators (up/down arrows) for each data point
+- Improve tooltip positioning algorithm to prevent overflow and stay centered over touched points
+- Format tooltip date with formatDateDDMMYYYY and numbers with formatWithCommas
+- Ensure tooltip scrolls horizontally with chart content while respecting vertical boundaries
+
 ## 3.0.2
 
 ### Features

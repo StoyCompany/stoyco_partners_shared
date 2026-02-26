@@ -362,7 +362,6 @@ class _LinearChartState extends State<LinearChart>
                                   tooltipBorder: const BorderSide(color: Colors.transparent),
                                   tooltipPadding: EdgeInsets.zero,
                                   getTooltipItems: (List<LineBarSpot> touchedSpots) {
-                                    // Devolver items vacíos pero con el mismo tamaño que touchedSpots
                                     return touchedSpots.map((_) => const LineTooltipItem('', TextStyle())).toList();
                                   },
                                 ),
@@ -403,10 +402,7 @@ class _LinearChartState extends State<LinearChart>
       return const SizedBox.shrink();
     }
     
-    // Usar el primer spot para calcular posición y obtener la fecha
     final LineBarSpot firstSpot = _touchedSpots.first;
-    
-    // Obtener todos los puntos para todas las líneas tocadas
     final List<_TooltipLineData> tooltipData = <_TooltipLineData>[];
     
     for (final LineBarSpot spot in _touchedSpots) {
@@ -430,50 +426,37 @@ class _LinearChartState extends State<LinearChart>
       return const SizedBox.shrink();
     }
     
-    // Calcular posición del tooltip basado en las coordenadas del chart
     final double minY = widget.data!.rangeY.first;
     final double rangeMaxY = widget.data!.rangeY.last;
     final double dataMaxY = _calculateMaxValue();
     final double maxY = dataMaxY > rangeMaxY ? dataMaxY : rangeMaxY;
     
-    // Dimensiones reales del área de dibujo del chart
     final double chartWidth = widget.data!.rangeX.length * StoycoScreenSize.width(context, 100);
     final double containerHeight = widget.height ?? StoycoScreenSize.height(context, 300);
     
-    // Los paddings se aplican FUERA del Stack, así que el Stack empieza en (0,0)
-    // Las dimensiones internas del LineChart consideran los títulos y márgenes
-    final double reservedSizeLeft = 50; // Espacio para títulos del eje Y
-    final double reservedSizeBottom = 40; // Espacio para títulos del eje X
+    final double reservedSizeLeft = 50;
+    final double reservedSizeBottom = 40;
     final double chartDrawingHeight = containerHeight - reservedSizeBottom;
     final double chartDrawingWidth = chartWidth - reservedSizeLeft;
     
-    // Convertir coordenadas del chart a posición en pantalla
     final double spotX = firstSpot.spotIndex.toDouble();
     final double spotY = firstSpot.y;
     
-    // Calcular dimensiones dinámicas del tooltip según cantidad de líneas
     final double tooltipWidth = StoycoScreenSize.width(context, 160);
     final double baseHeight = StoycoScreenSize.height(context, 40);
     final double lineHeight = StoycoScreenSize.height(context, 24);
     final double tooltipHeight = baseHeight + (tooltipData.length * lineHeight);
     
-    // Calcular posición X del punto (proporción en el área de dibujo)
     final double maxX = (widget.data!.rangeX.length - 1).toDouble();
     final double xRatio = maxX > 0 ? spotX / maxX : 0;
     double pointX = reservedSizeLeft + (chartDrawingWidth * xRatio);
     
-    // Calcular posición Y (invertida porque el canvas crece hacia abajo)
     final double yRange = maxY - minY;
     final double yRatio = yRange > 0 ? (spotY - minY) / yRange : 0;
     double pointY = chartDrawingHeight * (1 - yRatio);
     
-    // POSICIONAMIENTO DEL TOOLTIP
-    // Centrado horizontalmente sobre el punto
     double left = pointX - (tooltipWidth / 2);
-    // Por encima del punto
     double top = pointY - tooltipHeight - StoycoScreenSize.height(context, 10);
-    
-    // Ajustar horizontalmente para que no se salga del contenedor scrollable
     final double minLeft = StoycoScreenSize.width(context, 4);
     final double maxLeftBound = chartWidth - tooltipWidth - StoycoScreenSize.width(context, 4);
     
@@ -484,13 +467,10 @@ class _LinearChartState extends State<LinearChart>
       left = maxLeftBound;
     }
     
-    // Ajustar verticalmente
     if (top < StoycoScreenSize.height(context, 4)) {
-      // Si se sale por arriba, mostrar debajo del punto
       top = pointY + StoycoScreenSize.height(context, 10);
     }
     
-    // Si aún se sale por abajo
     if (top + tooltipHeight > containerHeight - StoycoScreenSize.height(context, 4)) {
       top = containerHeight - tooltipHeight - StoycoScreenSize.height(context, 4);
     }
@@ -504,7 +484,7 @@ class _LinearChartState extends State<LinearChart>
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              // Fecha
+
               Text(
                 DatesFormats.formatDateDDMMYYYY(tooltipData.first.point.date),
                 style: TextStyle(
@@ -516,7 +496,6 @@ class _LinearChartState extends State<LinearChart>
                 ),
               ),
               Gap(StoycoScreenSize.height(context, 8)),
-              // Valores de todas las líneas tocadas
               ...tooltipData.map((data) => Padding(
                 padding: EdgeInsets.only(
                   bottom: StoycoScreenSize.height(context, 4),
@@ -524,7 +503,6 @@ class _LinearChartState extends State<LinearChart>
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    // Círculo de color
                     Container(
                       width: StoycoScreenSize.width(context, 8),
                       height: StoycoScreenSize.width(context, 8),
@@ -534,7 +512,6 @@ class _LinearChartState extends State<LinearChart>
                       ),
                     ),
                     Gap(StoycoScreenSize.width(context, 6)),
-                    // Flecha de tendencia
                     if (data.point.trend != TrendType.neutral) ...<Widget>[
                       Transform.rotate(
                         angle: data.point.trend == TrendType.down ? 3.14159 : 0,
@@ -546,7 +523,6 @@ class _LinearChartState extends State<LinearChart>
                       ),
                       Gap(StoycoScreenSize.width(context, 4)),
                     ],
-                    // Número
                     Text(
                       NumbersFormat.formatWithCommas(data.point.total.toDouble()),
                       style: TextStyle(
