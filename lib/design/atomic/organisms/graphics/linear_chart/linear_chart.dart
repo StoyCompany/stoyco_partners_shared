@@ -485,7 +485,7 @@ class _LinearChartState extends State<LinearChart>
                               final LinearChartPoint point =
                                   points[_touchedSpotIndex!];
                               
-                              final double chartWidth = widget.data!.rangeX.length * 100;
+                              final double chartWidth = widget.data!.rangeX.length * StoycoScreenSize.width(context, 100);
                               final double xPercent = _touchedSpotIndex! / (widget.data!.rangeX.length - 1);
                               final double xPosition = chartWidth * xPercent;
                               
