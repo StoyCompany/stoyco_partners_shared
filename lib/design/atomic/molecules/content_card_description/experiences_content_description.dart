@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stoyco_partners_shared/design/atomic/atoms/content_stat/experience_stat.dart';
 import 'package:stoyco_partners_shared/design/models/content_cards/experiences_content_model.dart';
 import 'package:stoyco_partners_shared/design/responsive/gutter.dart';
 import 'package:stoyco_partners_shared/design/responsive/screen_size/stoyco_screen_size.dart';
@@ -6,17 +7,21 @@ import 'package:stoyco_partners_shared/design/utils/foundations/color_foundation
 import 'package:stoyco_partners_shared/design/utils/tokens/gen/fonts.gen.dart';
 
 class ExperiencesContentDescription extends StatelessWidget {
-  const ExperiencesContentDescription({super.key, required this.data});
+  const ExperiencesContentDescription({
+    super.key,
+    required this.data,
+    this.onTapDetail,
+  });
 
   final ExperiencesContentModel data;
+  final VoidCallback? onTapDetail;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: StoycoScreenSize.height(context, 115),
-      child: Row(
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: Gutter.separateChildren(
           children: <Widget>[
             Column(
@@ -24,7 +29,9 @@ class ExperiencesContentDescription extends StatelessWidget {
               children: Gutter.separateChildren(
                 children: <Widget>[
                   Text(
-                    data.name,
+                    data.name.length > 42
+                        ? '${data.name.substring(0, 42)}…'
+                        : data.name,
                     style: TextStyle(
                       fontFamily: StoycoFontFamilyToken.gilroy,
                       fontSize: StoycoScreenSize.fontSize(context, 12),
@@ -34,114 +41,72 @@ class ExperiencesContentDescription extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  RichText(
-                    text: TextSpan(
-                      text: 'Aforo: ',
-                      style: TextStyle(
-                        fontFamily: StoycoFontFamilyToken.gilroy,
-                        fontSize: StoycoScreenSize.fontSize(context, 12),
-                        fontWeight: FontWeight.w500,
-                        color: ColorFoundation.text.saHighlights,
-                      ),
-                      children: <InlineSpan>[
-                        TextSpan(
-                          text: ' ${data.capacity}',
-                          style: TextStyle(
-                            fontFamily: StoycoFontFamilyToken.gilroy,
-                            fontSize: StoycoScreenSize.fontSize(context, 12),
-                            fontWeight: FontWeight.w500,
-                            color: ColorFoundation.text.saLight,
-                          ),
-                        ),
-                      ],
-                    ),
+                  ExperienceContentStat(
+                    statLabel: 'UDS Totales',
+                    statValue: data.totalTickets,
+                    statRevenue: data.totalRevenue,
+                    statCurrency: data.currency,
+                    labelTooltipMessage:
+                        'Capacidad total de boletos configurados para esta experiencia.',
+                    revenueTooltipMessage:
+                        'Valor máximo estimado si se venden todos los boletos.',
                   ),
-                  RichText(
-                    text: TextSpan(
-                      text: 'Boletos cortesía: ',
-                      style: TextStyle(
-                        fontFamily: StoycoFontFamilyToken.gilroy,
-                        fontSize: StoycoScreenSize.fontSize(context, 12),
-                        fontWeight: FontWeight.w500,
-                        color: ColorFoundation.text.saHighlights,
-                      ),
-                      children: <InlineSpan>[
-                        TextSpan(
-                          text: ' ${data.courtesyTickets}',
-                          style: TextStyle(
-                            fontFamily: StoycoFontFamilyToken.gilroy,
-                            fontSize: StoycoScreenSize.fontSize(context, 12),
-                            fontWeight: FontWeight.w500,
-                            color: ColorFoundation.text.saLight,
-                          ),
-                        ),
-                      ],
-                    ),
+                  ExperienceContentStat(
+                    statLabel: 'UDS Disponibles',
+                    statValue: data.availableTickets,
+                    statRevenue: data.availableRevenue,
+                    statCurrency: data.currency,
+                    labelTooltipMessage:
+                        'Boletos que aún están disponibles para la venta.',
+                    revenueTooltipMessage:
+                        'Ingreso potencial pendiente si se venden los boletos disponibles.',
                   ),
-                  RichText(
-                    text: TextSpan(
-                      text: 'Boletos Disponibles: ',
-                      style: TextStyle(
-                        fontFamily: StoycoFontFamilyToken.gilroy,
-                        fontSize: StoycoScreenSize.fontSize(context, 12),
-                        fontWeight: FontWeight.w500,
-                        color: ColorFoundation.text.saHighlights,
-                      ),
-                      children: <InlineSpan>[
-                        TextSpan(
-                          text: ' ${data.availableTickets}',
-                          style: TextStyle(
-                            fontFamily: StoycoFontFamilyToken.gilroy,
-                            fontSize: StoycoScreenSize.fontSize(context, 12),
-                            fontWeight: FontWeight.w500,
-                            color: ColorFoundation.text.saLight,
-                          ),
-                        ),
-                      ],
-                    ),
+                  ExperienceContentStat(
+                    statLabel: 'UDS Vendidas',
+                    statValue: data.soldTickets,
+                    statRevenue: data.soldRevenue,
+                    statCurrency: data.currency,
+                    labelTooltipMessage:
+                        'Total de boletos vendidos para esta experiencia.',
+                    revenueTooltipMessage:
+                        'Ingresos generados por la venta de boletos.',
                   ),
-                  Text(
-                    data.eventDate,
+                ],
+                extent: StoycoScreenSize.height(context, 5),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  data.isActive
+                      ? 'Fecha de evento ${data.eventDate}'
+                      : 'Finalizado  ${data.eventDate}',
+                  style: TextStyle(
+                    fontFamily: StoycoFontFamilyToken.gilroy,
+                    fontSize: StoycoScreenSize.fontSize(context, 8),
+                    color: ColorFoundation.text.saLight,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: onTapDetail,
+                  child: Text(
+                    'Ver detalle',
                     style: TextStyle(
                       fontFamily: StoycoFontFamilyToken.gilroy,
-                      fontSize: StoycoScreenSize.fontSize(context, 8),
+                      fontSize: StoycoScreenSize.fontSize(context, 10),
                       color: ColorFoundation.text.saLight,
                       fontWeight: FontWeight.w700,
+                      decoration: TextDecoration.underline,
+                      decorationColor: ColorFoundation.text.saLight,
                     ),
                   ),
-                ],
-                extent: StoycoScreenSize.height(context, 5),
-              ),
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: Gutter.separateChildren(
-                children: <Widget>[
-                  Container(
-                    decoration: BoxDecoration(
-                      color: ColorFoundation.background.saHighlights,
-                      borderRadius: BorderRadius.circular(
-                        StoycoScreenSize.radius(context, 100),
-                      ),
-                    ),
-                    child: Center(child: Text('${data.ticketPrice}')),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: ColorFoundation.background.saHighlights,
-                      borderRadius: BorderRadius.circular(
-                        StoycoScreenSize.radius(context, 100),
-                      ),
-                    ),
-                    child: Center(child: Text('${data.totalTickets}')),
-                  ),
-                ],
-                extent: StoycoScreenSize.height(context, 5),
-              ),
+                ),
+              ],
             ),
           ],
-          extent: StoycoScreenSize.width(context, 18),
         ),
       ),
     );

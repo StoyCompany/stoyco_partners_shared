@@ -16,7 +16,6 @@ class AnnouncementsContentDescription extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: StoycoScreenSize.height(context, 115),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -27,56 +26,59 @@ class AnnouncementsContentDescription extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: Gutter.separateChildren(
-                children: <Widget>[
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        data.title,
-                        style: TextStyle(
-                          fontFamily: StoycoFontFamilyToken.gilroy,
-                          fontSize: StoycoScreenSize.fontSize(context, 12),
-                          color: ColorFoundation.text.saLight,
-                          fontWeight: FontWeight.w500,
+                  children: <Widget>[
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          data.title,
+                          style: TextStyle(
+                            fontFamily: StoycoFontFamilyToken.gilroy,
+                            fontSize: StoycoScreenSize.fontSize(context, 12),
+                            color: ColorFoundation.text.saLight,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      MessagedDescriptionTooltip(
-                        message: 'Videos Aprobados:',
-                        data: data.approvedVideos,
-                        tooltipMessage: 'Total de videos aprobados en la convocatoria',
-                      ),
-                      MessagedDescriptionTooltip(
-                        message: 'Participantes Unicos:',
-                        data: data.participants,
-                        tooltipMessage: 'Total de participantes únicos que participaron en la convocatoria',
-                      ),
-                      MessagedDescriptionTooltip(
-                        message: 'Contenido x user:',
-                        data: data.contentPerUser,
-                        tooltipMessage: 'Promedio de videos subidos por cada participante',
-                      ),
-                      Gutter(StoycoScreenSize.height(context, 5)),
-                      Text(
-                        'Finalizado ${DatesFormats.formatDateDDMMYYYYWithDashes(data.closeDate)}',
-                        style: TextStyle(
-                          fontFamily: StoycoFontFamilyToken.gilroy,
-                          fontSize: StoycoScreenSize.fontSize(context, 8),
-                          color: ColorFoundation.text.saLight,
-                          fontWeight: FontWeight.w700,
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        MessagedDescriptionTooltip(
+                          message: 'Videos Aprobados:',
+                          data: data.approvedVideos,
+                          tooltipMessage:
+                              'Total de videos aprobados en la convocatoria',
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                        MessagedDescriptionTooltip(
+                          message: 'Participantes Unicos:',
+                          data: data.participants,
+                          tooltipMessage:
+                              'Total de participantes únicos que participaron en la convocatoria',
+                        ),
+                        MessagedDescriptionTooltip(
+                          message: 'Contenido x user:',
+                          data: data.contentPerUser,
+                          tooltipMessage:
+                              'Promedio de videos subidos por cada participante',
+                        ),
+                        Gutter(StoycoScreenSize.height(context, 5)),
+                        Text(
+                          'Finalizado ${DatesFormats.formatDateDDMMYYYYWithDashes(data.closeDate)}',
+                          style: TextStyle(
+                            fontFamily: StoycoFontFamilyToken.gilroy,
+                            fontSize: StoycoScreenSize.fontSize(context, 8),
+                            color: ColorFoundation.text.saLight,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
             ),
             SizedBox(
               width: StoycoScreenSize.width(context, 55),
@@ -86,7 +88,8 @@ class AnnouncementsContentDescription extends StatelessWidget {
                 comments: data.comments,
                 views: data.views,
                 likesTooltip: 'Total de likes de la convocatoria',
-                sharesTooltip: 'Total de veces que se compartió la convocatoria',
+                sharesTooltip:
+                    'Total de veces que se compartió la convocatoria',
                 commentsTooltip: 'Total de comentarios de la convocatoria',
                 viewsTooltip: 'Total de visualizaciones de la convocatoria',
               ),

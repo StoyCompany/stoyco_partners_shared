@@ -1,6 +1,6 @@
 name: stoyco_partners_shared
 description: "A new Flutter package project."
-version: 3.0.0
+version: 3.0.2
 homepage: null
 
 environment:
@@ -72,10 +72,21 @@ flutter:
           weight: 800
         - asset: lib/assets/fonts/gilroy/Gilroy-Black.ttf
           weight: 900
-
     - family: Akkurat
       fonts:
         - asset: lib/assets/fonts/akkurat/AkkuratMono-Regular.ttf
+
+    - family: Apercu
+      fonts:
+        - asset: lib/assets/fonts/apercu/ApercuMonoPro-Light.ttf
+          weight: 300
+        - asset: lib/assets/fonts/apercu/ApercuMonoPro-Regular.ttf
+          weight: 400
+        - asset: lib/assets/fonts/apercu/ApercuMonoPro-Medium.ttf
+          weight: 500
+        - asset: lib/assets/fonts/apercu/ApercuMonoPro-Bold.ttf
+          weight: 700
+
 
 flutter_gen:
   output: lib/design/utils/tokens/gen

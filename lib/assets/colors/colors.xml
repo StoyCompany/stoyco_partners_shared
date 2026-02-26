@@ -37,6 +37,7 @@
     <!-- purple colors -->
     <color name="sa-highlights">#9E80E1</color>
     <color name="sa-disabled">#C8B5E9</color>
+    <color name="sa-disabled-2">#A397BE</color>
 
 
     <!-- blue colors -->

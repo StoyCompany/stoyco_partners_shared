@@ -14,6 +14,9 @@ class StoycoFontFamilyToken {
   /// Font family: Akkurat
   static const String akkurat = 'Akkurat';
 
+  /// Font family: Apercu
+  static const String apercu = 'Apercu';
+
   /// Font family: Gilroy
   static const String gilroy = 'Gilroy';
 }
