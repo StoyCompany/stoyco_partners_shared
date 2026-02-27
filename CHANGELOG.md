@@ -1,3 +1,9 @@
+### 3.0.5
+
+### Features
+
+- News Tests
+
 ### 3.0.4
 
 ### Features
