@@ -2,7 +2,13 @@
 
 ### Features
 
-- News Tests
+- Add comprehensive tests for design utilities and foundations
+
+- Introduced tests for BreakpointValue and ConstantLayoutValue to ensure correct resolution across different breakpoints.
+- Added tests for utility functions in NumbersFormat and DatesFormats, covering various formatting scenarios and edge cases.
+- Implemented tests for ColorFoundation to verify color values and accessibility standards.
+- Created tests for FontFoundation to validate font styles and consistency across different weights and sizes.
+- Added tests for ButtonTokens to ensure button styles and variants are correctly defined and resolved.
 
 ### 3.0.4
 
