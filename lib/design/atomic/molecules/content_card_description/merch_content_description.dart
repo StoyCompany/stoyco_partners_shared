@@ -37,55 +37,57 @@ class MerchContentDescription extends StatelessWidget {
                         color: ColorFoundation.text.white,
                         fontWeight: FontWeight.w500,
                       ),
-                      maxLines: 1,
+                      maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    MessagedDescriptionTooltip(
-                      message: 'Precio: ',
-                      dataText: NumbersFormat.formatCurrency(
-                        data.price,
-                        currency: data.currency,
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: Gutter.separateChildren(
+                        children: <Widget>[
+                          MessagedDescriptionTooltip(
+                            message: 'Precio: ',
+                            dataText: NumbersFormat.formatCurrency(
+                              data.price,
+                              currency: data.currency,
+                            ),
+                            tooltipMessage:
+                                'Corresponde al precio de venta publicado.',
+                          ),
+                          _InfoRowWithChip(
+                            message: 'UDS Vendidas: ',
+                            data: data.unitsSold,
+                            chipMessage: NumbersFormat.formatCurrency(
+                              data.generatedRevenue,
+                              currency: data.currency,
+                            ),
+                            tooltipMessage: 'Ingresos generados = Precio de venta x unidades vendidas.',
+                          ),
+                          _InfoRowWithChip(
+                            message: 'UDS Disponibles: ',
+                            data: data.unitsAvailable,
+                            chipMessage: NumbersFormat.formatCurrency(
+                              data.availableInventoryValue,
+                              currency: data.currency,
+                            ),
+                            tooltipMessage:
+                                'Valor del inventario disponible = Precio x unidades disponibles.',
+                          ),
+                          _InfoRowWithChip(
+                            message: 'UDS Totales: ',
+                            data: data.totalUnits,
+                            chipMessage: NumbersFormat.formatCurrency(
+                              data.totalInitialInventoryValue,
+                              currency: data.currency,
+                            ),
+                            tooltipMessage:'Valor total del inventario inicial = Precio x unidades totales.',
+                          ),
+                        ],
+                        extent: StoycoScreenSize.height(context, 6),
                       ),
-                      tooltipMessage:
-                          'Corresponde al precio de venta publicado.',
-                    ),
-                    MessagedDescriptionTooltip(
-                      message: 'Costo: ',
-                      dataText: NumbersFormat.formatCurrency(
-                        data.cost,
-                        currency: data.currency,
-                      ),
-                      tooltipMessage: 'Corresponde al costo unitario registrado.',
-                    ),
-                    _InfoRowWithChip(
-                      message: 'UDS Vendidas: ',
-                      data: data.unitsSold,
-                      chipMessage: NumbersFormat.formatCurrency(
-                        data.generatedRevenue,
-                        currency: data.currency,
-                      ),
-                      tooltipMessage: 'Ingresos generados = Precio de venta x unidades vendidas.',
-                    ),
-                    _InfoRowWithChip(
-                      message: 'UDS Disponibles: ',
-                      data: data.unitsAvailable,
-                      chipMessage: NumbersFormat.formatCurrency(
-                        data.availableInventoryValue,
-                        currency: data.currency,
-                      ),
-                      tooltipMessage: 'Valor del inventario disponible = Costo x unidades disponibles.',
-                    ),
-                    _InfoRowWithChip(
-                      message: 'UDS Totales: ',
-                      data: data.totalUnits,
-                      chipMessage: NumbersFormat.formatCurrency(
-                        data.totalInitialInventoryValue,
-                        currency: data.currency,
-                      ),
-                      tooltipMessage: 'Valor total del inventario inicial = Costo x unidades totales.',
                     ),
                   ],
-                  extent: StoycoScreenSize.height(context, 5),
+                  extent: StoycoScreenSize.height(context, 2),
                 ),
               ),
             ),
