@@ -1,3 +1,14 @@
+### 3.0.6
+
+### Fix
+
+- Fixed BubbleChart rendering issues when total value is 0 by displaying "Sin datos disponibles" message
+- Implemented tooltip collision detection and automatic repositioning system to prevent overlapping when bubbles are close together
+- Added formatPercentage method to NumbersFormat with support for up to 2 decimal places
+- Updated TopTenLocationsFlags to display values as percentages instead of raw numbers
+- Increased spacing for percentage values in multiple columns to prevent text overflow
+- Translated all Spanish comments to English in BubbleChart component
+
 ### 3.0.5
 
 ### Features
