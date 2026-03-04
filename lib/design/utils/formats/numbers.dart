@@ -82,6 +82,25 @@ final class NumbersFormat {
     return '\$$formattedNumber $currency';
   }
 
+  static String formatPercentage(double number, {int maxDecimals = 2}) {
+    final bool isNegative = number < 0;
+    final double absNumber = number.abs();
+    
+    final double multiplier = maxDecimals == 0 ? 1 : (maxDecimals == 1 ? 10 : 100);
+    final double rounded = (absNumber * multiplier).roundToDouble() / multiplier;
+    
+    String result;
+    if (rounded % 1 == 0) {
+      result = rounded.toStringAsFixed(0);
+    } else {
+      result = rounded.toStringAsFixed(maxDecimals)
+          .replaceAll(RegExp(r'0+$'), '')
+          .replaceAll(RegExp(r'\.$'), '');
+    }
+    
+    return '${isNegative ? '-' : ''}$result%';
+  }
+
   static String _formatValue(double value, String suffix, int decimals) {
     if (value % 1 == 0) {
       return '${value.toStringAsFixed(0)}$suffix';

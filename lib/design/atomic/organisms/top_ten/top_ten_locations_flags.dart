@@ -188,7 +188,7 @@ class _ColorHeader extends StatelessWidget {
                         : 0,
                   ),
                   child: SizedBox(
-                    width: StoycoScreenSize.width(context, 50),
+                    width: StoycoScreenSize.width(context, 60),
                     child: Center(
                       child: Container(
                         width: StoycoScreenSize.width(context, 12),
@@ -324,7 +324,7 @@ class _SingleValueSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      NumbersFormat.formatWithCommas(value),
+      NumbersFormat.formatPercentage(value),
       style: TextStyle(
         package: 'stoyco_partners_shared',
         fontSize: StoycoScreenSize.width(context, 14),
@@ -374,10 +374,10 @@ class _MultipleValuesSection extends StatelessWidget {
             left: displayIndex > 0 ? StoycoScreenSize.width(context, 8) : 0,
           ),
           child: SizedBox(
-            width: StoycoScreenSize.width(context, 50),
+            width: StoycoScreenSize.width(context, 60),
             child: Center(
               child: Text(
-                NumbersFormat.formatCompact(value),
+                NumbersFormat.formatPercentage(value),
                 style: TextStyle(
                   package: 'stoyco_partners_shared',
                   fontSize: StoycoScreenSize.width(context, 14),

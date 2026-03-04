@@ -43,6 +43,7 @@ class _BubbleChartState extends State<BubbleChart>
   late Animation<double> _animation;
   late Animation<double> _tooltipAnimation;
   List<BubblePosition> _bubblePositions = <BubblePosition>[];
+  List<double> _tooltipYOffsets = <double>[];
 
   @override
   void initState() {
@@ -193,16 +194,88 @@ class _BubbleChartState extends State<BubbleChart>
     return math.max(calculatedRadius, widget.minCenterRadius);
   }
 
+  /// Calculates tooltip Y positions avoiding collisions
+  void _calculateTooltipYOffsets(Offset center, double maxContainerRadius) {
+    _tooltipYOffsets = <double>[];
+    
+    if (_bubblePositions.isEmpty) {
+      return;
+    }
+
+    const double tooltipHeight = 20.0;
+    const double minTooltipSpacing = 8.0;
+    
+    final List<Map<String, dynamic>> tooltipPositions = <Map<String, dynamic>>[];
+    
+    for (int i = 0; i < _bubblePositions.length; i++) {
+      final BubblePosition bubble = _bubblePositions[i];
+      const double angleRange = math.pi;
+      final double angle = _bubblePositions.length > 1
+          ? -angleRange / 2 + (angleRange / (_bubblePositions.length - 1)) * i
+          : 0;
+      
+      final double yPosition = center.dy + bubble.radius * math.sin(angle);
+      
+      tooltipPositions.add(<String, dynamic>{
+        'index': i,
+        'originalY': yPosition,
+        'adjustedY': yPosition,
+        'angle': angle,
+      });
+    }
+    
+    tooltipPositions.sort((Map<String, dynamic> a, Map<String, dynamic> b) => 
+      (a['originalY'] as double).compareTo(b['originalY'] as double));
+    
+    for (int i = 0; i < tooltipPositions.length; i++) {
+      if (i == 0) {
+        continue;
+      }
+      
+      final double previousY = tooltipPositions[i - 1]['adjustedY'] as double;
+      final double currentY = tooltipPositions[i]['adjustedY'] as double;
+      final double difference = currentY - previousY;
+      
+      if (difference < tooltipHeight + minTooltipSpacing) {
+        final double newY = previousY + tooltipHeight + minTooltipSpacing;
+        tooltipPositions[i]['adjustedY'] = newY;
+      }
+    }
+    
+    final double maxY = center.dy + maxContainerRadius;
+    final double minY = center.dy - maxContainerRadius;
+    
+    for (int i = 0; i < tooltipPositions.length; i++) {
+      double adjustedY = tooltipPositions[i]['adjustedY'] as double;
+      
+      if (adjustedY + tooltipHeight / 2 > maxY) {
+        adjustedY = maxY - tooltipHeight / 2;
+      }
+      if (adjustedY - tooltipHeight / 2 < minY) {
+        adjustedY = minY + tooltipHeight / 2;
+      }
+      
+      tooltipPositions[i]['adjustedY'] = adjustedY;
+    }
+    
+    tooltipPositions.sort((Map<String, dynamic> a, Map<String, dynamic> b) => 
+      (a['index'] as int).compareTo(b['index'] as int));
+    
+    _tooltipYOffsets = tooltipPositions
+        .map((Map<String, dynamic> pos) => 
+          (pos['adjustedY'] as double) - (pos['originalY'] as double))
+        .toList();
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Validar si la lista está vacía o si la suma de todos los valores es 0
     final bool isEmpty = widget.data.isEmpty;
     final double totalValue = widget.data.fold<double>(
       0,
       (double sum, BubbleData item) => sum + item.value,
     );
 
-    if (isEmpty || totalValue == 0) {
+    if (isEmpty || totalValue == 0 || widget.total == 0) {
       return SizedBox(
         height: StoycoScreenSize.height(context, 200),
         child: Center(
@@ -237,6 +310,9 @@ class _BubbleChartState extends State<BubbleChart>
               constraints.maxWidth / 2,
               constraints.maxHeight / 2,
             );
+
+            final double maxContainerRadius = (widget.width ?? 280) / 2;
+            _calculateTooltipYOffsets(center, maxContainerRadius);
 
             return Stack(
               children: <Widget>[
@@ -294,14 +370,14 @@ class _BubbleChartState extends State<BubbleChart>
                   return AnimatedBuilder(
                     animation: _tooltipAnimation,
                     builder: (BuildContext context, Widget? child) {
-                      final double maxContainerRadius =
-                          (widget.width ?? 280) / 2;
+                      final double maxContainerRadius = (widget.width ?? 280) / 2;
                       final double distanceFromCenter = bubble.radius;
-                      final double remainingSpace =
-                          maxContainerRadius - distanceFromCenter;
-                      final double lineLength = remainingSpace > 66
-                          ? 66
-                          : remainingSpace * 0.7;
+                      final double remainingSpace = maxContainerRadius - distanceFromCenter;
+                      final double lineLength = remainingSpace > 66 ? 66 : remainingSpace * 0.7;
+                      
+                      final double yOffset = index < _tooltipYOffsets.length 
+                          ? _tooltipYOffsets[index] 
+                          : 0.0;
 
                       return Opacity(
                         opacity: _tooltipAnimation.value,
@@ -327,7 +403,7 @@ class _BubbleChartState extends State<BubbleChart>
                                   Offset(
                                     bubble.radius * math.cos(angle) +
                                         lineLength,
-                                    bubble.radius * math.sin(angle),
+                                    bubble.radius * math.sin(angle) + yOffset,
                                   ),
                             ),
                           ),
@@ -340,13 +416,11 @@ class _BubbleChartState extends State<BubbleChart>
                   child: AnimatedBuilder(
                     animation: _tooltipAnimation,
                     builder: (BuildContext context, Widget? child) {
-                      final double maxRadius =
-                          math.min(
-                            constraints.maxWidth,
-                            constraints.maxHeight,
-                          ) /
-                          2;
-                      const double angle = -math.pi / 2; // Hacia arriba
+                      final double maxRadius = math.min(
+                        constraints.maxWidth,
+                        constraints.maxHeight,
+                      ) / 2;
+                      const double angle = -math.pi / 2; 
                       const double lineLength = 50.0;
 
                       return Opacity(
