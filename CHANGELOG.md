@@ -1,3 +1,9 @@
+### 3.0.7
+
+### Features
+
+- Update CardContentFlex margin, enhance CustomFormField text color logic, and add new SVG icons for success and trash
+
 ### 3.0.6
 
 ### Fix

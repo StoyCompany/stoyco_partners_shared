@@ -13,7 +13,7 @@ class CardcContentFlex extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: StoycoScreenSize.symmetric(context, horizontal: 20),
+      margin: StoycoScreenSize.symmetric(context, horizontal: 15),
       decoration: BoxDecoration(
         color: ColorFoundation.background.saLight,
         borderRadius: BorderRadius.circular(
