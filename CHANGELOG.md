@@ -1,3 +1,9 @@
+### 3.0.7
+
+### Features
+
+- Add BoldTextSpan widget for displaying bold text segments in strings.
+
 ### 3.0.6
 
 ### Fix
