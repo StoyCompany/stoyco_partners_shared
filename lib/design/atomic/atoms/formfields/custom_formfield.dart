@@ -81,7 +81,7 @@ class CustomFormField extends StatelessWidget {
         final bool isEmptyError = errorMessage?.isEmpty ?? false;
 
         // Determine text color based on state
-        final Color effectiveTextColor = isDisabled
+        final Color effectiveTextColor = isDisabled || readOnly
             ? ColorFoundation.text.saTextDisabled
             : hasError
             ? ColorFoundation.text.saError
@@ -274,7 +274,7 @@ class _PasswordFieldState extends State<_PasswordField> {
   @override
   Widget build(BuildContext context) {
     // Determine text color based on state
-    final Color effectiveTextColor = widget.isDisabled
+    final Color effectiveTextColor = widget.isDisabled || widget.readOnly
         ? ColorFoundation.text.saTextDisabled
         : widget.hasError
         ? ColorFoundation.text.saError

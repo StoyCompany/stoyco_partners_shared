@@ -93,6 +93,12 @@ class $LibAssetsIconsGen {
   SvgGenImage get stoycoCoins =>
       const SvgGenImage('lib/assets/icons/stoyco_coins.svg');
 
+  /// File path: lib/assets/icons/success.svg
+  SvgGenImage get success => const SvgGenImage('lib/assets/icons/success.svg');
+
+  /// File path: lib/assets/icons/trash.svg
+  SvgGenImage get trash => const SvgGenImage('lib/assets/icons/trash.svg');
+
   /// File path: lib/assets/icons/x_icon.svg
   SvgGenImage get xIcon => const SvgGenImage('lib/assets/icons/x_icon.svg');
 
@@ -111,6 +117,8 @@ class $LibAssetsIconsGen {
     message,
     share,
     stoycoCoins,
+    success,
+    trash,
     xIcon,
   ];
 }
