@@ -86,6 +86,10 @@ class $LibAssetsIconsGen {
   /// File path: lib/assets/icons/message.svg
   SvgGenImage get message => const SvgGenImage('lib/assets/icons/message.svg');
 
+  /// File path: lib/assets/icons/order_filter.svg
+  SvgGenImage get orderFilter =>
+      const SvgGenImage('lib/assets/icons/order_filter.svg');
+
   /// File path: lib/assets/icons/share.svg
   SvgGenImage get share => const SvgGenImage('lib/assets/icons/share.svg');
 
@@ -115,6 +119,7 @@ class $LibAssetsIconsGen {
     like,
     mailBox,
     message,
+    orderFilter,
     share,
     stoycoCoins,
     success,

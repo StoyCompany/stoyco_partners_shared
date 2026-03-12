@@ -16,6 +16,9 @@ import 'package:stoyco_partners_shared/design/utils/tokens/gen/fonts.gen.dart';
 /// - `initialValue`: The initial selected value.
 /// - `onChanged`: Callback when a new value is selected.
 /// - `modalTitle`: Title displayed at the top of the modal. Defaults to "Ordenar Por".
+/// - `icon`: An optional icon to display on the selector button.
+/// - `iconColor`: An optional color for the icon.
+/// - `selectedIconColor`: An optional color for the selected icon.
 ///
 /// ### Returns
 /// A button that opens a bottom sheet with selectable options.
@@ -37,6 +40,9 @@ class Selector<T> extends StatefulWidget {
     required this.initialValue,
     required this.onChanged,
     this.modalTitle = 'Ordenar Por',
+    this.icon,
+    this.iconColor,
+    this.selectedIconColor,
   });
 
   /// List of string options to display in the modal.
@@ -50,6 +56,15 @@ class Selector<T> extends StatefulWidget {
 
   /// Title displayed at the top of the modal. Defaults to "Ordenar Por".
   final String modalTitle;
+
+  /// An optional icon to display on the selector bustton.
+  final Widget? icon;
+
+  /// An optional color for the icon.
+  final Color? iconColor;
+
+  /// An optional color for the selected icon.
+  final Color? selectedIconColor;
 
   @override
   State<Selector<T>> createState() => _SelectorState<T>();
@@ -87,7 +102,9 @@ class _SelectorState<T> extends State<Selector<T>> {
     final ScrollController scrollController = ScrollController();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final int selectedIndex = widget.items.indexWhere((SelectorItem<T> item) => item.label == _selectedValue.label);
+      final int selectedIndex = widget.items.indexWhere(
+        (SelectorItem<T> item) => item.label == _selectedValue.label,
+      );
       if (selectedIndex > 0 && scrollController.hasClients) {
         final double itemHeight = StoycoScreenSize.height(context, 50);
         final double targetPosition = selectedIndex * itemHeight;
@@ -149,9 +166,12 @@ class _SelectorState<T> extends State<Selector<T>> {
                   itemCount: widget.items.length,
                   separatorBuilder: (BuildContext context, int index) {
                     final SelectorItem<T> currentItem = widget.items[index];
-                    final bool isCurrentSelected = currentItem.label == _selectedValue.label;
+                    final bool isCurrentSelected =
+                        currentItem.label == _selectedValue.label;
 
-                    final bool isNextSelected = index + 1 < widget.items.length && widget.items[index + 1].label == _selectedValue.label;
+                    final bool isNextSelected =
+                        index + 1 < widget.items.length &&
+                        widget.items[index + 1].label == _selectedValue.label;
                     if (isCurrentSelected || isNextSelected) {
                       return const SizedBox.shrink();
                     }
@@ -216,42 +236,47 @@ class _SelectorState<T> extends State<Selector<T>> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => _showModal(context),
-      child: Container(
-        height: StoycoScreenSize.height(context, 28),
-        padding: EdgeInsets.symmetric(
-          horizontal: StoycoScreenSize.width(context, 12),
-          vertical: StoycoScreenSize.height(context, 4),
-        ),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(
-            StoycoScreenSize.width(context, 100),
-          ),
-          border: Border.all(color: ColorFoundation.text.fandom, width: 1),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Text(
-              _selectedValue.label,
-              style: TextStyle(
-                fontFamily: StoycoFontFamilyToken.gilroy,
-                fontWeight: FontWeight.bold,
-                fontSize: StoycoScreenSize.width(context, 12),
-                color: ColorFoundation.text.fandom,
+    return widget.icon != null
+        ? GestureDetector(onTap: () => _showModal(context), child: widget.icon)
+        : GestureDetector(
+            onTap: () => _showModal(context),
+            child: Container(
+              height: StoycoScreenSize.height(context, 28),
+              padding: EdgeInsets.symmetric(
+                horizontal: StoycoScreenSize.width(context, 12),
+                vertical: StoycoScreenSize.height(context, 4),
               ),
-              textAlign: TextAlign.center,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(
+                  StoycoScreenSize.width(context, 100),
+                ),
+                border: Border.all(
+                  color: ColorFoundation.text.fandom,
+                  width: 1,
+                ),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text(
+                    _selectedValue.label,
+                    style: TextStyle(
+                      fontFamily: StoycoFontFamilyToken.gilroy,
+                      fontWeight: FontWeight.bold,
+                      fontSize: StoycoScreenSize.width(context, 12),
+                      color: ColorFoundation.text.fandom,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  Gap(StoycoScreenSize.width(context, 6)),
+                  Icon(
+                    Icons.keyboard_arrow_down,
+                    size: StoycoScreenSize.width(context, 16),
+                    color: ColorFoundation.text.fandom,
+                  ),
+                ],
+              ),
             ),
-            Gap(StoycoScreenSize.width(context, 6)),
-            Icon(
-              Icons.keyboard_arrow_down,
-              size: StoycoScreenSize.width(context, 16),
-              color: ColorFoundation.text.fandom,
-            ),
-          ],
-        ),
-      ),
-    );
+          );
   }
 }
