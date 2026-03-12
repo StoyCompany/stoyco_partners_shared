@@ -1,3 +1,9 @@
+### 3.0.9
+
+### Features
+
+- Add order_filter SVG icon
+
 ### 3.0.8
 
 ### Features
@@ -58,7 +64,7 @@ feat: Enhance linear chart with custom tooltip implementation
 
 feat: Add content card models and descriptions for various content types
 
--  Refactor content description components for improved layout and introduce ExperienceContentStat for better statistics display
+- Refactor content description components for improved layout and introduce ExperienceContentStat for better statistics display
 
 ## 3.0.1
 
@@ -66,10 +72,10 @@ feat: Add content card models and descriptions for various content types
 
 feat: Add content card models and descriptions for various content types
 
--  Add ExperienceDetailDto and enhance ExperienceDetailModal with new data structure and UI updates
--  Update event date display logic in ExperiencesContentDescription for better clarity on event status
--  Add Apercu font family and implement RevenueStat component in experiences content
--  Introduce ExperienceTableValueContainer for improved display of experience values and refactor ExperienceDetailModal to utilize new component
+- Add ExperienceDetailDto and enhance ExperienceDetailModal with new data structure and UI updates
+- Update event date display logic in ExperiencesContentDescription for better clarity on event status
+- Add Apercu font family and implement RevenueStat component in experiences content
+- Introduce ExperienceTableValueContainer for improved display of experience values and refactor ExperienceDetailModal to utilize new component
 
 ## 3.0.0
 
