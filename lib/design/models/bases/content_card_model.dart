@@ -24,5 +24,6 @@ enum ContentType {
   music,
   projectsToFund,
   merch,
-  culturalAssets
+  culturalAssets,
+  suscriptions,
 }
