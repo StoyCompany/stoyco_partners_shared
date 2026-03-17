@@ -19,6 +19,9 @@ SubscriptionContentModel _$SubscriptionContentModelFromJson(
   totalSubscribers: (json['totalSubscribers'] as num).toInt(),
   totalRevenue: (json['totalRevenue'] as num).toDouble(),
   currency: json['currency'] as String,
+  exclusiveContentList: (json['exclusiveContentList'] as List<dynamic>?)
+      ?.map((e) => ExclusiveContentData.fromJson(e as Map<String, dynamic>))
+      .toList(),
 );
 
 Map<String, dynamic> _$SubscriptionContentModelToJson(
@@ -34,4 +37,25 @@ Map<String, dynamic> _$SubscriptionContentModelToJson(
   'totalSubscribers': instance.totalSubscribers,
   'totalRevenue': instance.totalRevenue,
   'currency': instance.currency,
+  'exclusiveContentList': instance.exclusiveContentList,
+};
+
+ExclusiveContentData _$ExclusiveContentDataFromJson(
+  Map<String, dynamic> json,
+) => ExclusiveContentData(
+  name: json['name'] as String?,
+  countContent: (json['countContent'] as num?)?.toInt(),
+  views: (json['views'] as num?)?.toInt(),
+  engagement: (json['engagement'] as num?)?.toDouble(),
+  conversion: (json['conversion'] as num?)?.toDouble(),
+);
+
+Map<String, dynamic> _$ExclusiveContentDataToJson(
+  ExclusiveContentData instance,
+) => <String, dynamic>{
+  'name': instance.name,
+  'countContent': instance.countContent,
+  'views': instance.views,
+  'engagement': instance.engagement,
+  'conversion': instance.conversion,
 };

@@ -53,6 +53,10 @@ class $LibAssetsIconsGen {
   /// File path: lib/assets/icons/arrow-up.svg
   SvgGenImage get arrowUp => const SvgGenImage('lib/assets/icons/arrow-up.svg');
 
+  /// File path: lib/assets/icons/arrow_down.svg
+  SvgGenImage get arrowDown =>
+      const SvgGenImage('lib/assets/icons/arrow_down.svg');
+
   /// Directory path: lib/assets/icons/common
   $LibAssetsIconsCommonGen get common => const $LibAssetsIconsCommonGen();
 
@@ -90,6 +94,10 @@ class $LibAssetsIconsGen {
   SvgGenImage get orderFilter =>
       const SvgGenImage('lib/assets/icons/order_filter.svg');
 
+  /// File path: lib/assets/icons/right_arrow.svg
+  SvgGenImage get rightArrow =>
+      const SvgGenImage('lib/assets/icons/right_arrow.svg');
+
   /// File path: lib/assets/icons/share.svg
   SvgGenImage get share => const SvgGenImage('lib/assets/icons/share.svg');
 
@@ -110,6 +118,7 @@ class $LibAssetsIconsGen {
   List<SvgGenImage> get values => [
     alert,
     arrowUp,
+    arrowDown,
     donation,
     error,
     errorX,
@@ -120,6 +129,7 @@ class $LibAssetsIconsGen {
     mailBox,
     message,
     orderFilter,
+    rightArrow,
     share,
     stoycoCoins,
     success,

@@ -15,6 +15,8 @@ class ContentCard extends StatelessWidget {
     this.heightCard = 115,
     this.widthImage = 115,
     this.heightImage = 115,
+    this.showDetail = false,
+    this.detail,
   });
 
   final String imageUrl;
@@ -24,62 +26,87 @@ class ContentCard extends StatelessWidget {
   final double widthImage;
   final double heightImage;
   final double heightCard;
+  final bool showDetail;
+  final Widget? detail;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: StoycoScreenSize.height(context, heightCard),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: Gutter.separateChildren(
-          children: <Widget>[
-            Stack(
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        SizedBox(
+          height: StoycoScreenSize.height(context, heightCard),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: Gutter.separateChildren(
               children: <Widget>[
-                ImageStoycoCache(
-                  imageUrl: imageUrl,
-                  height: heightCard,
-                  width: widthImage,
-                  backgroundColor: ColorFoundation.background.chartBlack,
-                  borderRadius: borderRadiusImage,
-                ),
-                Visibility(
-                  visible: isActive,
-                  child: Positioned(
-                    bottom: StoycoScreenSize.height(context, 8),
-                    left: 0,
-                    right: 0,
-                    child: Center(
-                      child: Container(
-                        width: StoycoScreenSize.width(context, 115) * 0.8,
-                        padding: StoycoScreenSize.symmetric(
-                          context,
-                          vertical: 2,
-                        ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          color: ColorFoundation.background.saHighlights,
-                        ),
-                        child: Text(
-                          'Activo',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: StoycoScreenSize.fontSize(context, 12),
-                            color: ColorFoundation.text.saDark,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: StoycoFontFamilyToken.gilroy,
+                Stack(
+                  children: <Widget>[
+                    ImageStoycoCache(
+                      imageUrl: imageUrl,
+                      height: heightCard,
+                      width: widthImage,
+                      backgroundColor: ColorFoundation.background.chartBlack,
+                      borderRadius: borderRadiusImage,
+                    ),
+                    Visibility(
+                      visible: isActive,
+                      child: Positioned(
+                        bottom: StoycoScreenSize.height(context, 8),
+                        left: 0,
+                        right: 0,
+                        child: Center(
+                          child: Container(
+                            width: StoycoScreenSize.width(context, 115) * 0.8,
+                            padding: StoycoScreenSize.symmetric(
+                              context,
+                              vertical: 2,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(100),
+                              color: ColorFoundation.background.saHighlights,
+                            ),
+                            child: Text(
+                              'Activo',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: StoycoScreenSize.fontSize(
+                                  context,
+                                  12,
+                                ),
+                                color: ColorFoundation.text.saDark,
+                                fontWeight: FontWeight.w500,
+                                fontFamily: StoycoFontFamilyToken.gilroy,
+                              ),
+                            ),
                           ),
                         ),
                       ),
                     ),
+                  ],
+                ),
+                Expanded(child: content),
+              ],
+              extent: StoycoScreenSize.width(context, 16),
+            ),
+          ),
+        ),
+        if (showDetail) ...<Widget>[
+          Gutter(StoycoScreenSize.height(context, 13)),
+          detail ??
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(16),
+                color: Colors.grey[200],
+                child: const Center(
+                  child: Text(
+                    'In construction',
+                    style: TextStyle(color: Colors.grey),
                   ),
                 ),
-              ],
-            ),
-            Expanded(child: content),
-          ],
-          extent: StoycoScreenSize.width(context, 16),
-        ),
-      ),
+              ),
+        ],
+      ],
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:stoyco_partners_shared/design/models/bases/content_card_model.dart';
 
@@ -16,6 +17,7 @@ class SubscriptionContentModel extends ContentCardModel {
     required this.totalSubscribers,
     required this.totalRevenue,
     required this.currency,
+    this.exclusiveContentList,
   }) : super(contentType: ContentType.suscriptions);
   factory SubscriptionContentModel.fromJson(Map<String, dynamic> json) =>
       _$SubscriptionContentModelFromJson(json);
@@ -29,6 +31,7 @@ class SubscriptionContentModel extends ContentCardModel {
   final int totalSubscribers;
   final double totalRevenue;
   final String currency;
+  final List<ExclusiveContentData>? exclusiveContentList;
 
   @override
   List<Object?> get props =>
@@ -41,5 +44,35 @@ class SubscriptionContentModel extends ContentCardModel {
         monthlyPackageValue,
         totalSubscribers,
         totalRevenue,
+        exclusiveContentList,
       ];
+}
+
+@JsonSerializable()
+class ExclusiveContentData extends Equatable {
+  const ExclusiveContentData({
+    this.name,
+    this.countContent,
+    this.views,
+    this.engagement,
+    this.conversion,
+  });
+  factory ExclusiveContentData.fromJson(Map<String, dynamic> json) =>
+      _$ExclusiveContentDataFromJson(json);
+
+  final String? name;
+  final int? countContent;
+  final int? views;
+  final double? engagement;
+  final double? conversion;
+  Map<String, dynamic> toJson() => _$ExclusiveContentDataToJson(this);
+
+  @override
+  List<Object?> get props => <Object?>[
+    name,
+    countContent,
+    views,
+    engagement,
+    conversion,
+  ];
 }
