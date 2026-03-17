@@ -434,8 +434,8 @@ class _LinearChartState extends State<LinearChart>
     final double chartWidth = widget.data!.rangeX.length * StoycoScreenSize.width(context, 100);
     final double containerHeight = widget.height ?? StoycoScreenSize.height(context, 300);
     
-    final double reservedSizeLeft = 50;
-    final double reservedSizeBottom = 40;
+    const double reservedSizeLeft = 50;
+    const double reservedSizeBottom = 40;
     final double chartDrawingHeight = containerHeight - reservedSizeBottom;
     final double chartDrawingWidth = chartWidth - reservedSizeLeft;
     
@@ -449,11 +449,11 @@ class _LinearChartState extends State<LinearChart>
     
     final double maxX = (widget.data!.rangeX.length - 1).toDouble();
     final double xRatio = maxX > 0 ? spotX / maxX : 0;
-    double pointX = reservedSizeLeft + (chartDrawingWidth * xRatio);
+    final double pointX = reservedSizeLeft + (chartDrawingWidth * xRatio);
     
     final double yRange = maxY - minY;
     final double yRatio = yRange > 0 ? (spotY - minY) / yRange : 0;
-    double pointY = chartDrawingHeight * (1 - yRatio);
+    final double pointY = chartDrawingHeight * (1 - yRatio);
     
     double left = pointX - (tooltipWidth / 2);
     double top = pointY - tooltipHeight - StoycoScreenSize.height(context, 10);
@@ -496,7 +496,7 @@ class _LinearChartState extends State<LinearChart>
                 ),
               ),
               Gap(StoycoScreenSize.height(context, 8)),
-              ...tooltipData.map((data) => Padding(
+              ...tooltipData.map((_TooltipLineData data) => Padding(
                 padding: EdgeInsets.only(
                   bottom: StoycoScreenSize.height(context, 4),
                 ),
