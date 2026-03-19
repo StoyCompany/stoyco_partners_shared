@@ -81,7 +81,7 @@ class SubscriptionsContentDescription extends StatelessWidget {
                     children: <Widget>[
                       Expanded(
                         child: CustomTooltip(
-                          position: TooltipPosition.left,
+                          position: TooltipPosition.top,
                           message:
                               'Total de suscriptores activos (suma de planes anuales y mensuales).',
                           child: Container(
