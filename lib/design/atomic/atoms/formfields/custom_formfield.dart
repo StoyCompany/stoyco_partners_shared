@@ -127,8 +127,7 @@ class CustomFormField extends StatelessWidget {
                 maxLength: maxLength,
                 onTap: onTap,
                 readOnly: readOnly,
-                showErrors: (FormControl<String> control) =>
-                    showErrors && control.touched,
+                showErrors: (FormControl<String> control) => showErrors && (control.touched || control.dirty),
                 style: TextStyle(
                   fontFamily: 'Gilroy',
                   fontWeight: FontWeight.w600,
@@ -293,8 +292,7 @@ class _PasswordFieldState extends State<_PasswordField> {
       maxLength: widget.maxLength,
       onTap: widget.onTap,
       readOnly: widget.readOnly,
-      showErrors: (FormControl<String> control) =>
-          widget.showErrors && control.touched,
+      showErrors: (FormControl<String> control) => widget.showErrors && (control.touched || control.dirty),
       style: TextStyle(
         fontFamily: 'Gilroy',
         fontWeight: FontWeight.w600,

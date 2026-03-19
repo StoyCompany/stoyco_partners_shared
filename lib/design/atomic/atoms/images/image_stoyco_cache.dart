@@ -40,6 +40,8 @@ class ImageStoycoCache extends StatelessWidget {
         : null;
     final String normalizedUrl = _normalizeUrl(imageUrl);
 
+    final int cacheHeight = adaptiveHeight.toInt();
+    final int? cacheWidth = adaptiveWidth?.toInt();
     final Widget imageWidget = ClipRRect(
       borderRadius: adaptiveBorderRadius,
       child: CachedNetworkImage(
@@ -48,6 +50,20 @@ class ImageStoycoCache extends StatelessWidget {
         width: adaptiveWidth ?? double.infinity,
         fit: fit,
         useOldImageOnUrlChange: useOldImageOnUrlChange,
+        memCacheHeight: cacheHeight,
+        memCacheWidth: cacheWidth,
+        imageBuilder: (BuildContext context, ImageProvider<Object> imageProvider) => Container(
+          height: adaptiveHeight,
+          width: adaptiveWidth ?? double.infinity,
+          decoration: BoxDecoration(
+            borderRadius: adaptiveBorderRadius,
+            image: DecorationImage(
+              image: imageProvider,
+              fit: fit,
+              filterQuality: FilterQuality.high,
+            ),
+          ),
+        ),
         placeholder: (BuildContext context, String url) {
           return placeholder ??
               _buildDefaultPlaceholder(

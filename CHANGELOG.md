@@ -1,8 +1,14 @@
-### 3.0.10
+### 3.0.11
 
 ### Features
 
 - Added suscription related descriptions and widgets
+
+### 3.0.10
+
+### Features
+
+- Enhance ImageStoycoCache with improved caching parameters and error handling; refactor BarHorizontalChart for better performance and interaction
 
 ### 3.0.9
 
