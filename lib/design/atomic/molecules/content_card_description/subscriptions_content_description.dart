@@ -47,14 +47,16 @@ class SubscriptionsContentDescription extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       MessagedDescriptionTooltip(
-                        message: 'Anual:',
+                        message: 'Anual: ',
                         data: data.annualSubscribers,
-                        tooltipMessage: '',
+                        tooltipMessage:
+                            'Total de usuarios activos con un plan de suscripción anual.',
                       ),
                       RevenueStat(
                         value: data.annualPackageValue,
                         currency: data.currency,
-                        tooltipMessage: '',
+                        tooltipMessage:
+                            'Costo actual del plan de suscripción anual.',
                       ),
                     ],
                   ),
@@ -64,12 +66,14 @@ class SubscriptionsContentDescription extends StatelessWidget {
                       MessagedDescriptionTooltip(
                         message: 'Mensual:',
                         data: data.monthlySubscribers,
-                        tooltipMessage: '',
+                        tooltipMessage:
+                            'Total de usuarios activos con un plan de suscripción mensual.',
                       ),
                       RevenueStat(
                         value: data.monthlyPackageValue,
                         currency: data.currency,
-                        tooltipMessage: '',
+                        tooltipMessage:
+                            'Costo actual del plan de suscripción mensual.',
                       ),
                     ],
                   ),
@@ -78,7 +82,8 @@ class SubscriptionsContentDescription extends StatelessWidget {
                       Expanded(
                         child: CustomTooltip(
                           position: TooltipPosition.left,
-                          message: '',
+                          message:
+                              'Total de suscriptores activos (suma de planes anuales y mensuales).',
                           child: Container(
                             padding: StoycoScreenSize.symmetric(
                               context,
@@ -113,7 +118,8 @@ class SubscriptionsContentDescription extends StatelessWidget {
                         child: RevenueStat(
                           value: data.totalRevenue,
                           currency: data.currency,
-                          tooltipMessage: '',
+                          tooltipMessage:
+                              'Ingresos totales generados por tus suscripciones activas.',
                         ),
                       ),
                     ],

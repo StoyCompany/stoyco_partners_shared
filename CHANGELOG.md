@@ -1,3 +1,9 @@
+### 3.0.10
+
+### Features
+
+- Added suscription related descriptions and widgets
+
 ### 3.0.9
 
 ### Features
