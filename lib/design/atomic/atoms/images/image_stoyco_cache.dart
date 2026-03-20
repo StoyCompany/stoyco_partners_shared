@@ -27,15 +27,17 @@ class ImageStoycoCache extends StatelessWidget {
   final Widget? placeholder;
   final Widget? errorWidget;
   final bool useOldImageOnUrlChange;
-  final Color? backgroundColor; 
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
-    final BorderRadius adaptiveBorderRadius = borderRadius ?? BorderRadius.circular(
-      StoycoScreenSize.radius(context, 5),
-    );
+    final BorderRadius adaptiveBorderRadius =
+        borderRadius ??
+        BorderRadius.circular(StoycoScreenSize.radius(context, 5));
     final double adaptiveHeight = StoycoScreenSize.width(context, height);
-    final double? adaptiveWidth = width != null ? StoycoScreenSize.width(context, width!) : null;
+    final double? adaptiveWidth = width != null
+        ? StoycoScreenSize.width(context, width!)
+        : null;
     final String normalizedUrl = _normalizeUrl(imageUrl);
 
     final int cacheHeight = adaptiveHeight.toInt();
@@ -63,18 +65,17 @@ class ImageStoycoCache extends StatelessWidget {
           ),
         ),
         placeholder: (BuildContext context, String url) {
-          return placeholder ?? _buildDefaultPlaceholder(
-            adaptiveHeight, 
-            adaptiveWidth, 
-            adaptiveBorderRadius,
-          );
-        }, 
+          return placeholder ??
+              _buildDefaultPlaceholder(
+                adaptiveHeight,
+                adaptiveWidth,
+                adaptiveBorderRadius,
+              );
+        },
         errorWidget: (BuildContext context, String url, Object error) {
           StoyCoLogger.error('Error loading image: $url, error: $error');
-          return errorWidget ?? _buildDefaultError(
-            adaptiveHeight, 
-            adaptiveWidth,
-          );
+          return errorWidget ??
+              _buildDefaultError(adaptiveHeight, adaptiveWidth);
         },
       ),
     );
