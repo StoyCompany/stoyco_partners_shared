@@ -83,6 +83,9 @@ class StoycoColorsToken {
   /// Color: #E8CF00
   static const Color darkYellow = Color(0xFFE8CF00);
 
+  /// Color: #0F151A
+  static const Color deepCharcoal = Color(0xFF0F151A);
+
   /// Color: #F8C3BE
   static const Color failed = Color(0xFFF8C3BE);
 

@@ -144,6 +144,8 @@ class _Background {
   final Color saSkeleton = StoycoColorsToken.saSkeleton;
 
   final Color saDisabled2 = StoycoColorsToken.saDisabled2;
+
+  final Color deepCharcoal = StoycoColorsToken.deepCharcoal;
 }
 
 class _Border {

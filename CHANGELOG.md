@@ -1,3 +1,9 @@
+### 3.0.12
+
+### Features
+
+- Added color deepCharcoal
+
 ### 3.0.11
 
 ### Features
