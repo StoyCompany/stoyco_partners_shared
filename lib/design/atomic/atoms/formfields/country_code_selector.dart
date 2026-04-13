@@ -36,6 +36,8 @@ class _CountryCodeSelectorState extends State<CountryCodeSelector> {
   final FocusNode _focusNode = FocusNode();
   final GlobalKey _rowKey = GlobalKey();
   double _dropdownWidth = 0;
+  final TextEditingController _searchController = TextEditingController();
+  List<Country> _filteredCountries = countries;
 
   @override
   void initState() {
@@ -49,8 +51,25 @@ class _CountryCodeSelectorState extends State<CountryCodeSelector> {
       }
     });
 
+    _searchController.addListener(_filterCountries);
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _updateDropdownWidth();
+    });
+  }
+
+  void _filterCountries() {
+    final String query = _searchController.text.toLowerCase();
+    setState(() {
+      if (query.isEmpty) {
+        _filteredCountries = countries;
+      } else {
+        _filteredCountries = countries.where((Country country) {
+          return country.name.toLowerCase().contains(query) ||
+              country.code.toLowerCase().contains(query) ||
+              country.dialCode.contains(query);
+        }).toList();
+      }
     });
   }
 
@@ -67,6 +86,7 @@ class _CountryCodeSelectorState extends State<CountryCodeSelector> {
   @override
   void dispose() {
     _focusNode.dispose();
+    _searchController.dispose();
     super.dispose();
   }
 
@@ -76,6 +96,8 @@ class _CountryCodeSelectorState extends State<CountryCodeSelector> {
       if (_isExpanded) {
         _focusNode.requestFocus();
         _updateDropdownWidth();
+        _searchController.clear();
+        _filteredCountries = countries;
       }
     });
   }
@@ -112,6 +134,17 @@ class _CountryCodeSelectorState extends State<CountryCodeSelector> {
         final FormControl<PhoneNumber?> control = field.control;
         final Country selectedCountry = _getCountryFromControl(control);
         final bool hasError = control.hasErrors && control.touched;
+
+        // Cerrar dropdown si el control se deshabilita
+        if (!control.enabled && _isExpanded) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted) {
+              setState(() {
+                _isExpanded = false;
+              });
+            }
+          });
+        }
 
         return Focus(
           focusNode: _focusNode,
@@ -259,65 +292,175 @@ class _CountryCodeSelectorState extends State<CountryCodeSelector> {
       ),
       child: Material(
         color: Colors.transparent,
-        child: ListView.separated(
-          shrinkWrap: true,
-          padding: StoycoScreenSize.symmetric(context, vertical: 4),
-          itemCount: countries.length,
-          separatorBuilder: (BuildContext context, int index) => Divider(
-            height: 1,
-            color: ColorFoundation.border.saDark.withOpacity(0.2),
-          ),
-          itemBuilder: (BuildContext context, int index) {
-            final Country country = countries[index];
-            final bool isSelected = country.code == selectedCountry.code;
-
-            return InkWell(
-              onTap: () => _selectCountry(country, control),
-              child: Container(
-                padding: StoycoScreenSize.symmetric(
-                  context,
-                  horizontal: 12,
-                  vertical: 10,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            // Search Field
+            Padding(
+              padding: StoycoScreenSize.symmetric(context, horizontal: 12),
+              child: TextField(
+                controller: _searchController,
+                style: TextStyle(
+                  fontFamily: StoycoFontFamilyToken.gilroy,
+                  fontWeight: FontWeight.w500,
+                  fontSize: StoycoScreenSize.fontSize(context, 14),
+                  color: ColorFoundation.text.saDark,
                 ),
-                color: isSelected
-                    ? ColorFoundation.background.saHighlights.withOpacity(0.1)
-                    : Colors.transparent,
-                child: Row(
-                  children: <Widget>[
-                    Text(
-                      country.flag,
-                      style: TextStyle(
-                        fontSize: StoycoScreenSize.fontSize(context, 20),
-                      ),
+                decoration: InputDecoration(
+                  hintText: 'Buscar país...',
+                  hintStyle: TextStyle(
+                    fontFamily: StoycoFontFamilyToken.gilroy,
+                    fontWeight: FontWeight.w400,
+                    fontSize: StoycoScreenSize.fontSize(context, 14),
+                    color: ColorFoundation.text.saDark.withOpacity(0.6),
+                  ),
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: ColorFoundation.text.saDark,
+                    size: StoycoScreenSize.fontSize(context, 20),
+                  ),
+                  suffixIcon: _searchController.text.isNotEmpty
+                      ? IconButton(
+                          icon: Icon(
+                            Icons.clear,
+                            color: ColorFoundation.text.saDark,
+                            size: StoycoScreenSize.fontSize(context, 20),
+                          ),
+                          onPressed: () {
+                            _searchController.clear();
+                          },
+                        )
+                      : null,
+                  contentPadding: StoycoScreenSize.symmetric(
+                    context,
+                    vertical: 8,
+                    horizontal: 12,
+                  ),
+                  isDense: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(
+                      StoycoScreenSize.radius(context, 8),
                     ),
-                    Gutter(StoycoScreenSize.width(context, 20)),
-                    Expanded(
-                      child: Text(
-                        country.name,
-                        style: TextStyle(
-                          fontFamily: StoycoFontFamilyToken.gilroy,
-                          fontWeight: isSelected
-                              ? FontWeight.w600
-                              : FontWeight.w500,
-                          fontSize: StoycoScreenSize.fontSize(context, 14),
-                          color: ColorFoundation.text.saDark,
-                        ),
-                      ),
+                    borderSide: BorderSide(
+                      color: ColorFoundation.border.saDark,
                     ),
-                    Text(
-                      '+${country.dialCode}',
-                      style: TextStyle(
-                        fontFamily: StoycoFontFamilyToken.gilroy,
-                        fontWeight: FontWeight.w500,
-                        fontSize: StoycoScreenSize.fontSize(context, 15),
-                        color: ColorFoundation.text.saDark,
-                      ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(
+                      StoycoScreenSize.radius(context, 8),
                     ),
-                  ],
+                    borderSide: BorderSide(
+                      color: ColorFoundation.border.saDark.withOpacity(0.3),
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(
+                      StoycoScreenSize.radius(context, 8),
+                    ),
+                    borderSide: BorderSide(
+                      color: ColorFoundation.border.saDark,
+                    ),
+                  ),
                 ),
               ),
-            );
-          },
+            ),
+            Gutter(StoycoScreenSize.height(context, 8)),
+            // Country List
+            Flexible(
+              child: _filteredCountries.isEmpty
+                  ? Padding(
+                      padding: StoycoScreenSize.symmetric(
+                        context,
+                        vertical: 20,
+                        horizontal: 12,
+                      ),
+                      child: Text(
+                        'No se encontraron países',
+                        style: TextStyle(
+                          fontFamily: StoycoFontFamilyToken.gilroy,
+                          fontWeight: FontWeight.w500,
+                          fontSize: StoycoScreenSize.fontSize(context, 14),
+                          color: ColorFoundation.text.saDark.withOpacity(0.6),
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    )
+                  : ListView.separated(
+                      shrinkWrap: true,
+                      padding: StoycoScreenSize.symmetric(context, vertical: 4),
+                      itemCount: _filteredCountries.length,
+                      separatorBuilder: (BuildContext context, int index) =>
+                          Divider(
+                            height: 1,
+                            color: ColorFoundation.border.saDark.withOpacity(
+                              0.2,
+                            ),
+                          ),
+                      itemBuilder: (BuildContext context, int index) {
+                        final Country country = _filteredCountries[index];
+                        final bool isSelected =
+                            country.code == selectedCountry.code;
+
+                        return InkWell(
+                          onTap: () => _selectCountry(country, control),
+                          child: Container(
+                            padding: StoycoScreenSize.symmetric(
+                              context,
+                              horizontal: 12,
+                              vertical: 10,
+                            ),
+                            color: isSelected
+                                ? ColorFoundation.background.saHighlights
+                                      .withOpacity(0.1)
+                                : Colors.transparent,
+                            child: Row(
+                              children: <Widget>[
+                                Text(
+                                  country.flag,
+                                  style: TextStyle(
+                                    fontSize: StoycoScreenSize.fontSize(
+                                      context,
+                                      20,
+                                    ),
+                                  ),
+                                ),
+                                Gutter(StoycoScreenSize.width(context, 12)),
+                                Expanded(
+                                  child: Text(
+                                    country.name,
+                                    style: TextStyle(
+                                      fontFamily: StoycoFontFamilyToken.gilroy,
+                                      fontWeight: isSelected
+                                          ? FontWeight.w600
+                                          : FontWeight.w500,
+                                      fontSize: StoycoScreenSize.fontSize(
+                                        context,
+                                        14,
+                                      ),
+                                      color: ColorFoundation.text.saDark,
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  '+${country.dialCode}',
+                                  style: TextStyle(
+                                    fontFamily: StoycoFontFamilyToken.gilroy,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: StoycoScreenSize.fontSize(
+                                      context,
+                                      14,
+                                    ),
+                                    color: ColorFoundation.text.saDark,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+            ),
+          ],
         ),
       ),
     );
@@ -427,7 +570,10 @@ class _PhoneNumberInputState extends State<_PhoneNumberInput> {
               bottom: BorderSide(
                 color: hasError
                     ? ColorFoundation.text.saError
-                    : (widget.underlineColor ?? ColorFoundation.text.saDark),
+                    : isEnabled
+                    ? (widget.underlineColor ?? ColorFoundation.text.saDark)
+                    : (widget.underlineColor ?? ColorFoundation.text.saDark)
+                          .withOpacity(0.5),
                 width: 2,
               ),
             ),
@@ -437,7 +583,7 @@ class _PhoneNumberInputState extends State<_PhoneNumberInput> {
             style: TextStyle(
               color: isEnabled
                   ? (widget.textColor ?? ColorFoundation.text.saDark)
-                  : (widget.textColor ?? ColorFoundation.text.grey1)
+                  : (widget.textColor ?? ColorFoundation.text.saDark)
                         .withOpacity(0.5),
               fontSize: StoycoScreenSize.fontSize(context, 14),
               fontWeight: FontWeight.w500,
@@ -458,7 +604,10 @@ class _PhoneNumberInputState extends State<_PhoneNumberInput> {
               fontSize: StoycoScreenSize.fontSize(context, 14),
               color: hasError
                   ? ColorFoundation.text.saError
-                  : (widget.textColor ?? ColorFoundation.text.saDark),
+                  : isEnabled
+                  ? (widget.textColor ?? ColorFoundation.text.saDark)
+                  : (widget.textColor ?? ColorFoundation.text.saDark)
+                        .withOpacity(0.5),
               height: 1.0,
             ),
             decoration: InputDecoration(
