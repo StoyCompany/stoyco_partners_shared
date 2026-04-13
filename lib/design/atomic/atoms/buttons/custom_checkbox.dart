@@ -8,7 +8,8 @@ class CustomCheckbox extends StatefulWidget {
   const CustomCheckbox({
     super.key,
     required this.formControlName,
-    required this.label,
+    this.label = '',
+    this.labelWidget,
     this.checkboxSize = 20,
     this.labelStyle,
     this.activeColor,
@@ -18,10 +19,14 @@ class CustomCheckbox extends StatefulWidget {
     this.spacing = 10,
     this.validationMessages,
     this.onLabelTap,
-  });
+  }) : assert(
+          label != '' || labelWidget != null,
+          'Either label or labelWidget must be provided',
+        );
 
   final String formControlName;
   final String label;
+  final Widget? labelWidget;
   final double checkboxSize;
   final TextStyle? labelStyle;
   final Color? activeColor;
@@ -119,14 +124,19 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
                   Flexible(
                     child: GestureDetector(
                       onTap: widget.onLabelTap,
-                      child: Text(
-                        widget.label,
-                        style: isEnabled
-                            ? effectiveLabelStyle
-                            : effectiveLabelStyle.copyWith(
-                                color: ColorFoundation.text.saTextDisabled,
-                              ),
-                      ),
+                      child: widget.labelWidget != null
+                          ? Opacity(
+                              opacity: isEnabled ? 1.0 : 0.5,
+                              child: widget.labelWidget,
+                            )
+                          : Text(
+                              widget.label,
+                              style: isEnabled
+                                  ? effectiveLabelStyle
+                                  : effectiveLabelStyle.copyWith(
+                                      color: ColorFoundation.text.saTextDisabled,
+                                    ),
+                            ),
                     ),
                   ),
                 ],
