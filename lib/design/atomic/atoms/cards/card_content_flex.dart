@@ -6,9 +6,11 @@ class CardcContentFlex extends StatelessWidget {
   const CardcContentFlex({
     super.key,
     required this.child,
+    this.contentPadding,
   });
 
   final Widget child;
+  final EdgeInsetsGeometry? contentPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class CardcContentFlex extends StatelessWidget {
         minHeight: StoycoScreenSize.height(context, 638),
       ),
       child: Padding(
-        padding: StoycoScreenSize.fromLTRB(
+        padding: contentPadding ?? StoycoScreenSize.fromLTRB(
           context,
           top: 35,
           left: 33,
