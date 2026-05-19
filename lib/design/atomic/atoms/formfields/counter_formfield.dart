@@ -114,7 +114,7 @@ class CounterFormField extends StatelessWidget {
           }
         }
         
-        final bool hasError = errorMessage != null;
+        final bool hasError = errorMessage != null; 
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
