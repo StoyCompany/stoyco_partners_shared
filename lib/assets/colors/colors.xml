@@ -101,6 +101,12 @@
     <!-- light menu -->
     <color name="sa-light-menu">#EFDFEF</color>
 
+    <color name="sa-white">#F8F9FA</color>
+
+    <color name="sa-dark-charcoal">#373348</color>
+
+    <color name="sa-violet">#4236DD</color>
+
     <!-- chart -->
     <color name="blue-chart">#3C80FF</color>
     <color name="green-chart">#7BC08F</color>

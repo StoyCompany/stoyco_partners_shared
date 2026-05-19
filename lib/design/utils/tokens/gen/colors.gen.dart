@@ -161,6 +161,9 @@ class StoycoColorsToken {
   /// Color: #14121D
   static const Color saDark = Color(0xFF14121D);
 
+  /// Color: #373348
+  static const Color saDarkCharcoal = Color(0xFF373348);
+
   /// Color: #C8B5E9
   static const Color saDisabled = Color(0xFFC8B5E9);
 
@@ -190,6 +193,12 @@ class StoycoColorsToken {
 
   /// Color: #6B6974
   static const Color saTextDisabled = Color(0xFF6B6974);
+
+  /// Color: #4236DD
+  static const Color saViolet = Color(0xFF4236DD);
+
+  /// Color: #F8F9FA
+  static const Color saWhite = Color(0xFFF8F9FA);
 
   /// Color: #29000000
   static const Color shadow1 = Color(0x29000000);
