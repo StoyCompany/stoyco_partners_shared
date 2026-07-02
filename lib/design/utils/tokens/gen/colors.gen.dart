@@ -23,8 +23,20 @@ class StoycoColorsToken {
   /// Color: #0D0F33
   static const Color black2 = Color(0xFF0D0F33);
 
+  /// Color: #141318
+  static const Color black3 = Color(0xFF141318);
+
+  /// Color: #2B292F
+  static const Color black4 = Color(0xFF2B292F);
+
+  /// Color: #201F24
+  static const Color black5 = Color(0xFF201F24);
+
   /// Color: #43414A
   static const Color blackChart = Color(0xFF43414A);
+
+  /// Color: #0E0E0E
+  static const Color blackFinancialLayer = Color(0xFF0E0E0E);
 
   /// Color: #33000000
   static const Color blackTransparent = Color(0x33000000);
@@ -49,6 +61,15 @@ class StoycoColorsToken {
 
   /// Color: #B2383838
   static const Color blur = Color(0xB2383838);
+
+  /// Color: #802D2D3A
+  static const Color borderFinancialLayerType2 = Color(0x802D2D3A);
+
+  /// Color: #1D1A27
+  static const Color cardFinancialLayer = Color(0xFF1D1A27);
+
+  /// Color: #F21C1C24
+  static const Color cardFinancialLayerType2 = Color(0xF21C1C24);
 
   /// Color: #15B790
   static const Color cardAffirmative1 = Color(0xFF15B790);
@@ -80,6 +101,9 @@ class StoycoColorsToken {
   /// Color: #15B790
   static const Color complementario4 = Color(0xFF15B790);
 
+  /// Color: #131313
+  static const Color darkGrayFinancialLayer = Color(0xFF131313);
+
   /// Color: #E8CF00
   static const Color darkYellow = Color(0xFFE8CF00);
 
@@ -92,8 +116,14 @@ class StoycoColorsToken {
   /// Color: #7BC08F
   static const Color greenChart = Color(0xFF7BC08F);
 
+  /// Color: #00A572
+  static const Color greenAccent = Color(0xFF00A572);
+
   /// Color: #76DBC3
   static const Color greenClear = Color(0xFF76DBC3);
+
+  /// Color: #4EDEA3
+  static const Color greenLight = Color(0xFF4EDEA3);
 
   /// Color: #B9E9DE
   static const Color greenMenu = Color(0xFFB9E9DE);
@@ -106,6 +136,27 @@ class StoycoColorsToken {
 
   /// Color: #585858
   static const Color grey1 = Color(0xFF585858);
+
+  /// Color: #E5E1E8
+  static const Color grey10 = Color(0xFFE5E1E8);
+
+  /// Color: #A1A1AA
+  static const Color grey11 = Color(0xFFA1A1AA);
+
+  /// Color: #E5E2E1
+  static const Color grey12 = Color(0xFFE5E2E1);
+
+  /// Color: #99999E
+  static const Color grey13 = Color(0xFF99999E);
+
+  /// Color: #474747
+  static const Color grey14 = Color(0xFF474747);
+
+  /// Color: #948E9C
+  static const Color grey15 = Color(0xFF948E9C);
+
+  /// Color: #494551
+  static const Color grey16 = Color(0xFF494551);
 
   /// Color: #797979
   static const Color grey2 = Color(0xFF797979);
@@ -124,6 +175,12 @@ class StoycoColorsToken {
 
   /// Color: #545F71
   static const Color grey7 = Color(0xFF545F71);
+
+  /// Color: #94A3B8
+  static const Color grey8 = Color(0xFF94A3B8);
+
+  /// Color: #CBC4D3
+  static const Color grey9 = Color(0xFFCBC4D3);
 
   /// Color: #AAD3E1
   static const Color header1 = Color(0xFFAAD3E1);
@@ -161,6 +218,9 @@ class StoycoColorsToken {
   /// Color: #14121D
   static const Color saDark = Color(0xFF14121D);
 
+  /// Color: #1C1B20
+  static const Color saDark2 = Color(0xFF1C1B20);
+
   /// Color: #373348
   static const Color saDarkCharcoal = Color(0xFF373348);
 
@@ -184,6 +244,9 @@ class StoycoColorsToken {
 
   /// Color: #EFDFEF
   static const Color saLightMenu = Color(0xFFEFDFEF);
+
+  /// Color: #D1BCFF
+  static const Color saLightPurple = Color(0xFFD1BCFF);
 
   /// Color: #57535d
   static const Color saSkeleton = Color(0xFF57535D);
@@ -211,6 +274,9 @@ class StoycoColorsToken {
 
   /// Color: #F27B2C
   static const Color tertiary3 = Color(0xFFF27B2C);
+
+  /// Color: #F1F5F9
+  static const Color textGrayFinancialLayer = Color(0xFFF1F5F9);
 
   /// Color: #00000000
   static const Color transparent = Color(0x00000000);

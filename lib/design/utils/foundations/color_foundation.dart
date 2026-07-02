@@ -26,6 +26,7 @@ class _Text {
 
   final Color black = StoycoColorsToken.black;
   final Color black_1 = StoycoColorsToken.black1;
+  final Color black_3 = StoycoColorsToken.black3;
   final Color saDark = StoycoColorsToken.saDark;
   final Color white = StoycoColorsToken.white;
   final Color saLight = StoycoColorsToken.saLight;
@@ -36,6 +37,13 @@ class _Text {
   final Color grey4 = StoycoColorsToken.grey4;
   final Color grey5 = StoycoColorsToken.grey5;
   final Color grey7 = StoycoColorsToken.grey7;
+  final Color grey8 = StoycoColorsToken.grey8;
+  final Color grey9 = StoycoColorsToken.grey9;
+  final Color grey10 = StoycoColorsToken.grey10;
+  final Color grey11 = StoycoColorsToken.grey11;
+  final Color grey12 = StoycoColorsToken.grey12;
+  final Color grey13 = StoycoColorsToken.grey13;
+  final Color grey14 = StoycoColorsToken.grey14;
 
   final Color success = StoycoColorsToken.complementario4;
   final Color negative = StoycoColorsToken.tertiary1;
@@ -63,18 +71,37 @@ class _Text {
   final Color itemMenuRed = StoycoColorsToken.itemMenuRed;
   final Color itemMenuYellow = StoycoColorsToken.itemMenuYellow;
   final Color itemMenuOrange = StoycoColorsToken.itemMenuOrange;
+
+  final Color textGrayFinancialLayer = StoycoColorsToken.textGrayFinancialLayer;
+  final Color darkGrayFinancialLayer = StoycoColorsToken.darkGrayFinancialLayer;
+  final Color blackFinancialLayer = StoycoColorsToken.blackFinancialLayer;
+
+  final Color greenAccent = StoycoColorsToken.greenAccent;
+  final Color greenLight = StoycoColorsToken.greenLight;
+  final Color saWhite = StoycoColorsToken.saWhite;
 }
 
 class _Background {
   _Background._();
 
   final Color black = StoycoColorsToken.black;
+  final Color black1 = StoycoColorsToken.black1;
+  final Color black2 = StoycoColorsToken.black2;
+  final Color black3 = StoycoColorsToken.black3;
+  final Color black4 = StoycoColorsToken.black4;
+  final Color black5 = StoycoColorsToken.black5;
+  final Color saDark = StoycoColorsToken.saDark;
+  final Color saDark2 = StoycoColorsToken.saDark2;
   final Color white = StoycoColorsToken.white;
+  final Color saLight = StoycoColorsToken.saLight;
+  final Color saWhite = StoycoColorsToken.saWhite;
 
   final Color greenClear = StoycoColorsToken.greenClear;
   final Color greenDark = StoycoColorsToken.greendark;
   final Color greenMenu = StoycoColorsToken.greenMenu;
   final Color greenTable = StoycoColorsToken.greenTable;
+  final Color greenAccent = StoycoColorsToken.greenAccent;
+  final Color greenLight = StoycoColorsToken.greenLight;
 
   final Color grey1 = StoycoColorsToken.grey1;
   final Color grey2 = StoycoColorsToken.grey2;
@@ -82,6 +109,16 @@ class _Background {
   final Color grey4 = StoycoColorsToken.grey4;
   final Color grey5 = StoycoColorsToken.grey5;
   final Color grey6 = StoycoColorsToken.grey6;
+  final Color grey7 = StoycoColorsToken.grey7;
+  final Color grey8 = StoycoColorsToken.grey8;
+  final Color grey9 = StoycoColorsToken.grey9;
+  final Color grey10 = StoycoColorsToken.grey10;
+  final Color grey11 = StoycoColorsToken.grey11;
+  final Color grey12 = StoycoColorsToken.grey12;
+  final Color grey13 = StoycoColorsToken.grey13;
+  final Color grey14 = StoycoColorsToken.grey14;
+  final Color grey15 = StoycoColorsToken.grey15;
+  final Color grey16 = StoycoColorsToken.grey16;
 
   final Color complementario1 = StoycoColorsToken.complementario1;
   final Color complementario2 = StoycoColorsToken.complementario2;
@@ -120,13 +157,12 @@ class _Background {
 
   final Color darkYellow = StoycoColorsToken.darkYellow;
 
-  final Color saDark = StoycoColorsToken.saDark;
-
-  final Color saLight = StoycoColorsToken.saLight;
-
   final Color saHighlights = StoycoColorsToken.saHighlights;
+  final Color saLightPurple = StoycoColorsToken.saLightPurple;
 
   final Color saDisabled = StoycoColorsToken.saDisabled;
+
+  final Color saViolet = StoycoColorsToken.saViolet;
 
   final Color fandom = StoycoColorsToken.saLightMenu;
 
@@ -146,6 +182,17 @@ class _Background {
   final Color saDisabled2 = StoycoColorsToken.saDisabled2;
 
   final Color deepCharcoal = StoycoColorsToken.deepCharcoal;
+
+  final Color cardFinancialLayer = StoycoColorsToken.cardFinancialLayer;
+
+  final Color cardGrayFinancialLayer = StoycoColorsToken.darkGrayFinancialLayer;
+
+  final Color blackFinancialLayer = StoycoColorsToken.blackFinancialLayer;
+
+  final Color cardFinancialLayerType2 =
+      StoycoColorsToken.cardFinancialLayerType2;
+  final Color borderFinancialLayerType2 =
+      StoycoColorsToken.borderFinancialLayerType2;
 }
 
 class _Border {
@@ -166,6 +213,7 @@ class _Border {
   final Color saDark = StoycoColorsToken.saDark;
   final Color saLight = StoycoColorsToken.saLight;
   final Color saHighlights = StoycoColorsToken.saHighlights;
+  final Color saBorderHeader = StoycoColorsToken.grey7;
 }
 
 class _Shadow {
