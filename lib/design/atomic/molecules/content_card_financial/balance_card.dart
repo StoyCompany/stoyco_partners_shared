@@ -39,6 +39,8 @@ class BalanceCard extends StatefulWidget {
     this.hiddenBalanceText = r'$ ••••••••',
     this.initiallyVisible = true,
     this.fontFamily,
+    this.currency,
+    this.currencyFontStyle,
     this.onVisibilityToggle,
     super.key,
   });
@@ -74,6 +76,12 @@ class BalanceCard extends StatefulWidget {
 
   /// Optional font family
   final String? fontFamily;
+
+  /// Currency text to display (e.g., 'USD', 'CLP', 'EUR')
+  final String? currency;
+
+  /// Custom font style for currency text
+  final TextStyle? currencyFontStyle;
 
   /// Optional callback when visibility changes
   final ValueChanged<bool>? onVisibilityToggle;
@@ -144,19 +152,45 @@ class _BalanceCardState extends State<BalanceCard> {
           Row(
             children: <Widget>[
               Flexible(
-                child: Text(
-                  _isBalanceVisible
-                      ? formattedBalance
-                      : widget.hiddenBalanceText,
-                  style: TextStyle(
-                    fontFamily: widget.fontFamily,
-                    fontSize: StoycoScreenSize.fontSize(context, 30),
-                    fontWeight: FontWeight.w700,
-                    color: balanceColorResolved,
-                    letterSpacing: 0,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    Flexible(
+                      child: Text(
+                        _isBalanceVisible
+                            ? formattedBalance
+                            : widget.hiddenBalanceText,
+                        style: TextStyle(
+                          fontFamily: widget.fontFamily,
+                          fontSize: StoycoScreenSize.fontSize(context, 30),
+                          fontWeight: FontWeight.w700,
+                          color: balanceColorResolved,
+                          letterSpacing: 0,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    if (widget.currency != null && _isBalanceVisible) ...<Widget>[
+                      SizedBox(width: StoycoScreenSize.width(context, 6)),
+                      Padding(
+                        padding: EdgeInsets.only(
+                          bottom: StoycoScreenSize.height(context, 4),
+                        ),
+                        child: Text(
+                          widget.currency!,
+                          style: widget.currencyFontStyle ??
+                              TextStyle(
+                                fontFamily: widget.fontFamily,
+                                fontSize: StoycoScreenSize.fontSize(context, 16),
+                                fontWeight: FontWeight.w400,
+                                color: balanceColorResolved,
+                                letterSpacing: 0,
+                              ),
+                        ),
+                      ),
+                    ],
+                  ],
                 ),
               ),
               SizedBox(width: StoycoScreenSize.width(context, 12)),
