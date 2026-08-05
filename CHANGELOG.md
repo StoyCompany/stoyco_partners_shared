@@ -1,3 +1,21 @@
+## 4.0.1
+
+### Features
+
+- Add financial card components with comprehensive tests
+  - Add CardFinancial component with two variants (type1/type2)
+  - Add BalanceCard with visibility toggle functionality
+  - Add NoResultsBlockCard for empty states
+  - Add InfoPillCard for informational messages
+  - Add InfoAdvisorBannerCard for promotional content with Spanish localization
+  - Replace all hardcoded values with StoycoScreenSize for responsiveness
+  - Add comprehensive English documentation for all components
+  - Add 80 unit tests with full coverage
+  - Parameterize all colors, sizes, and text for maximum flexibility
+- Enhance color definitions for financial components
+
+Related to: SC-937, SC-936, SC-374, SC-373
+
 ### 3.0.12
 
 ### Features
